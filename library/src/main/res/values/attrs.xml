@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="tooltipViewStyle" format="reference"/>
+
+    <declare-styleable name="TooltipView">
+
+    </declare-styleable>
+</resources>

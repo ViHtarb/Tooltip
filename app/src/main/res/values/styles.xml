@@ -8,4 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.Test" parent="TextAppearance.AppCompat.Large.Inverse"/>
+
+    <style name="Tooltip">
+        <item name="android:text">TESSSSSS</item>
+        <item name="backgroundColor">@color/colorAccent</item>
+        <item name="android:textAppearance">@style/TextAppearance.Test</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="Tooltip2">
+        <item name="android:text">qwqwrqwfqwfqwfqwfqwf</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Test</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
 </resources>

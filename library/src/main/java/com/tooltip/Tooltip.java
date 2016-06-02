@@ -12,13 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupWindow;
 
 /**
  * Created by Viнt@rь on 26.05.2016
  */
-public class Tooltip {
+public class Tooltip implements View.OnTouchListener {
 
     private View mAnchorView;
     private PopupWindow mPopupWindow;
@@ -39,11 +40,21 @@ public class Tooltip {
         tooltipView.setTextAppearance(builder.mTextAppearance);
         tooltipView.setPadding(padding, padding, padding, padding);
         tooltipView.setTypeface(builder.mTypeface, builder.mTextStyle);
-        tooltipView.setBackgroundDrawable(drawable);
+        tooltipView.setBackground(drawable);
+        //tooltipView.setOnTouchListener(this);
 
         mPopupWindow = new PopupWindow(builder.mContext);
         mPopupWindow.setBackgroundDrawable(null);
+        mPopupWindow.setClippingEnabled(false);
         mPopupWindow.setContentView(tooltipView);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setOutsideTouchable(true);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        //dismiss();
+        return true;
     }
 
     public boolean isShowing() {
@@ -68,8 +79,8 @@ public class Tooltip {
         private boolean isDismissOnInsideTouch;
         private boolean isDismissOnOutsideTouch;
 
-        private int mGravity = Gravity.BOTTOM;
-        private int mBackgroundColor = Color.BLACK;
+        private int mGravity;
+        private int mBackgroundColor;
         private int mTextAppearance;
         private int mTextStyle;
 
@@ -95,10 +106,10 @@ public class Tooltip {
 
             setDismissOnInsideTouch(a.getBoolean(R.styleable.Tooltip_dismissOnInsideTouch, false));
             setDismissOnOutsideTouch(a.getBoolean(R.styleable.Tooltip_dismissOnOutsideTouch, false));
-            setBackgroundColor(a.getColor(R.styleable.Tooltip_backgroundColor, Color.BLACK));
+            setBackgroundColor(a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY));
             setCornerRadius(a.getDimension(R.styleable.Tooltip_cornerRadius, -1));
             setPadding(a.getDimension(R.styleable.Tooltip_android_padding, -1));
-            setGravity(a.getInteger(R.styleable.Tooltip_android_gravity, -1));
+            setGravity(a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM));
             setText(a.getString(R.styleable.Tooltip_android_text));
             setTextSize(a.getDimension(R.styleable.Tooltip_android_textSize, -1));
             setTextColor(a.getColorStateList(R.styleable.Tooltip_android_textColor));

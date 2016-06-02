@@ -14,7 +14,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView textView = (TextView) findViewById(R.id.text);
-        Tooltip.Builder builder = new Tooltip.Builder(this, textView, R.style.Tooltip2);
+
+        Tooltip.Builder builder = new Tooltip.Builder(this, textView)
+                .setText("TEESSSTTT");
         builder.show();
     }
 }

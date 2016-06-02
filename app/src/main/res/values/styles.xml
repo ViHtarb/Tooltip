@@ -21,6 +21,6 @@
         <item name="android:text">qwqwrqwfqwfqwfqwfqwf</item>
         <item name="backgroundColor">@color/colorPrimary</item>
         <item name="android:textAppearance">@style/TextAppearance.Test</item>
-        <item name="cornerRadius">20dp</item>
+        <item name="cornerRadius">10dp</item>
     </style>
 </resources>

@@ -3,6 +3,8 @@ package com.tooltip;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.StyleRes;
 import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
@@ -28,6 +30,16 @@ class TooltipView extends FrameLayout {
 
         mTextView = new TextView(context, attrs, defStyleAttr);
         addView(mTextView);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void setBackground(Drawable background) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            super.setBackground(background);
+        } else {
+            super.setBackgroundDrawable(background);
+        }
     }
 
     public void setText(String text) {

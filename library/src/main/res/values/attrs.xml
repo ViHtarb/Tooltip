@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Tooltip">
-        <attr name="dismissOnInsideTouch" format="boolean"/>
-        <attr name="dismissOnOutsideTouch" format="boolean"/>
+        <attr name="cancelable" format="boolean"/>
+        <attr name="dismissOnClick" format="boolean"/>
         <attr name="backgroundColor" format="color"/>
         <attr name="cornerRadius" format="dimension"/>
+        <attr name="arrowHeight" format="dimension"/>
+        <attr name="arrowWidth" format="dimension"/>
         <attr name="android:padding"/>
         <attr name="android:text"/>
         <attr name="android:textSize"/>

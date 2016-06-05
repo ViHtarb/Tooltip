@@ -9,12 +9,14 @@ import android.support.annotation.StyleRes;
 import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * Created by Viнt@rь on 26.05.2016
  */
-class TooltipView extends FrameLayout {
+class TooltipView extends LinearLayout {
     private TextView mTextView;
 
     public TooltipView(Context context) {
@@ -33,13 +35,18 @@ class TooltipView extends FrameLayout {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void setBackground(Drawable background) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            super.setBackground(background);
+            mTextView.setBackground(background);
         } else {
-            super.setBackgroundDrawable(background);
+            //noinspection deprecation
+            mTextView.setBackgroundDrawable(background);
         }
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        mTextView.setPadding(left, top, right, bottom);
     }
 
     public void setText(String text) {

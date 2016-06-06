@@ -262,7 +262,7 @@ public class Tooltip implements View.OnClickListener {
             setTextSize(a.getDimension(R.styleable.Tooltip_android_textSize, -1));
             setTextColor(a.getColorStateList(R.styleable.Tooltip_android_textColor));
             setTextStyle(a.getInteger(R.styleable.Tooltip_android_textStyle, -1));
-            setTextAppearance(a.getResourceId(R.styleable.Tooltip_android_textAppearance, -1));
+            setTextAppearance(a.getResourceId(R.styleable.Tooltip_textAppearance, -1));
 
             final String fontFamily = a.getString(R.styleable.Tooltip_android_fontFamily);
             final int typefaceIndex = a.getInt(R.styleable.Tooltip_android_typeface, -1);

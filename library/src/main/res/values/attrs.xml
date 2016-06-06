@@ -8,13 +8,13 @@
         <attr name="arrowHeight" format="dimension"/>
         <attr name="arrowWidth" format="dimension"/>
         <attr name="margin" format="dimension"/>
+        <attr name="textAppearance" format="reference"/>
         <attr name="android:padding"/>
         <attr name="android:text"/>
         <attr name="android:textSize"/>
         <attr name="android:textColor"/>
         <attr name="android:textStyle"/>
         <attr name="android:gravity"/>
-        <attr name="android:textAppearance"/>
         <attr name="android:fontFamily"/>
         <attr name="android:typeface"/>
     </declare-styleable>

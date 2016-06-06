@@ -14,7 +14,7 @@ import android.view.Gravity;
 /**
  * Created by Viнt@rь on 26.05.2016
  */
-class ArrowDrawable extends ColorDrawable {
+final class ArrowDrawable extends ColorDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final int mBackgroundColor;

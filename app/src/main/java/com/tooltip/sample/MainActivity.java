@@ -1,13 +1,16 @@
 package com.tooltip.sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.tooltip.Tooltip;
+import com.tooltip.TooltipActionView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,13 +30,26 @@ public class MainActivity extends AppCompatActivity {
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)
                         .setGravity(Gravity.END)
-                        .setText("TEESSSTTT");
+                        .setText("TETETETETT");
                 builder.show();
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        //AlertDialog.Builder a = new AlertDialog.Builder(this);
+        MenuItem menuItem = menu.findItem(R.id.action_test2);
+        TooltipActionView view = (TooltipActionView) menuItem.getActionView();
+        view.setMenuItem(menuItem);
 
+        Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, view)
+                .setCornerRadius(20f)
+                .setGravity(Gravity.BOTTOM)
+                .setText("TETETETETT");
+        builder.show();
+
+        return super.onCreateOptionsMenu(menu);
     }
 }

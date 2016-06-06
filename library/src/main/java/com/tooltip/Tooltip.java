@@ -34,6 +34,8 @@ public class Tooltip implements View.OnClickListener {
 
     private int mGravity;
 
+    private float mMargin;
+
     private View mAnchorView;
     private LinearLayout mContentView;
     private PopupWindow mPopupWindow;
@@ -42,6 +44,7 @@ public class Tooltip implements View.OnClickListener {
 
     private Tooltip(Builder builder) {
         mGravity = builder.mGravity;
+        mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
         isDismissOnClick = builder.isDismissOnClick;
 
@@ -192,20 +195,20 @@ public class Tooltip implements View.OnClickListener {
 
         switch (mGravity) {
             case Gravity.START:
-                location.x = anchorRect.left - mContentView.getWidth()/* - mMargin*/;
+                location.x = anchorRect.left - mContentView.getWidth() - mMargin;
                 location.y = anchorCenter.y - mContentView.getHeight() / 2f;
                 break;
             case Gravity.END:
-                location.x = anchorRect.right/* + mMargin*/;
+                location.x = anchorRect.right + mMargin;
                 location.y = anchorCenter.y - mContentView.getHeight() / 2f;
                 break;
             case Gravity.TOP:
                 location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.top - mContentView.getHeight()/* - mMargin*/;
+                location.y = anchorRect.top - mContentView.getHeight() - mMargin;
                 break;
             case Gravity.BOTTOM:
                 location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.bottom/* + mMargin*/;
+                location.y = anchorRect.bottom + mMargin;
                 break;
             default:
                 throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
@@ -224,6 +227,7 @@ public class Tooltip implements View.OnClickListener {
         private int mTextStyle;
 
         private float mCornerRadius;
+        private float mMargin;
         private float mPadding;
         private float mTextSize;
         private float mArrowHeight;
@@ -249,6 +253,7 @@ public class Tooltip implements View.OnClickListener {
             setDismissOnClick(a.getBoolean(R.styleable.Tooltip_dismissOnClick, false));
             setBackgroundColor(a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY));
             setCornerRadius(a.getDimension(R.styleable.Tooltip_cornerRadius, -1));
+            setMargin(a.getDimension(R.styleable.Tooltip_margin, -1));
             setPadding(a.getDimension(R.styleable.Tooltip_android_padding, -1));
             setGravity(a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM));
             setArrowHeight(a.getDimension(R.styleable.Tooltip_arrowHeight, -1));
@@ -266,130 +271,253 @@ public class Tooltip implements View.OnClickListener {
             a.recycle();
         }
 
+        /**
+         * Sets whether the tooltip is cancelable or not. Default is false.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setCancelable(boolean cancelable) {
-            this.isCancelable = cancelable;
+            isCancelable = cancelable;
             return this;
         }
 
+        /**
+         * Sets whether the tooltip is dismissing on click or not. Default is false.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setDismissOnClick(boolean isDismissOnClick) {
             this.isDismissOnClick = isDismissOnClick;
             return this;
         }
 
+        /**
+         * Sets the tooltip background color.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setBackgroundColor(@ColorInt int color) {
             mBackgroundColor = color;
             return this;
         }
 
+        /**
+         * Sets the tooltip background drawable corner radius from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setCornerRadius(@DimenRes int resId) {
             return setCornerRadius(mContext.getResources().getDimension(resId));
         }
 
+        /**
+         * Sets the tooltip background drawable corner radius.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setCornerRadius(float radius) {
             mCornerRadius = radius;
             return this;
         }
 
+        /**
+         * Sets the tooltip arrow height from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setArrowHeight(@DimenRes int resId) {
             return setArrowHeight(mContext.getResources().getDimension(resId));
         }
 
+        /**
+         * Sets the tooltip arrow height.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setArrowHeight(float height) {
             mArrowHeight = height;
             return this;
         }
 
+        /**
+         * Sets the tooltip arrow width from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setArrowWidth(@DimenRes int resId) {
             return setArrowWidth(mContext.getResources().getDimension(resId));
         }
 
+        /**
+         * Sets the tooltip arrow width.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setArrowWidth(float width) {
             mArrowWidth = width;
             return this;
         }
 
+        /**
+         * Sets the tooltip margin from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setMargin(@DimenRes int resId) {
+            return setMargin(mContext.getResources().getDimension(resId));
+        }
+
+        /**
+         * Sets the tooltip margin.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setMargin(float margin) {
+            mMargin = margin;
+            return this;
+        }
+
+        /**
+         * Sets the tooltip padding from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setPadding(@DimenRes int resId) {
             return setPadding(mContext.getResources().getDimension(resId));
         }
 
+        /**
+         * Sets the tooltip padding.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setPadding(float padding) {
             mPadding = padding;
             return this;
         }
 
         /**
-         * Sets tool tip gravity
+         * Sets tooltip gravity.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setGravity(int gravity) {
             mGravity = gravity;
             return this;
         }
 
+        /**
+         * Sets tooltip text from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setText(@StringRes int resId) {
             return setText(mContext.getString(resId));
         }
 
+        /**
+         * Sets tooltip text.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setText(String text) {
             mText = text;
             return this;
         }
 
+        /**
+         * Sets tooltip text size from resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTextSize(@DimenRes int resId) {
             return setTextSize(mContext.getResources().getDimension(resId));
         }
 
+        /**
+         * Sets tooltip text size.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTextSize(float size) {
             mTextSize = size;
             return this;
         }
 
+        /**
+         * Sets tooltip text color.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTextColor(@ColorInt int color) {
             return setTextColor(ColorStateList.valueOf(color));
         }
 
+        /**
+         * Sets tooltip text colors in {@link ColorStateList}.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTextColor(ColorStateList colors) {
             mTextColor = colors;
             return this;
         }
 
+        /**
+         * Sets tooltip text style.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTextStyle(int style) {
             mTextStyle = style;
             return this;
         }
 
         /**
-         * Set the text appearance for tool tip
+         * Sets tooltip text appearance.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextAppearance(@StyleRes int resId) {
             mTextAppearance = resId;
             return this;
         }
 
+        /**
+         * Sets tooltip text typeface.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setTypeface(Typeface typeface) {
             mTypeface = typeface;
             return this;
         }
 
         public Tooltip build() {
-            if (mTextSize == -1) {
-                mTextSize = mContext.getResources().getDimension(R.dimen.default_tooltip_text_size);
-            }
-            if (mTextColor == null) {
-                mTextColor = ColorStateList.valueOf(Color.WHITE);
-            }
-            if (mPadding == -1) {
-                mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);
-            }
             if (mArrowHeight == -1) {
                 mArrowHeight = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_height);
             }
             if (mArrowWidth == -1) {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
             }
-
+            if (mMargin == -1) {
+                mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
+            }
+            if (mPadding == -1) {
+                mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);
+            }
+            if (mTextSize == -1) {
+                mTextSize = mContext.getResources().getDimension(R.dimen.default_tooltip_text_size);
+            }
+            if (mTextColor == null) {
+                mTextColor = ColorStateList.valueOf(Color.WHITE);
+            }
             return new Tooltip(this);
         }
 
+        /**
+         * Builds a {@link Tooltip} with builder attributes and {@link Tooltip#show()}'s the tooltip.
+         */
         public Tooltip show() {
             Tooltip tooltip = build();
             tooltip.show();

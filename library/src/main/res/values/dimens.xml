@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_tooltip_text_size">4sp</dimen>
+    <dimen name="default_tooltip_margin">0dp</dimen>
     <dimen name="default_tooltip_padding">6dp</dimen>
     <dimen name="default_tooltip_arrow_height">10dp</dimen>
     <dimen name="default_tooltip_arrow_width">10dp</dimen>

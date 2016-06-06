@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView textView = (TextView) findViewById(R.id.text);
 
-        Button button = (Button) findViewById(R.id.button_test);
+        final Button button = (Button) findViewById(R.id.button_test);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, textView)
+                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, button)
                         .setCancelable(false)
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)

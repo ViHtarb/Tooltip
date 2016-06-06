@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)
-                        .setGravity(Gravity.END)
-                        .setText("TETETETETT");
+                        .setGravity(Gravity.BOTTOM)
+                        .setText("TETETETETTfdasf");
                 builder.show();
             }
         });
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, view)
                 .setCornerRadius(20f)
                 .setGravity(Gravity.BOTTOM)
+                .setMargin(20f)
                 .setText("TETETETETT");
         builder.show();
 

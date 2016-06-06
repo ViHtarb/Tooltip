@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="tooltipViewStyle" format="reference"/>
-
-    <declare-styleable name="TooltipView">
-
+    <declare-styleable name="Tooltip">
+        <attr name="cancelable" format="boolean"/>
+        <attr name="dismissOnClick" format="boolean"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="cornerRadius" format="dimension"/>
+        <attr name="arrowHeight" format="dimension"/>
+        <attr name="arrowWidth" format="dimension"/>
+        <attr name="margin" format="dimension"/>
+        <attr name="android:padding"/>
+        <attr name="android:text"/>
+        <attr name="android:textSize"/>
+        <attr name="android:textColor"/>
+        <attr name="android:textStyle"/>
+        <attr name="android:gravity"/>
+        <attr name="android:textAppearance"/>
+        <attr name="android:fontFamily"/>
+        <attr name="android:typeface"/>
     </declare-styleable>
 </resources>

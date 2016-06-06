@@ -119,14 +119,16 @@ public final class Tooltip {
     }
 
     public void show() {
-        mPopupWindow.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
+        if (!isShowing()) {
+            mPopupWindow.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
 
-        mAnchorView.post(new Runnable() {
-            @Override
-            public void run() {
-                mPopupWindow.showAsDropDown(mAnchorView);
-            }
-        });
+            mAnchorView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mPopupWindow.showAsDropDown(mAnchorView);
+                }
+            });
+        }
     }
 
     public void dismiss() {

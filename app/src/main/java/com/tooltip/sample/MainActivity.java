@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)
                         .setGravity(Gravity.END)
-                        .setElevation(50f)
                         .setText("TEESSSTTT");
                 builder.show();
             }

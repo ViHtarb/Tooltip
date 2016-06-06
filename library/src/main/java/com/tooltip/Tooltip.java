@@ -28,7 +28,7 @@ import android.widget.TextView;
 /**
  * Created by Viнt@rь on 26.05.2016
  */
-public class Tooltip implements View.OnClickListener {
+public final class Tooltip {
 
     private boolean isDismissOnClick;
 
@@ -95,7 +95,14 @@ public class Tooltip implements View.OnClickListener {
         mContentView = new LinearLayout(builder.mContext);
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-        mContentView.setOnClickListener(this);
+        mContentView.setOnClickListener(new View.OnClickListener() { // for private on click only
+            @Override
+            public void onClick(View v) {
+                if (isDismissOnClick) {
+                    dismiss();
+                }
+            }
+        });
 
         if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
             mContentView.addView(textView);
@@ -105,13 +112,6 @@ public class Tooltip implements View.OnClickListener {
             mContentView.addView(textView);
         }
         return mContentView;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (isDismissOnClick) {
-            dismiss();
-        }
     }
 
     public boolean isShowing() {
@@ -247,7 +247,7 @@ public class Tooltip implements View.OnClickListener {
             mContext = context;
             mAnchorView = anchorView;
 
-            TypedArray a = context.obtainStyledAttributes(null, R.styleable.Tooltip, 0, resId);
+            TypedArray a = context.obtainStyledAttributes(resId, R.styleable.Tooltip);
 
             setCancelable(a.getBoolean(R.styleable.Tooltip_cancelable, false));
             setDismissOnClick(a.getBoolean(R.styleable.Tooltip_dismissOnClick, false));

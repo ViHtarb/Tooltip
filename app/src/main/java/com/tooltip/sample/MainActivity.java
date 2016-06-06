@@ -2,6 +2,7 @@ package com.tooltip.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)
+                        .setGravity(Gravity.END)
+                        .setElevation(50f)
                         .setText("TEESSSTTT");
                 builder.show();
             }

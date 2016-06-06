@@ -1,6 +1,5 @@
 package com.tooltip;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -51,10 +50,6 @@ public class Tooltip implements View.OnClickListener {
         mPopupWindow.setClippingEnabled(false);
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mPopupWindow.setElevation(builder.mElevation);
-        }
     }
 
     private View getContentView(Builder builder) {
@@ -67,7 +62,7 @@ public class Tooltip implements View.OnClickListener {
         TextView textView = new TextView(builder.mContext);
         textView.setText(builder.mText);
         textView.setTextSize(builder.mTextSize);
-        //textView.setTextColor(builder.mTextColor);
+        textView.setTextColor(builder.mTextColor);
         textView.setPadding(padding, padding, padding, padding);
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
         TextViewCompat.setTextAppearance(textView, builder.mTextAppearance);
@@ -77,6 +72,10 @@ public class Tooltip implements View.OnClickListener {
             //noinspection deprecation
             textView.setBackgroundDrawable(drawable);
         }
+
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        textViewParams.gravity = Gravity.CENTER;
+        textView.setLayoutParams(textViewParams);
 
         mArrowView = new ImageView(builder.mContext);
         mArrowView.setImageDrawable(new ArrowDrawable(builder.mBackgroundColor, builder.mGravity));
@@ -135,11 +134,12 @@ public class Tooltip implements View.OnClickListener {
         @Override
         public void onGlobalLayout() {
             Utils.removeOnGlobalLayoutListener(mContentView, this);
+
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
             PointF location = calculatePopupLocation();
             mPopupWindow.setClippingEnabled(true);
             mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
-            mPopupWindow.getContentView().requestLayout();
+            mContentView.requestLayout();
         }
     };
 
@@ -147,6 +147,7 @@ public class Tooltip implements View.OnClickListener {
         @Override
         public void onGlobalLayout() {
             Utils.removeOnGlobalLayoutListener(mContentView, this);
+
             RectF anchorRect = Utils.calculateRectOnScreen(mAnchorView);
             RectF contentViewRect = Utils.calculateRectOnScreen(mContentView);
             float x, y;
@@ -214,7 +215,6 @@ public class Tooltip implements View.OnClickListener {
     }
 
     public static final class Builder {
-
         private boolean isDismissOnClick;
         private boolean isCancelable;
 
@@ -225,7 +225,6 @@ public class Tooltip implements View.OnClickListener {
 
         private float mCornerRadius;
         private float mPadding;
-        private float mElevation;
         private float mTextSize;
         private float mArrowHeight;
         private float mArrowWidth;
@@ -251,7 +250,6 @@ public class Tooltip implements View.OnClickListener {
             setBackgroundColor(a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY));
             setCornerRadius(a.getDimension(R.styleable.Tooltip_cornerRadius, -1));
             setPadding(a.getDimension(R.styleable.Tooltip_android_padding, -1));
-            setElevation(a.getDimension(R.styleable.Tooltip_android_elevation, 0));
             setGravity(a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM));
             setArrowHeight(a.getDimension(R.styleable.Tooltip_arrowHeight, -1));
             setArrowWidth(a.getDimension(R.styleable.Tooltip_arrowWidth, -1));
@@ -316,17 +314,6 @@ public class Tooltip implements View.OnClickListener {
 
         public Builder setPadding(float padding) {
             mPadding = padding;
-            return this;
-        }
-
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        public Builder setElevation(@DimenRes int resId) {
-            return setElevation(mContext.getResources().getDimension(resId));
-        }
-
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        public Builder setElevation(float elevation) {
-            mElevation = elevation;
             return this;
         }
 

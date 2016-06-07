@@ -16,6 +16,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public final class Tooltip {
         mPopupWindow = new PopupWindow(builder.mContext);
         mPopupWindow.setBackgroundDrawable(null);
         mPopupWindow.setClippingEnabled(false);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
     }
@@ -64,7 +67,7 @@ public final class Tooltip {
 
         TextView textView = new TextView(builder.mContext);
         textView.setText(builder.mText);
-        textView.setTextSize(builder.mTextSize);
+        textView.setTextSize(TypedValue.TYPE_NULL, builder.mTextSize);
         textView.setTextColor(builder.mTextColor);
         textView.setPadding(padding, padding, padding, padding);
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
@@ -133,7 +136,7 @@ public final class Tooltip {
 
     public void show() {
         if (!isShowing()) {
-            mPopupWindow.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
+            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
 
             mAnchorView.post(new Runnable() {
                 @Override
@@ -446,7 +449,8 @@ public final class Tooltip {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(@DimenRes int resId) {
-            return setTextSize(mContext.getResources().getDimension(resId));
+            mTextSize = mContext.getResources().getDimension(resId);
+            return this;
         }
 
         /**
@@ -455,7 +459,7 @@ public final class Tooltip {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(float size) {
-            mTextSize = size;
+            mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, mContext.getResources().getDisplayMetrics());
             return this;
         }
 

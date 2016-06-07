@@ -520,7 +520,7 @@ public final class Tooltip {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
             }
             if (mMargin == -1) {
-                mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
+                mMargin = mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
             }
             if (mPadding == -1) {
                 mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);

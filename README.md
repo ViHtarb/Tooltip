@@ -20,12 +20,14 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .show();
 ### Stylable ###
 You can create tooltip with custom style
+
     View view = (Button) findViewById(R.id.view);
     Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view, R.style.tooltip)
             .setText("Hellow tooltip")
             .show();
 
 Styleable attributes
+
     <declare-styleable name="Tooltip">
         <attr name="cancelable" format="boolean"/> # dissmiss on outside touch by default false
         <attr name="dismissOnClick" format="boolean"/> # dissmiss on inside toush by default false

@@ -493,16 +493,7 @@ public final class Tooltip {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextColor(@ColorInt int color) {
-            return setTextColor(ColorStateList.valueOf(color));
-        }
-
-        /**
-         * Sets tooltip text colors in {@link ColorStateList}.
-         *
-         * @return This Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setTextColor(ColorStateList colors) {
-            mTextColor = colors;
+            mTextColor = ColorStateList.valueOf(color);
             return this;
         }
 
@@ -536,6 +527,12 @@ public final class Tooltip {
             return this;
         }
 
+        /**
+         * Creates a {@link Tooltip} with the arguments supplied to this builder. It does not
+         * {@link Tooltip#show()} the tooltip. This allows the user to do any extra processing
+         * before displaying the tooltip. Use {@link #show()} if you don't have any other processing
+         * to do and want this to be created and displayed.
+         */
         public Tooltip build() {
             if (mArrowHeight == -1) {
                 mArrowHeight = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_height);

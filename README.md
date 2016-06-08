@@ -4,12 +4,16 @@
 
 Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
 
+-----------------------
 ## Getting started ##
 ### Gradle ###
+```javascript
     dependencies {
         compile 'com.github.vihtarb:tooltip:0.1.0'
     }
+```
 ### Usage ###
+```java
     Tooltip tooltip = new Tooltip.Builder(context, anchorView)
             .setCancelable(false)
             .setDismissOnClick(true)
@@ -17,7 +21,9 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setGravity(Gravity.BOTTOM)
             .setText("Hellow tooltip")
             .show();
+```
 ### Advanced ###
+```java
     Tooltip tooltip = new Tooltip.Builder(context, anchorView)
             .setCancelable(true) // dissmiss on outside touch by default false
             .setDismissOnClick(true) // dissmiss on inside toush by default false
@@ -47,15 +53,16 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             tooltip.isShowing(); // retruns is tooltip showing
             tooltip.show(); // shows tooltip if not showing
             tooltip.dismiss(); // dismissing tooltip
+```
 ### Styleable ###
 You can create tooltip with custom style
-
+```java
     Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
             .setText("Hellow tooltip")
             .show();
-
+```
 Styleable attributes
-
+```XML
     <declare-styleable name="Tooltip">
         <attr name="cancelable" format="boolean"/> # dissmiss on outside touch by default false
         <attr name="dismissOnClick" format="boolean"/> # dissmiss on inside toush by default false
@@ -74,3 +81,4 @@ Styleable attributes
         <attr name="android:fontFamily"/>
         <attr name="android:typeface"/>
     </declare-styleable>
+```

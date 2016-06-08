@@ -4,8 +4,8 @@
 
 Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
 
------------------------
 ## Getting started ##
+-----------------------
 ### Gradle ###
 ```javascript
     dependencies {

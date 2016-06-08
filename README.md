@@ -18,3 +18,6 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setGravity(Gravity.BOTTOM)
             .setText("Hellow tooltip")
             .show();
+
+
+### All builder methods ###

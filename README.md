@@ -41,7 +41,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setTextStyle(intStyle) // text style
             .setTextAppearance(R.style.TooltipTextAppearance) // text appearance
             .setTypeface(typeface) // text typeface
-            .build()
+            .build() // or
             .show();
 
             tooltip.isShowing(); // retruns is tooltip showing

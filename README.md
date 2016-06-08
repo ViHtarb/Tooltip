@@ -30,8 +30,17 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setArrowWidth(5f) // arrow width from resources
             .setMargin(R.dimen.tooltip_margin) // margin between arrow and anchor view from resources
             .setMargin(5f) // margin between arrow and anchor view
-            .setGravity(Gravity.BOTTOM)
-            .setText("Hellow tooltip")
+            .setPadding(R.dimen.tooltip_padding) // content padding from resources
+            .setPadding(5f) // content padding
+            .setGravity(Gravity.BOTTOM) // tooltip gravity
+            .setText(R.string.tooltip_text) // text from resources
+            .setText("Hellow tooltip") // text
+            .setTextSize(R.dimen.tooltip_text_size) // text size from resources
+            .setTextSize(15f) // text size from resources
+            .setTextColor(Color.GREEN) // text color
+            .setTextStyle(intStyle) // text style
+            .setTextAppearance(R.style.TooltipTextAppearance) // text appearance
+            .setTypeface(typeface) // text typeface
             .show();
 ### Styleable ###
 You can create tooltip with custom style

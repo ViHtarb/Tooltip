@@ -11,7 +11,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
     }
 ### Usage ###
     View view = (Button) findViewById(R.id.view);
-    Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view, R.style.tooltip)
+    Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view)
             .setCancelable(false)
             .setDismissOnClick(true)
             .setCornerRadius(20f)

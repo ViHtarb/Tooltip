@@ -18,7 +18,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setGravity(Gravity.BOTTOM)
             .setText("Hellow tooltip")
             .show();
-### Stylable ###
+### Stylaeble ###
 You can create tooltip with custom style
 
     View view = (Button) findViewById(R.id.view);

@@ -1,3 +1,6 @@
+image:https://travis-ci.org/darwin-evolution/darwin.svg[alt="Travis"]
+image:https://img.shields.io/badge/license-MIT-brightgreen.svg[alt="MIT License"]
+
 # README #
 
 This README would normally document whatever steps are necessary to get your application up and running.

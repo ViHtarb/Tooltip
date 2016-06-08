@@ -18,6 +18,30 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setGravity(Gravity.BOTTOM)
             .setText("Hellow tooltip")
             .show();
+### Stylable ###
+    // You can create tooltip with custom style
+    View view = (Button) findViewById(R.id.view);
+    Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view, R.style.tooltip)
+            .setText("Hellow tooltip")
+            .show();
 
+    // Styleable attributes
+    cancelable - dissmiss tooltip on outside touch by default false - boolean
+    dismissOnClick - dissmiss tooltip on inside toush by default false - boolean
+    colorBackground - tooltip background color - int color
+    cornerRadius - tooltip baground drawable corner radius - dp
+    arrowHeight - arrow height - dp
+    arrowWidth - arrow width - dp
+    margin - tooltip margin between arrow and anchor view - dp
+    textAppearance - tooltip text appearance - reference
+    android:padding
+    android:text
+    android:textSize
+    android:textColor
+    android:textStyle
+    android:gravity
+    android:fontFamily
+    android:typeface
 
 ### All builder methods ###
+    

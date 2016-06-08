@@ -10,15 +10,30 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
         compile 'com.github.vihtarb:tooltip:0.1.0'
     }
 ### Usage ###
-    View view = (Button) findViewById(R.id.view);
-    Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view)
+    Tooltip tooltip = new Tooltip.Builder(context, anchorView)
             .setCancelable(false)
             .setDismissOnClick(true)
             .setCornerRadius(20f)
             .setGravity(Gravity.BOTTOM)
             .setText("Hellow tooltip")
             .show();
-### Stylaeble ###
+### Advanced ###
+    Tooltip tooltip = new Tooltip.Builder(context, anchorView)
+            .setCancelable(true) // dissmiss on outside touch by default false
+            .setDismissOnClick(true) // dissmiss on inside toush by default false
+            .setBackgroundColor(Color.GREEN) // background color
+            .setCornerRadius(R.dimen.tooltip_corner_radius) // background drawable corner radius from resources
+            .setCornerRadius(20f) // background drawable corner radius
+            .setArrowHeight(R.dimen.tooltip_arrow_height) // arrow height from resources
+            .setArrowHeight(5f) // arrow height from resources
+            .setArrowWidth(R.dimen.tooltip_arrow_width) // arrow width from resources
+            .setArrowWidth(5f) // arrow width from resources
+            .setMargin(R.dimen.tooltip_margin) // margin between arrow and anchor view from resources
+            .setMargin(5f) // margin between arrow and anchor view
+            .setGravity(Gravity.BOTTOM)
+            .setText("Hellow tooltip")
+            .show();
+### Styleable ###
 You can create tooltip with custom style
 
     View view = (Button) findViewById(R.id.view);
@@ -46,5 +61,3 @@ Styleable attributes
         <attr name="android:fontFamily"/>
         <attr name="android:typeface"/>
     </declare-styleable>
-
-### All builder methods ###

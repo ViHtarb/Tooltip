@@ -50,8 +50,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 ### Styleable ###
 You can create tooltip with custom style
 
-    View view = (Button) findViewById(R.id.view);
-    Tooltip tooltip = new Tooltip.Builder(MainActivity.this, view, R.style.tooltip)
+    Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
             .setText("Hellow tooltip")
             .show();
 

@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.tooltip.Tooltip;
 import com.tooltip.TooltipActionView;
@@ -19,18 +18,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = (TextView) findViewById(R.id.text);
-
         final Button button = (Button) findViewById(R.id.button_test);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, button)
+                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, button, R.style.Tooltip2)
                         .setCancelable(false)
                         .setDismissOnClick(true)
                         .setCornerRadius(20f)
-                        .setGravity(Gravity.END)
-                        .setText("TETETETETT");
+                        .setGravity(Gravity.BOTTOM)
+                        .setText("TETETETETTfdasf");
                 builder.show();
             }
         });
@@ -45,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         view.setMenuItem(menuItem);
 
         Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, view)
-                .setCornerRadius(20f)
+                .setCornerRadius(10f)
                 .setGravity(Gravity.BOTTOM)
                 .setText("TETETETETT");
         builder.show();

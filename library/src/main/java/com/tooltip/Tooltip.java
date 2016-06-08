@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ * <p/>
+ * Copyright (c) 2016. Viнt@rь
+ * <p/>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * <p/>
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * <p/>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.tooltip;
 
 import android.content.Context;
@@ -16,6 +40,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +76,8 @@ public final class Tooltip {
         mPopupWindow = new PopupWindow(builder.mContext);
         mPopupWindow.setBackgroundDrawable(null);
         mPopupWindow.setClippingEnabled(false);
+        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
     }
@@ -64,7 +91,7 @@ public final class Tooltip {
 
         TextView textView = new TextView(builder.mContext);
         textView.setText(builder.mText);
-        textView.setTextSize(builder.mTextSize);
+        textView.setTextSize(TypedValue.TYPE_NULL, builder.mTextSize);
         textView.setTextColor(builder.mTextColor);
         textView.setPadding(padding, padding, padding, padding);
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
@@ -104,6 +131,19 @@ public final class Tooltip {
             }
         });
 
+        switch (mGravity) {
+            case Gravity.START:
+                mContentView.setPadding(0, 0, (int) Utils.pxFromDp(5), 0);
+                break;
+            case Gravity.TOP:
+            case Gravity.BOTTOM:
+                mContentView.setPadding((int) Utils.pxFromDp(5), 0, (int) Utils.pxFromDp(5), 0);
+                break;
+            case Gravity.END:
+                mContentView.setPadding((int) Utils.pxFromDp(5), 0, 0, 0);
+                break;
+        }
+
         if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
             mContentView.addView(textView);
             mContentView.addView(mArrowView);
@@ -120,7 +160,7 @@ public final class Tooltip {
 
     public void show() {
         if (!isShowing()) {
-            mPopupWindow.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
+            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
 
             mAnchorView.post(new Runnable() {
                 @Override
@@ -133,6 +173,36 @@ public final class Tooltip {
 
     public void dismiss() {
         mPopupWindow.dismiss();
+    }
+
+    private PointF calculatePopupLocation() {
+        PointF location = new PointF();
+
+        final RectF anchorRect = Utils.calculateRectInWindow(mAnchorView);
+        final PointF anchorCenter = new PointF(anchorRect.centerX(), anchorRect.centerY());
+
+        switch (mGravity) {
+            case Gravity.START:
+                location.x = anchorRect.left - mContentView.getWidth() - mMargin;
+                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
+                break;
+            case Gravity.END:
+                location.x = anchorRect.right + mMargin;
+                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
+                break;
+            case Gravity.TOP:
+                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
+                location.y = anchorRect.top - mContentView.getHeight() - mMargin;
+                break;
+            case Gravity.BOTTOM:
+                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
+                location.y = anchorRect.bottom + mMargin;
+                break;
+            default:
+                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
+        }
+
+        return location;
     }
 
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -189,51 +259,21 @@ public final class Tooltip {
         }
     };
 
-    private PointF calculatePopupLocation() {
-        PointF location = new PointF();
-
-        final RectF anchorRect = Utils.calculateRectInWindow(mAnchorView);
-        final PointF anchorCenter = new PointF(anchorRect.centerX(), anchorRect.centerY());
-
-        switch (mGravity) {
-            case Gravity.START:
-                location.x = anchorRect.left - mContentView.getWidth() - mMargin;
-                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
-                break;
-            case Gravity.END:
-                location.x = anchorRect.right + mMargin;
-                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
-                break;
-            case Gravity.TOP:
-                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.top - mContentView.getHeight() - mMargin;
-                break;
-            case Gravity.BOTTOM:
-                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.bottom + mMargin;
-                break;
-            default:
-                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
-        }
-
-        return location;
-    }
-
     public static final class Builder {
         private boolean isDismissOnClick;
         private boolean isCancelable;
 
         private int mGravity;
         private int mBackgroundColor;
-        private int mTextAppearance;
         private int mTextStyle;
+        private int mTextAppearance;
 
         private float mCornerRadius;
         private float mMargin;
         private float mPadding;
-        private float mTextSize;
         private float mArrowHeight;
         private float mArrowWidth;
+        private float mTextSize;
 
         private Context mContext;
         private View mAnchorView;
@@ -251,24 +291,24 @@ public final class Tooltip {
 
             TypedArray a = context.obtainStyledAttributes(resId, R.styleable.Tooltip);
 
-            setCancelable(a.getBoolean(R.styleable.Tooltip_cancelable, false));
-            setDismissOnClick(a.getBoolean(R.styleable.Tooltip_dismissOnClick, false));
-            setBackgroundColor(a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY));
-            setCornerRadius(a.getDimension(R.styleable.Tooltip_cornerRadius, -1));
-            setMargin(a.getDimension(R.styleable.Tooltip_margin, -1));
-            setPadding(a.getDimension(R.styleable.Tooltip_android_padding, -1));
-            setGravity(a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM));
-            setArrowHeight(a.getDimension(R.styleable.Tooltip_arrowHeight, -1));
-            setArrowWidth(a.getDimension(R.styleable.Tooltip_arrowWidth, -1));
-            setText(a.getString(R.styleable.Tooltip_android_text));
-            setTextSize(a.getDimension(R.styleable.Tooltip_android_textSize, -1));
-            setTextColor(a.getColorStateList(R.styleable.Tooltip_android_textColor));
-            setTextStyle(a.getInteger(R.styleable.Tooltip_android_textStyle, -1));
-            setTextAppearance(a.getResourceId(R.styleable.Tooltip_textAppearance, -1));
+            isCancelable = a.getBoolean(R.styleable.Tooltip_cancelable, false);
+            isDismissOnClick = a.getBoolean(R.styleable.Tooltip_dismissOnClick, false);
+            mBackgroundColor = a.getColor(R.styleable.Tooltip_colorBackground, Color.GRAY);
+            mCornerRadius = a.getDimension(R.styleable.Tooltip_cornerRadius, -1);
+            mMargin = a.getDimension(R.styleable.Tooltip_margin, -1);
+            mPadding = a.getDimension(R.styleable.Tooltip_android_padding, -1);
+            mGravity = a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM);
+            mArrowHeight = a.getDimension(R.styleable.Tooltip_arrowHeight, -1);
+            mArrowWidth = a.getDimension(R.styleable.Tooltip_arrowWidth, -1);
+            mText = a.getString(R.styleable.Tooltip_android_text);
+            mTextSize = a.getDimension(R.styleable.Tooltip_android_textSize, -1);
+            mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
+            mTextStyle = a.getInteger(R.styleable.Tooltip_android_textStyle, -1);
+            mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
 
             final String fontFamily = a.getString(R.styleable.Tooltip_android_fontFamily);
             final int typefaceIndex = a.getInt(R.styleable.Tooltip_android_typeface, -1);
-            setTypeface(getTypefaceFromAttr(fontFamily, typefaceIndex, mTextStyle));
+            mTypeface = getTypefaceFromAttr(fontFamily, typefaceIndex, mTextStyle);
 
             a.recycle();
         }
@@ -433,7 +473,8 @@ public final class Tooltip {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(@DimenRes int resId) {
-            return setTextSize(mContext.getResources().getDimension(resId));
+            mTextSize = mContext.getResources().getDimension(resId);
+            return this;
         }
 
         /**
@@ -442,7 +483,7 @@ public final class Tooltip {
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(float size) {
-            mTextSize = size;
+            mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, mContext.getResources().getDisplayMetrics());
             return this;
         }
 
@@ -503,7 +544,7 @@ public final class Tooltip {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
             }
             if (mMargin == -1) {
-                mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
+                mMargin = mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
             }
             if (mPadding == -1) {
                 mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);

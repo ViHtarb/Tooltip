@@ -1,6 +1,7 @@
 package com.tooltip.sample;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_test2);
-        TooltipActionView view = (TooltipActionView) menuItem.getActionView();
+        TooltipActionView view = (TooltipActionView) MenuItemCompat.getActionView(menuItem);
         view.setMenuItem(menuItem);
 
         Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, view)

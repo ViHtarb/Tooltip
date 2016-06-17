@@ -51,7 +51,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 /**
- * Created by Viнt@rь on 26.05.2016
+ * Tooltip
  */
 public final class Tooltip {
 

@@ -32,7 +32,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 /**
- * Created by Viнt@rь on 04.06.2016
+ * Tooltip utils
  */
 final class Utils {
 

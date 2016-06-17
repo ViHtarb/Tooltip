@@ -36,7 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by Viнt@rь on 03.12.2015
+ * Implementation menu item wrapper view for tooltip
  */
 public class TooltipActionView extends FrameLayout implements View.OnClickListener, View.OnLongClickListener {
 

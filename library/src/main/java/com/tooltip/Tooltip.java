@@ -82,6 +82,7 @@ public final class Tooltip {
         mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
+        mPopupWindow.setOutsideTouchable(builder.isCancelable);
     }
 
     private View getContentView(Builder builder) {

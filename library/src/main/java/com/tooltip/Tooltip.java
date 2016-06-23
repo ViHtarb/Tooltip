@@ -42,6 +42,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -55,6 +56,7 @@ import android.widget.TextView;
  */
 public final class Tooltip {
 
+    private boolean isCancelable;
     private boolean isDismissOnClick;
 
     private int mGravity;
@@ -71,6 +73,7 @@ public final class Tooltip {
         mGravity = builder.mGravity;
         mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
+        isCancelable = builder.isCancelable;
         isDismissOnClick = builder.isDismissOnClick;
 
         mPopupWindow = new PopupWindow(builder.mContext);
@@ -122,14 +125,6 @@ public final class Tooltip {
         mContentView = new LinearLayout(builder.mContext);
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-        mContentView.setOnClickListener(new View.OnClickListener() { // for private on click only
-            @Override
-            public void onClick(View v) {
-                if (isDismissOnClick) {
-                    dismiss();
-                }
-            }
-        });
 
         switch (mGravity) {
             case Gravity.START:
@@ -150,6 +145,9 @@ public final class Tooltip {
         } else {
             mContentView.addView(mArrowView);
             mContentView.addView(textView);
+        }
+        if (builder.isCancelable || builder.isDismissOnClick) {
+            mContentView.setOnTouchListener(mTouchListener);
         }
         return mContentView;
     }
@@ -204,6 +202,18 @@ public final class Tooltip {
 
         return location;
     }
+
+    private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                dismiss();
+            } else if (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP) {
+                dismiss();
+            }
+            return true;
+        }
+    };
 
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override

@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, button, R.style.Tooltip2)
-                        .setCancelable(false)
-                        .setDismissOnClick(true)
+                        .setCancelable(true)
+                        .setDismissOnClick(false)
                         .setCornerRadius(20f)
                         .setGravity(Gravity.BOTTOM)
                         .setText("TETETETETTfdasf");

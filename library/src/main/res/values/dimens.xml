@@ -6,5 +6,6 @@
     <dimen name="default_tooltip_arrow_height">10dp</dimen>
     <dimen name="default_tooltip_arrow_width">10dp</dimen>
 
-    <dimen name="action_button_width">36dp</dimen>
+    <dimen name="action_button_width">@dimen/abc_action_button_min_height_material</dimen>
+    <dimen name="action_button_padding">@dimen/abc_action_bar_icon_vertical_padding_material</dimen>
 </resources>

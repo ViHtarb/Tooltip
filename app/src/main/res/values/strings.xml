@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tooltip</string>
+
+    <string name="tooltip_hello_world">Hello World!</string>
 </resources>

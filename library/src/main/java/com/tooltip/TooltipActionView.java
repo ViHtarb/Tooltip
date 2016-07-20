@@ -55,7 +55,8 @@ public class TooltipActionView extends FrameLayout implements View.OnClickListen
         super(context, attrs, defStyleAttr);
 
         int itemWidth = getResources().getDimensionPixelSize(R.dimen.action_button_width);
-        LayoutParams layoutParams = new LayoutParams(itemWidth, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+        int itemPadding = getResources().getDimensionPixelSize(R.dimen.action_button_padding);
+        LayoutParams layoutParams = new LayoutParams(itemWidth - itemPadding, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
 
         mTextView = new TextView(context);
         mImageView = new ImageView(context);

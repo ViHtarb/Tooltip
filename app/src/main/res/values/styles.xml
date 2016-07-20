@@ -20,6 +20,7 @@
     <style name="Tooltip2">
         <item name="android:text">qwqwrqwfqwfqwfqwfqwf</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">20dp</item>
         <item name="colorBackground">@color/colorPrimary</item>
         <item name="cornerRadius">10dp</item>
     </style>

@@ -46,6 +46,8 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setTextColor(Color.GREEN) // text color
             .setTextStyle(intStyle) // text style
             .setTextAppearance(R.style.TooltipTextAppearance) // text appearance
+            .setLineSpacing(R.dimen.tooltip_line_spacing, 1f) // text line spacing
+            .setLineSpacing(10f, 1f) // text line spacing
             .setTypeface(typeface) // text typeface
             .build() // or
             .show();
@@ -58,7 +60,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 You can create tooltip with custom style
 ```java
     Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
-            .setText("Hellow tooltip")
+            .setText("Hello tooltip")
             .show();
 ```
 Styleable attributes
@@ -79,6 +81,8 @@ Styleable attributes
         <attr name="android:textStyle"/>
         <attr name="android:gravity"/> # tooltip gravity
         <attr name="android:fontFamily"/>
+        <attr name="android:lineSpacingExtra"/>
+        <attr name="android:lineSpacingMultiplier"/>
         <attr name="android:typeface"/>
     </declare-styleable>
 ```

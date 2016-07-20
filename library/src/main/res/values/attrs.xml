@@ -17,5 +17,7 @@
         <attr name="android:gravity"/>
         <attr name="android:fontFamily"/>
         <attr name="android:typeface"/>
+        <attr name="android:lineSpacingExtra"/>
+        <attr name="android:lineSpacingMultiplier"/>
     </declare-styleable>
 </resources>

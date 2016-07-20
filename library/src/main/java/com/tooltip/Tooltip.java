@@ -98,6 +98,7 @@ public final class Tooltip {
         textView.setText(builder.mText);
         textView.setTextSize(TypedValue.TYPE_NULL, builder.mTextSize);
         textView.setTextColor(builder.mTextColor);
+        textView.setLineSpacing(builder.mLineSpacingExtra, builder.mLineSpacingMultiplier);
         textView.setPadding(padding, padding, padding, padding);
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
         TextViewCompat.setTextAppearance(textView, builder.mTextAppearance);
@@ -286,6 +287,8 @@ public final class Tooltip {
         private float mArrowHeight;
         private float mArrowWidth;
         private float mTextSize;
+        private float mLineSpacingExtra;
+        private float mLineSpacingMultiplier = 1f;
 
         private Context mContext;
         private View mAnchorView;
@@ -345,6 +348,8 @@ public final class Tooltip {
             mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
             mTextStyle = a.getInteger(R.styleable.Tooltip_android_textStyle, -1);
             mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
+            mLineSpacingExtra = a.getDimensionPixelSize(R.styleable.Tooltip_android_lineSpacingExtra, 0);
+            mLineSpacingMultiplier = a.getFloat(R.styleable.Tooltip_android_lineSpacingMultiplier, mLineSpacingMultiplier);
 
             final String fontFamily = a.getString(R.styleable.Tooltip_android_fontFamily);
             final int typefaceIndex = a.getInt(R.styleable.Tooltip_android_typeface, -1);
@@ -548,12 +553,36 @@ public final class Tooltip {
         }
 
         /**
-         * Sets tooltip text appearance.
+         * Sets tooltip text appearance from the specified style resource.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setTextAppearance(@StyleRes int resId) {
             mTextAppearance = resId;
+            return this;
+        }
+
+        /**
+         * Sets tooltip line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setLineSpacing(@DimenRes int addResId, float mult) {
+            mLineSpacingExtra = mContext.getResources().getDimensionPixelSize(addResId);
+            mLineSpacingMultiplier = mult;
+            return this;
+        }
+
+        /**
+         * Sets tooltip line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setLineSpacing(float add, float mult) {
+            mLineSpacingExtra = add;
+            mLineSpacingMultiplier = mult;
             return this;
         }
 

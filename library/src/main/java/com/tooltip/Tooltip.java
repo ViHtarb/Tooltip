@@ -38,10 +38,12 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -291,11 +293,39 @@ public final class Tooltip {
         private ColorStateList mTextColor;
         private Typeface mTypeface = Typeface.DEFAULT;
 
+        public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem) {
+            this(context, anchorMenuItem, 0);
+        }
+
+        public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem, @StyleRes int resId) {
+            View anchorView = MenuItemCompat.getActionView(anchorMenuItem);
+            if (anchorView == null) {
+                TooltipActionView tooltipActionView = new TooltipActionView(context);
+
+                MenuItemCompat.setActionView(anchorMenuItem, tooltipActionView);
+
+                tooltipActionView.setMenuItem(anchorMenuItem);
+
+                init(context, tooltipActionView, resId);
+            } else {
+                if (anchorView instanceof TooltipActionView) {
+                    TooltipActionView tooltipActionView = (TooltipActionView) anchorView;
+                    tooltipActionView.setMenuItem(anchorMenuItem);
+                }
+
+                init(context, anchorView, resId);
+            }
+        }
+
         public Builder(@NonNull Context context, @NonNull View anchorView) {
             this(context, anchorView, 0);
         }
 
         public Builder(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
+            init(context, anchorView, resId);
+        }
+
+        private void init(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
             mContext = context;
             mAnchorView = anchorView;
 

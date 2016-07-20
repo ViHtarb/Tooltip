@@ -1,7 +1,6 @@
 package com.tooltip.sample;
 
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tooltip.Tooltip;
-import com.tooltip.TooltipActionView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
                         .setGravity(Gravity.BOTTOM)
-                        .setText("TETETETETTfdasf");
+                        .setText(R.string.tooltip_hello_world);
                 builder.show();
             }
         });
@@ -38,15 +36,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_test2);
-        TooltipActionView view = (TooltipActionView) MenuItemCompat.getActionView(menuItem);
-        view.setMenuItem(menuItem);
-
-        Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, view)
-                .setCornerRadius(10f)
-                .setGravity(Gravity.BOTTOM)
-                .setText("TETETETETT");
-        builder.show();
+        if (getSupportActionBar() != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_test2);
+            Tooltip.Builder builder = new Tooltip.Builder(getSupportActionBar().getThemedContext(), menuItem)
+                    .setCornerRadius(10f)
+                    .setGravity(Gravity.BOTTOM)
+                    .setText("I`m on the bottom of menu item");
+            builder.show();
+        }
 
         return super.onCreateOptionsMenu(menu);
     }

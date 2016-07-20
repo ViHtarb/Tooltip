@@ -5,14 +5,13 @@
         android:id="@+id/action_test"
         android:orderInCategory="100"
         android:icon="@mipmap/ic_launcher"
-        android:title="TEST"
-        app:actionViewClass="com.tooltip.TooltipActionView"
+        android:title="@null"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_test2"
         android:orderInCategory="101"
         android:icon="@mipmap/ic_launcher"
-        android:title="TEST"
+        android:title="@null"
         app:actionViewClass="com.tooltip.TooltipActionView"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 </menu>

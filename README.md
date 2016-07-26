@@ -9,7 +9,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 ### Gradle ###
 ```javascript
     dependencies {
-        compile 'com.github.vihtarb:tooltip:0.1.5'
+        compile 'com.github.vihtarb:tooltip:0.1.6'
     }
 ```
 ### Usage ###

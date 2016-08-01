@@ -20,3 +20,6 @@ android:
 
   licenses:
     - '.+'
+
+  jdk:
+    - oraclejdk8

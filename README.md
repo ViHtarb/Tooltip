@@ -9,7 +9,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 ## Getting started ##
 -----------------------
 ### Gradle ###
-```javascript
+```java
     dependencies {
         compile 'com.github.vihtarb:tooltip:0.1.6'
     }
@@ -21,7 +21,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
             .setDismissOnClick(true)
             .setCornerRadius(20f)
             .setGravity(Gravity.BOTTOM)
-            .setText("Hellow tooltip")
+            .setText("Hello tooltip")
             .show();
 ```
 ### Advanced ###

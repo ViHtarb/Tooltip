@@ -56,17 +56,17 @@ import android.widget.TextView;
  */
 public final class Tooltip {
 
-    private boolean isCancelable;
-    private boolean isDismissOnClick;
+    private final boolean isCancelable;
+    private final boolean isDismissOnClick;
 
-    private int mGravity;
+    private final int mGravity;
 
-    private float mMargin;
+    private final float mMargin;
 
-    private View mAnchorView;
+    private final View mAnchorView;
+    private final PopupWindow mPopupWindow;
+
     private LinearLayout mContentView;
-    private PopupWindow mPopupWindow;
-
     private ImageView mArrowView;
 
     private Tooltip(Builder builder) {
@@ -317,12 +317,12 @@ public final class Tooltip {
             }
         }
 
-        public Builder(@NonNull Context context, @NonNull View anchorView) {
-            this(context, anchorView, 0);
+        public Builder(@NonNull View anchorView) {
+            this(anchorView, 0);
         }
 
-        public Builder(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
-            init(context, anchorView, resId);
+        public Builder(@NonNull View anchorView, @StyleRes int resId) {
+            init(anchorView.getContext(), anchorView, resId);
         }
 
         private void init(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
@@ -333,7 +333,7 @@ public final class Tooltip {
 
             isCancelable = a.getBoolean(R.styleable.Tooltip_cancelable, false);
             isDismissOnClick = a.getBoolean(R.styleable.Tooltip_dismissOnClick, false);
-            mBackgroundColor = a.getColor(R.styleable.Tooltip_colorBackground, Color.GRAY);
+            mBackgroundColor = a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY);
             mCornerRadius = a.getDimension(R.styleable.Tooltip_cornerRadius, -1);
             mMargin = a.getDimension(R.styleable.Tooltip_margin, -1);
             mPadding = a.getDimension(R.styleable.Tooltip_android_padding, -1);

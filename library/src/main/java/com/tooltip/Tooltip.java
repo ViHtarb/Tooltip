@@ -38,8 +38,6 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -266,8 +264,8 @@ public final class Tooltip {
                 x = mArrowView.getLeft();
                 x = x + (mGravity == Gravity.START ? -1 : +1);
             }
-            ViewCompat.setX(mArrowView, (int) x);
-            ViewCompat.setY(mArrowView, (int) y);
+            mArrowView.setX(x);
+            mArrowView.setY(y);
             mContentView.requestLayout();
         }
     };
@@ -301,13 +299,12 @@ public final class Tooltip {
         }
 
         public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem, @StyleRes int resId) {
-            View anchorView = MenuItemCompat.getActionView(anchorMenuItem);
+            View anchorView = anchorMenuItem.getActionView();
             if (anchorView == null) {
                 TooltipActionView tooltipActionView = new TooltipActionView(context);
-
-                MenuItemCompat.setActionView(anchorMenuItem, tooltipActionView);
-
                 tooltipActionView.setMenuItem(anchorMenuItem);
+
+                anchorMenuItem.setActionView(tooltipActionView);
 
                 init(context, tooltipActionView, resId);
             } else {

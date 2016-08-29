@@ -25,7 +25,6 @@
 package com.tooltip;
 
 import android.content.Context;
-import android.support.v4.view.MenuItemCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -48,7 +47,7 @@ public class TooltipActionView extends FrameLayout implements View.OnClickListen
     }
 
     public TooltipActionView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.actionButtonStyle);
+        this(context, attrs, android.R.attr.actionButtonStyle);
     }
 
     public TooltipActionView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -84,7 +83,7 @@ public class TooltipActionView extends FrameLayout implements View.OnClickListen
     }
 
     public void setMenuItem(MenuItem menuItem) {
-        View actionView = MenuItemCompat.getActionView(menuItem);
+        View actionView = menuItem.getActionView();
         if (actionView != null && actionView.equals(this)) {
             if (menuItem.getIcon() != null) {
                 mImageView.setImageDrawable(menuItem.getIcon());

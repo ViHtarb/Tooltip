@@ -12,7 +12,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.6'
+    compile 'com.github.vihtarb:tooltip:0.1.7'
 }
 ```
 ### Maven
@@ -93,6 +93,19 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
 - `<attr name="android:lineSpacingExtra"/>`
 - `<attr name="android:lineSpacingMultiplier"/>`
 - `<attr name="android:typeface"/>`
+
+## Changelog
+### 0.1.7
+- Min SDK changed from 7 to 11
+- Removed not used dependencies(library size is reduced almost in 2 times)
+
+### 0.1.6
+This version is supported Android API 7 and large. If you want use Tooltips in projects with Min SDK 7 then use this code in dependencies:
+```java
+dependencies {
+    compile 'com.github.vihtarb:tooltip:0.1.6'
+}
+```
 
 ## Future Work
 - Animations

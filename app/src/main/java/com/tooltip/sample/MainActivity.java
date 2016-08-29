@@ -1,5 +1,6 @@
 package com.tooltip.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -17,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button button = (Button) findViewById(R.id.button_test);
+        Button button = (Button) findViewById(R.id.button_test);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, button, R.style.Tooltip2)
+                Tooltip.Builder builder = new Tooltip.Builder(MainActivity.this, v, R.style.Tooltip2)
                         .setCancelable(true)
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
@@ -46,5 +47,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_test:
+                new Tooltip.Builder(this, findViewById(R.id.action_test))
+                        .setCancelable(true)
+                        .setDismissOnClick(true)
+                        .setBackgroundColor(Color.LTGRAY)
+                        .setCornerRadius(10f)
+                        .setGravity(Gravity.BOTTOM)
+                        .setText("I`m on the bottom of first menu item and can showing dynamically on item click")
+                        .show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

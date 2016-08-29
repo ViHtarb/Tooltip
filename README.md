@@ -1,8 +1,8 @@
-# Android Tooltips library
+# Android Tooltips
 
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://bitbucket.org/ViHtarb/tooltip/src/ccb911a31d9749e3e607cdfd93c6485dcdde056d/LICENSE?at=master&fileviewer=file-view-default)
 [![Build Status](https://travis-ci.org/ViHtarb/Tooltip.svg?branch=master)](https://travis-ci.org/ViHtarb/Tooltip)
-[![Tooltip Maven Central](https://img.shields.io/badge/Tooltip%20Maven%20Central-0.1.6-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
+[![Tooltip Maven Central](https://img.shields.io/badge/Tooltip%20Maven%20Central-0.1.7-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
 
 Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html). This Tooltips does not require any custom layout. It works as [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
 
@@ -20,7 +20,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
 </dependency>
 ```
 ## Usage
@@ -100,7 +100,7 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
 - Removed not used dependencies(library size is reduced almost in 2 times)
 
 ### 0.1.6
-This version is supported Android API 7 and large. If you want use Tooltips in projects with Min SDK 7 then use this code in dependencies:
+This version is supported Android API 7 and large. If you want use Tooltips in projects with Min SDK 7 then use this in dependencies:
 ```java
 dependencies {
     compile 'com.github.vihtarb:tooltip:0.1.6'

@@ -2,9 +2,9 @@
 
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://bitbucket.org/ViHtarb/tooltip/src/ccb911a31d9749e3e607cdfd93c6485dcdde056d/LICENSE?at=master&fileviewer=file-view-default)
 [![Build Status](https://travis-ci.org/ViHtarb/Tooltip.svg?branch=master)](https://travis-ci.org/ViHtarb/Tooltip)
-[![Tooltip Maven Central](https://img.shields.io/badge/Tooltip%20Maven%20Central-0.1.7-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
+[![Tooltip Maven Central](https://img.shields.io/badge/Tooltip%20Maven%20Central-0.1.8-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
 
-Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html). This Tooltips does not require any custom layout. It works as [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
+Simple to use customizable Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html). This Tooltips does not require any custom layout. It works as [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
 
 ![Demo](https://raw.githubusercontent.com/ViHtarb/Tooltip/master/art/demo.gif)
 
@@ -12,7 +12,7 @@ Android Tooltips library based on [PopupWindow](http://developer.android.com/int
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.7'
+    compile 'com.github.vihtarb:tooltip:0.1.8'
 }
 ```
 ### Maven
@@ -20,12 +20,12 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
 </dependency>
 ```
 ## Usage
 ```java
-Tooltip tooltip = new Tooltip.Builder(context, anchorView)
+Tooltip tooltip = new Tooltip.Builder(anchorView)
         .setText("Hello tooltip")
         .show();
 ```
@@ -33,8 +33,8 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView)
 #### Builder:
 - `Builder(Context context, MenuItem anchorMenuItem)`
 - `Builder(Context context, MenuItem anchorMenuItem, @StyleRes int resId)`
-- `Builder(Context context, View anchorView)`
-- `Builder(Context context, View anchorView, @StyleRes int resId)`
+- `Builder(View anchorView)`
+- `Builder(View anchorView, @StyleRes int resId)`
 - `setCancelable(boolean cancelable)` - dismiss on outside touch. Default is `false`
 - `setDismissOnClick(boolean isDissmissOnClick)` - dismiss on inside touch. Default is `false`
 - `setBackgroundColor(@ColorInt int color)` - background color. Default is `Color.GRAY`
@@ -59,6 +59,7 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView)
 - `setLineSpacing(@DimenRes int addResId, float mult)`
 - `setLineSpacing(float add, float mult)`
 - `setTypeface(Typeface typeface)`
+- `setOnDismissListener(OnDismissListener listener)`
 - `build()` - creates and returns new Tooltip
 - `show()` - creates, shows and returns new Tooltip
 
@@ -70,14 +71,14 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView)
 ## Styleable
 You can create Tooltip with custom style
 ```java
-Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
+Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
         .setText("Hello tooltip")
         .show();
 ```
 ### Attributes
 - `<attr name="cancelable" format="boolean"/>` - dismiss on outside touch. Default is `false`
 - `<attr name="dismissOnClick" format="boolean"/>` - dismiss on inside toush. Default is `false`
-- `<attr name="colorBackground" format="color"/>` - background color. Default is `Color.GRAY`
+- `<attr name="backgroundColor" format="color"/>` - background color. Default is `Color.GRAY`
 - `<attr name="cornerRadius" format="dimension"/>` - background drawable corner radius
 - `<attr name="arrowHeight" format="dimension"/>`
 - `<attr name="arrowWidth" format="dimension"/>`
@@ -95,16 +96,30 @@ Tooltip tooltip = new Tooltip.Builder(context, anchorView, R.style.tooltip)
 - `<attr name="android:typeface"/>`
 
 ## Changelog
+### 0.1.8
+- Implemented OnDismissListener
+- Removed `Context context` argument in builder constructors with second argument `View anchorView`
+- Renamed styleable attribute from `colorBackground` to `backgroundColor`
+
 ### 0.1.7
 - Min SDK changed from 7 to 11
 - Removed not used dependencies(library size is reduced almost in 2 times)
 
 ### 0.1.6
 This version is supported Android API 7 and large. If you want use Tooltips in projects with Min SDK 7 then use this in dependencies:
+### Gradle
 ```java
 dependencies {
     compile 'com.github.vihtarb:tooltip:0.1.6'
 }
+```
+### Maven
+```html
+<dependency>
+    <groupId>com.github.vihtarb</groupId>
+    <artifactId>tooltip</artifactId>
+    <version>0.1.6</version>
+</dependency>
 ```
 
 ## Future Work

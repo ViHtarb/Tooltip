@@ -1,27 +1,24 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextAppearance.Test" parent="TextAppearance.AppCompat.Large.Inverse"/>
-
     <style name="Tooltip">
         <item name="android:text">TESSSSSS</item>
-        <item name="colorBackground">@color/colorAccent</item>
-        <item name="textAppearance">@style/TextAppearance.Test</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="backgroundColor">@color/colorAccent</item>
         <item name="cornerRadius">10dp</item>
     </style>
 
     <style name="Tooltip2">
         <item name="android:text">qwqwrqwfqwfqwfqwfqwf</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:lineSpacingExtra">20dp</item>
-        <item name="colorBackground">@color/colorPrimary</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
         <item name="cornerRadius">10dp</item>
     </style>
 </resources>

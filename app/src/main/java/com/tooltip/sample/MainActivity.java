@@ -1,6 +1,5 @@
 package com.tooltip.sample;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -56,9 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 new Tooltip.Builder(findViewById(R.id.action_test), R.style.Tooltip)
                         .setCancelable(true)
                         .setDismissOnClick(true)
-                        .setCornerRadius(10f)
                         .setGravity(Gravity.BOTTOM)
-                        .setText("I`m on the bottom of first menu item and can showing dynamically on item click")
+                        .setText("I`m on the bottom of first menu item and showing dynamically on menu item click")
                         .show();
                 break;
         }

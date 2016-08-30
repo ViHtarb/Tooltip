@@ -83,6 +83,7 @@ public final class Tooltip {
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
+        mPopupWindow.setOnDismissListener(builder.mOnDismissListener);
     }
 
     private View getContentView(Builder builder) {
@@ -127,16 +128,17 @@ public final class Tooltip {
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
 
+        padding = (int) Utils.pxFromDp(5);
         switch (mGravity) {
             case Gravity.START:
-                mContentView.setPadding(0, 0, (int) Utils.pxFromDp(5), 0);
+                mContentView.setPadding(0, 0, padding, 0);
                 break;
             case Gravity.TOP:
             case Gravity.BOTTOM:
-                mContentView.setPadding((int) Utils.pxFromDp(5), 0, (int) Utils.pxFromDp(5), 0);
+                mContentView.setPadding(padding, 0, padding, 0);
                 break;
             case Gravity.END:
-                mContentView.setPadding((int) Utils.pxFromDp(5), 0, 0, 0);
+                mContentView.setPadding(padding, 0, 0, 0);
                 break;
         }
 
@@ -147,6 +149,7 @@ public final class Tooltip {
             mContentView.addView(mArrowView);
             mContentView.addView(textView);
         }
+
         if (builder.isCancelable || builder.isDismissOnClick) {
             mContentView.setOnTouchListener(mTouchListener);
         }
@@ -293,6 +296,7 @@ public final class Tooltip {
         private String mText;
         private ColorStateList mTextColor;
         private Typeface mTypeface = Typeface.DEFAULT;
+        private OnDismissListener mOnDismissListener;
 
         public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem) {
             this(context, anchorMenuItem, 0);
@@ -590,6 +594,16 @@ public final class Tooltip {
          */
         public Builder setTypeface(Typeface typeface) {
             mTypeface = typeface;
+            return this;
+        }
+
+        /**
+         * Sets the listener to be called when the window is dismissed.
+         *
+         * @param listener The listener.
+         */
+        public Builder setOnDismissListener(OnDismissListener listener) {
+            mOnDismissListener = listener;
             return this;
         }
 

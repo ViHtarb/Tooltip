@@ -94,8 +94,9 @@ final class ArrowDrawable extends ColorDrawable {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(mBackgroundColor);
-        if (mPath == null)
+        if (mPath == null) {
             updatePath(getBounds());
+        }
         canvas.drawPath(mPath, mPaint);
     }
 

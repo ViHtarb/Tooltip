@@ -31,13 +31,16 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -113,7 +116,7 @@ public final class Tooltip {
         textView.setLayoutParams(textViewParams);
 
         mArrowView = new ImageView(builder.mContext);
-        mArrowView.setImageDrawable(new ArrowDrawable(builder.mBackgroundColor, builder.mGravity));
+        mArrowView.setImageDrawable(builder.mArrowDrawable);
 
         LinearLayout.LayoutParams arrowLayoutParams;
         if (mGravity == Gravity.TOP || mGravity == Gravity.BOTTOM) {
@@ -210,9 +213,7 @@ public final class Tooltip {
     private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                dismiss();
-            } else if (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP) {
+            if ((isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) || (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP)) {
                 dismiss();
             }
             return true;
@@ -293,6 +294,7 @@ public final class Tooltip {
 
         private Context mContext;
         private View mAnchorView;
+        private Drawable mArrowDrawable;
         private String mText;
         private ColorStateList mTextColor;
         private Typeface mTypeface = Typeface.DEFAULT;
@@ -344,6 +346,7 @@ public final class Tooltip {
             mGravity = a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM);
             mArrowHeight = a.getDimension(R.styleable.Tooltip_arrowHeight, -1);
             mArrowWidth = a.getDimension(R.styleable.Tooltip_arrowWidth, -1);
+            mArrowDrawable = a.getDrawable(R.styleable.Tooltip_arrowDrawable);
             mText = a.getString(R.styleable.Tooltip_android_text);
             mTextSize = a.getDimension(R.styleable.Tooltip_android_textSize, -1);
             mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
@@ -428,7 +431,7 @@ public final class Tooltip {
         }
 
         /**
-         * Sets the tooltip arrow width from resource.
+         * Sets the Tooltip arrow width from resource.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
@@ -437,12 +440,31 @@ public final class Tooltip {
         }
 
         /**
-         * Sets the tooltip arrow width.
+         * Sets the Tooltip arrow width.
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
         public Builder setArrowWidth(float width) {
             mArrowWidth = width;
+            return this;
+        }
+
+        /**
+         * Sets the Tooltip arrow drawable from resources.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setArrow(@DrawableRes int resId) {
+            return setArrow(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+        }
+
+        /**
+         * Sets the Tooltip arrow drawable.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setArrow(Drawable arrowDrawable) {
+            mArrowDrawable = arrowDrawable;
             return this;
         }
 
@@ -619,6 +641,9 @@ public final class Tooltip {
             }
             if (mArrowWidth == -1) {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
+            }
+            if (mArrowDrawable == null) {
+                mArrowDrawable = new ArrowDrawable(mBackgroundColor, mGravity);
             }
             if (mMargin == -1) {
                 mMargin = mContext.getResources().getDimension(R.dimen.default_tooltip_margin);

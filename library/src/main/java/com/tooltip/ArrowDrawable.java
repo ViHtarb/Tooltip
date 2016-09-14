@@ -47,7 +47,7 @@ final class ArrowDrawable extends ColorDrawable {
     private Path mPath;
 
     ArrowDrawable(@ColorInt int foregroundColor, int gravity) {
-        mGravity = Utils.gravityToArrowDirection(gravity);
+        mGravity = Util.gravityToArrowDirection(gravity);
         mBackgroundColor = Color.TRANSPARENT;
 
         mPaint.setColor(foregroundColor);

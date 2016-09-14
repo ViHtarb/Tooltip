@@ -34,7 +34,7 @@ import android.view.ViewTreeObserver;
 /**
  * Tooltip utils
  */
-final class Utils {
+final class Util {
 
     public static RectF calculateRectOnScreen(View view) {
         int[] location = new int[2];
@@ -48,11 +48,11 @@ final class Utils {
         return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
     }
 
-    public static float dpFromPx(float px) {
+    public static float pxToDp(float px) {
         return px / Resources.getSystem().getDisplayMetrics().density;
     }
 
-    public static float pxFromDp(float dp) {
+    public static float dpToPx(float dp) {
         return dp * Resources.getSystem().getDisplayMetrics().density;
     }
 

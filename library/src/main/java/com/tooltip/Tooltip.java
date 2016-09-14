@@ -492,6 +492,16 @@ public final class Tooltip {
         }
 
         /**
+         * Sets Tooltip text appearance from the specified style resource.
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setTextAppearance(@StyleRes int resId) {
+            mTextAppearance = resId;
+            return this;
+        }
+
+        /**
          * Sets Tooltip padding from resource.
          *
          * @return This Builder object to allow for chaining of calls to set methods
@@ -576,16 +586,6 @@ public final class Tooltip {
          */
         public Builder setTextStyle(int style) {
             mTextStyle = style;
-            return this;
-        }
-
-        /**
-         * Sets Tooltip text appearance from the specified style resource.
-         *
-         * @return This Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setTextAppearance(@StyleRes int resId) {
-            mTextAppearance = resId;
             return this;
         }
 

@@ -36,14 +36,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        if (getSupportActionBar() != null) {
             MenuItem menuItem = menu.findItem(R.id.action_test2);
-            Tooltip.Builder builder = new Tooltip.Builder(getSupportActionBar().getThemedContext(), menuItem)
+            Tooltip.Builder builder = new Tooltip.Builder(menuItem)
                     .setCornerRadius(10f)
                     .setGravity(Gravity.BOTTOM)
                     .setText("I`m on the bottom of menu item");
             builder.show();
-        }
 
         return super.onCreateOptionsMenu(menu);
     }

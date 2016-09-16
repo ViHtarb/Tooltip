@@ -68,16 +68,19 @@ public final class Tooltip {
 
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
+    private final OnDismissListener mOnDismissListener;
 
     private LinearLayout mContentView;
     private ImageView mArrowView;
 
     private Tooltip(Builder builder) {
+        isCancelable = builder.isCancelable;
+        isDismissOnClick = builder.isDismissOnClick;
+
         mGravity = builder.mGravity;
         mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
-        isCancelable = builder.isCancelable;
-        isDismissOnClick = builder.isDismissOnClick;
+        mOnDismissListener = builder.mOnDismissListener;
 
         mPopupWindow = new PopupWindow(builder.mContext);
         mPopupWindow.setBackgroundDrawable(null);
@@ -86,7 +89,16 @@ public final class Tooltip {
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
-        mPopupWindow.setOnDismissListener(builder.mOnDismissListener);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
+                if (mOnDismissListener != null) {
+                    mOnDismissListener.onDismiss();
+                }
+            }
+        });
     }
 
     private View getContentView(Builder builder) {
@@ -173,6 +185,7 @@ public final class Tooltip {
         if (!isShowing()) {
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
 
+            mAnchorView.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
             mAnchorView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -184,6 +197,7 @@ public final class Tooltip {
 
     public void dismiss() {
         mPopupWindow.dismiss();
+        mPopupWindow.setContentView(null);
     }
 
     private PointF calculateLocation() {
@@ -277,14 +291,26 @@ public final class Tooltip {
         }
     };
 
+    private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener() {
+        @Override
+        public void onViewAttachedToWindow(View v) {
+
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(View v) {
+            dismiss();
+        }
+    };
+
     public static final class Builder {
         private boolean isDismissOnClick;
         private boolean isCancelable;
 
         private int mGravity;
         private int mBackgroundColor;
-        private int mTextStyle;
         private int mTextAppearance;
+        private int mTextStyle;
 
         private float mCornerRadius;
         private float mArrowHeight;

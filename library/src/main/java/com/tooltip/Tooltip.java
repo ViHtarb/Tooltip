@@ -330,26 +330,21 @@ public final class Tooltip {
         private View mAnchorView;
         private OnDismissListener mOnDismissListener;
 
-        public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem) {
-            this(context, anchorMenuItem, 0);
+        public Builder(@NonNull MenuItem anchorMenuItem) {
+            this(anchorMenuItem, 0);
         }
 
-        public Builder(@NonNull Context context, @NonNull MenuItem anchorMenuItem, @StyleRes int resId) {
+        public Builder(@NonNull MenuItem anchorMenuItem, @StyleRes int resId) {
             View anchorView = anchorMenuItem.getActionView();
-            if (anchorView == null) {
-                TooltipActionView tooltipActionView = new TooltipActionView(context);
-                tooltipActionView.setMenuItem(anchorMenuItem);
-
-                anchorMenuItem.setActionView(tooltipActionView);
-
-                init(context, tooltipActionView, resId);
-            } else {
+            if (anchorView != null) {
                 if (anchorView instanceof TooltipActionView) {
                     TooltipActionView tooltipActionView = (TooltipActionView) anchorView;
                     tooltipActionView.setMenuItem(anchorMenuItem);
                 }
 
-                init(context, anchorView, resId);
+                init(anchorView.getContext(), anchorView, resId);
+            } else {
+                throw new NullPointerException("anchor menuItem haven`t actionViewClass");
             }
         }
 

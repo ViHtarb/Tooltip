@@ -25,6 +25,10 @@
 package com.tooltip;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -33,14 +37,19 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Implementation menu item wrapper view for Tooltip
  */
-public class TooltipActionView extends FrameLayout implements View.OnClickListener, View.OnLongClickListener {
-
+public class TooltipActionView extends FrameLayout {
     private TextView mTextView;
     private ImageView mImageView;
+    private MenuItem mMenuItem;
+
+    private OnClickListener mOnClickListener;
+    private OnLongClickListener mOnLongClickListener;
+    private MenuItem.OnMenuItemClickListener mOnMenuItemClickListener;
 
     public TooltipActionView(Context context) {
         this(context, null);
@@ -60,35 +69,84 @@ public class TooltipActionView extends FrameLayout implements View.OnClickListen
         mTextView = new TextView(context);
         mImageView = new ImageView(context);
 
-        mTextView.setLayoutParams(layoutParams);
         mTextView.setDuplicateParentStateEnabled(true);
-        mImageView.setLayoutParams(layoutParams);
         mImageView.setDuplicateParentStateEnabled(true);
 
-        addView(mTextView);
-        addView(mImageView);
+        addView(mTextView, layoutParams);
+        addView(mImageView, layoutParams);
 
-        setOnClickListener(this);
-        setOnLongClickListener(this);
+        super.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnClickListener != null) {
+                    mOnClickListener.onClick(v);
+                }
+                if (mOnMenuItemClickListener != null) {
+                    mOnMenuItemClickListener.onMenuItemClick(mMenuItem);
+                }
+            }
+        });
+
+        super.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return TooltipActionView.this.onLongClick(v);
+            }
+        });
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void setOnClickListener(OnClickListener l) {
+        mOnClickListener = l;
     }
 
     @Override
-    public boolean onLongClick(View v) {
-        return false;
+    public void setOnLongClickListener(OnLongClickListener l) {
+        mOnLongClickListener = l;
     }
 
-    public void setMenuItem(MenuItem menuItem) {
-        View actionView = menuItem.getActionView();
-        if (actionView != null && actionView.equals(this)) {
-            if (menuItem.getIcon() != null) {
-                mImageView.setImageDrawable(menuItem.getIcon());
-            } else if (menuItem.getTitle() != null) {
-                mTextView.setText(menuItem.getTitle());
+    public void setOnMenuItemClick(MenuItem.OnMenuItemClickListener l) {
+        mOnMenuItemClickListener = l;
+    }
+
+    protected boolean onLongClick(@NonNull View v) {
+        if (mMenuItem != null && !TextUtils.isEmpty(mMenuItem.getTitle())) {
+            final int[] screenPos = new int[2];
+            final Rect displayFrame = new Rect();
+            getLocationOnScreen(screenPos);
+            getWindowVisibleDisplayFrame(displayFrame);
+            final Context context = getContext();
+            final int width = getWidth();
+            final int height = getHeight();
+            final int middleY = screenPos[1] + height / 2;
+            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            Toast cheatSheet = Toast.makeText(context, mMenuItem.getTitle(), Toast.LENGTH_SHORT);
+            if (middleY < displayFrame.height()) {
+                cheatSheet.setGravity(Gravity.TOP | Gravity.END, screenWidth - screenPos[0] - width / 2, height);
+            } else {
+                cheatSheet.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, height);
+            }
+            cheatSheet.show();
+        }
+        return mOnLongClickListener != null && mOnLongClickListener.onLongClick(v);
+    }
+
+    @Nullable
+    public MenuItem getMenuItem() {
+        return mMenuItem;
+    }
+
+    public void setMenuItem(@NonNull MenuItem menuItem) {
+        if (mMenuItem != menuItem) {
+            mMenuItem = menuItem;
+
+            View actionView = menuItem.getActionView();
+            if (actionView != null && actionView.equals(this)) {
+                if (menuItem.getIcon() != null) {
+                    mImageView.setImageDrawable(menuItem.getIcon());
+                } else if (menuItem.getTitle() != null) {
+                    mTextView.setText(menuItem.getTitle());
+                }
             }
         }
     }

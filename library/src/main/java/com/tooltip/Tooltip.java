@@ -68,7 +68,7 @@ public final class Tooltip {
 
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
-    private final OnDismissListener mOnDismissListener;
+    private OnDismissListener mOnDismissListener;
 
     private LinearLayout mContentView;
     private ImageView mArrowView;
@@ -177,10 +177,20 @@ public final class Tooltip {
         return mContentView;
     }
 
+    /**
+     * <p>Indicate whether this Tooltip is showing on screen.</p>
+     *
+     * @return true if the Tooltip is showing, false otherwise
+     */
     public boolean isShowing() {
         return mPopupWindow.isShowing();
     }
 
+    /**
+     * Display the Tooltip anchored to the custom gravity of the anchor view.
+
+     * @see #dismiss()
+     */
     public void show() {
         if (!isShowing()) {
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
@@ -195,9 +205,25 @@ public final class Tooltip {
         }
     }
 
+    /**
+     * Disposes of the Tooltip. This method can be invoked only after
+     * {@link #show()} has been executed. Failing
+     * that, calling this method will have no effect.
+     *
+     * @see #show()
+     */
     public void dismiss() {
         mPopupWindow.dismiss();
         mPopupWindow.setContentView(null);
+    }
+
+    /**
+     * Sets the listener to be called when the window is dismissed.
+     *
+     * @param listener The listener.
+     */
+    public void setOnDismissListener(OnDismissListener listener) {
+        mOnDismissListener = listener;
     }
 
     private PointF calculateLocation() {

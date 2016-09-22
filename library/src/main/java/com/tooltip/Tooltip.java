@@ -150,6 +150,7 @@ public final class Tooltip {
         mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
 
         padding = (int) Util.dpToPx(5);
+
         switch (mGravity) {
             case Gravity.START:
                 mContentView.setPadding(0, 0, padding, 0);
@@ -188,7 +189,7 @@ public final class Tooltip {
 
     /**
      * Display the Tooltip anchored to the custom gravity of the anchor view.
-
+     *
      * @see #dismiss()
      */
     public void show() {
@@ -218,7 +219,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets the listener to be called when the window is dismissed.
+     * Sets the listener to be called when Tooltip is dismissed.
      *
      * @param listener The listener.
      */
@@ -249,8 +250,6 @@ public final class Tooltip {
                 location.x = anchorCenter.x - mContentView.getWidth() / 2f;
                 location.y = anchorRect.bottom + mMargin;
                 break;
-            default:
-                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
         }
 
         return location;
@@ -687,6 +686,10 @@ public final class Tooltip {
          * to do and want this to be created and displayed.
          */
         public Tooltip build() {
+            if (!Gravity.isHorizontal(mGravity) && !Gravity.isVertical(mGravity)) {
+                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
+            }
+
             if (mArrowHeight == -1) {
                 mArrowHeight = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_height);
             }

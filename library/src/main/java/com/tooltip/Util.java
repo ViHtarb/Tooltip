@@ -67,7 +67,7 @@ final class Util {
             case Gravity.BOTTOM:
                 return Gravity.TOP;
             default:
-                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
+                return gravity;
         }
     }
 

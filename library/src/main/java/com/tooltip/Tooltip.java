@@ -215,7 +215,6 @@ public final class Tooltip {
      */
     public void dismiss() {
         mPopupWindow.dismiss();
-        mPopupWindow.setContentView(null);
     }
 
     /**

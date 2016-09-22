@@ -47,8 +47,6 @@ public class TooltipActionView extends FrameLayout {
     private ImageView mImageView;
     private MenuItem mMenuItem;
 
-    private OnClickListener mOnClickListener;
-    private OnLongClickListener mOnLongClickListener;
     private MenuItem.OnMenuItemClickListener mOnMenuItemClickListener;
 
     public TooltipActionView(Context context) {
@@ -61,6 +59,8 @@ public class TooltipActionView extends FrameLayout {
 
     public TooltipActionView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setClickable(true);
+        setLongClickable(true);
 
         int itemWidth = getResources().getDimensionPixelSize(R.dimen.action_button_width);
         int itemPadding = getResources().getDimensionPixelSize(R.dimen.action_button_padding);
@@ -74,42 +74,18 @@ public class TooltipActionView extends FrameLayout {
 
         addView(mTextView, layoutParams);
         addView(mImageView, layoutParams);
-
-        super.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnClickListener != null) {
-                    mOnClickListener.onClick(v);
-                }
-                if (mOnMenuItemClickListener != null) {
-                    mOnMenuItemClickListener.onMenuItemClick(mMenuItem);
-                }
-            }
-        });
-
-        super.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return TooltipActionView.this.onLongClick(v);
-            }
-        });
     }
 
     @Override
-    public void setOnClickListener(OnClickListener l) {
-        mOnClickListener = l;
+    public boolean performClick() {
+        if (mOnMenuItemClickListener != null) {
+            mOnMenuItemClickListener.onMenuItemClick(mMenuItem);
+        }
+        return super.performClick();
     }
 
     @Override
-    public void setOnLongClickListener(OnLongClickListener l) {
-        mOnLongClickListener = l;
-    }
-
-    public void setOnMenuItemClick(MenuItem.OnMenuItemClickListener l) {
-        mOnMenuItemClickListener = l;
-    }
-
-    protected boolean onLongClick(@NonNull View v) {
+    public boolean performLongClick() {
         if (mMenuItem != null && !TextUtils.isEmpty(mMenuItem.getTitle())) {
             final int[] screenPos = new int[2];
             final Rect displayFrame = new Rect();
@@ -128,7 +104,7 @@ public class TooltipActionView extends FrameLayout {
             }
             cheatSheet.show();
         }
-        return mOnLongClickListener != null && mOnLongClickListener.onLongClick(v);
+        return super.performLongClick();
     }
 
     @Nullable
@@ -149,5 +125,9 @@ public class TooltipActionView extends FrameLayout {
                 }
             }
         }
+    }
+
+    public void setOnMenuItemClick(MenuItem.OnMenuItemClickListener l) {
+        mOnMenuItemClickListener = l;
     }
 }

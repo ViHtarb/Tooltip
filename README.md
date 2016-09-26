@@ -99,7 +99,7 @@ Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
 ## Changelog
 ### 0.1.8
 - Implemented `OnDismissListener`
-- Removed `Context context` argument in builder constructors with second argument `View anchorView`
+- Removed `Context context` argument in `Builder` constructors with second argument `View anchorView`
 - Renamed styleable attribute from `colorBackground` to `backgroundColor`
 
 ### 0.1.7
@@ -146,9 +146,12 @@ dependencies {
 ## Changelog-SNAPSHOTS
 ### 0.1.8.1-SNAPSHOT
 - Min SDK changed from 11 to 14
-- Implemented `OnClicListener` `OnLongClickListener` and `OnDismissListener` listeners
-- Implemented customizing arrow drawable
+- Implemented `OnClickListener` and `OnLongClickListener` listeners
+- Implemented `setOnClickListener` and `setOnLongClickListener` methods in `Builder` and `Tooltip`
+- Implemented `setOnDismissListener` in `Tooltip`
+- Implemented customizing arrow drawable by method `setArrow(Drawable)` and styleable attribute `arrowDrawable`
 - Reimplemented `TooltipActionView` class
+- Removed `Context context` argument in `Builder` constructors with second argument `MenuItem anchorMenuItem`
 
 ## Future Work
 - Animations

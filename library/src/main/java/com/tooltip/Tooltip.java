@@ -68,6 +68,9 @@ public final class Tooltip {
 
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
+
+    private OnClickListener mOnClickListener;
+    private OnLongClickListener mOnLongClickListener;
     private OnDismissListener mOnDismissListener;
 
     private LinearLayout mContentView;
@@ -80,6 +83,8 @@ public final class Tooltip {
         mGravity = builder.mGravity;
         mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
+        mOnClickListener = builder.mOnClickListener;
+        mOnLongClickListener = builder.mOnLongClickListener;
         mOnDismissListener = builder.mOnDismissListener;
 
         mPopupWindow = new PopupWindow(builder.mContext);
@@ -172,6 +177,9 @@ public final class Tooltip {
             mContentView.addView(textView);
         }
 
+        mContentView.setOnClickListener(mClickListener);
+        mContentView.setOnLongClickListener(mLongClickListener);
+
         if (builder.isCancelable || builder.isDismissOnClick) {
             mContentView.setOnTouchListener(mTouchListener);
         }
@@ -218,6 +226,24 @@ public final class Tooltip {
     }
 
     /**
+     * Sets listener to be called when the Tooltip is clicked.
+     *
+     * @param listener The listener.
+     */
+    public void setOnClickListener(OnClickListener listener) {
+        mOnClickListener = listener;
+    }
+
+    /**
+     * Sets listener to be called when the Tooltip is clicked and held.
+     *
+     * @param listener The listener.
+     */
+    public void setOnLongClickListener(OnLongClickListener listener) {
+        mOnLongClickListener = listener;
+    }
+
+    /**
      * Sets the listener to be called when Tooltip is dismissed.
      *
      * @param listener The listener.
@@ -254,13 +280,30 @@ public final class Tooltip {
         return location;
     }
 
+    private final View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mOnClickListener != null) {
+                mOnClickListener.onClick(Tooltip.this);
+            }
+        }
+    };
+
+    private final View.OnLongClickListener mLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            return mOnLongClickListener != null && mOnLongClickListener.onLongClick(Tooltip.this);
+        }
+    };
+
     private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if ((isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) || (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP)) {
                 dismiss();
+                return true;
             }
-            return true;
+            return false;
         }
     };
 
@@ -352,6 +395,9 @@ public final class Tooltip {
 
         private Context mContext;
         private View mAnchorView;
+
+        private OnClickListener mOnClickListener;
+        private OnLongClickListener mOnLongClickListener;
         private OnDismissListener mOnDismissListener;
 
         public Builder(@NonNull MenuItem anchorMenuItem) {
@@ -665,6 +711,26 @@ public final class Tooltip {
          */
         public Builder setTypeface(Typeface typeface) {
             mTypeface = typeface;
+            return this;
+        }
+
+        /**
+         * Sets listener to be called when the Tooltip is clicked.
+         *
+         * @param listener The listener.
+         */
+        public Builder setOnClickListener(OnClickListener listener) {
+            mOnClickListener = listener;
+            return this;
+        }
+
+        /**
+         * Sets listener to be called when the Tooltip is clicked and held.
+         *
+         * @param listener The listener.
+         */
+        public Builder setOnLongClickListener(OnLongClickListener listener) {
+            mOnLongClickListener = listener;
             return this;
         }
 

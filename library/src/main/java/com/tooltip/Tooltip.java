@@ -89,7 +89,7 @@ public final class Tooltip {
 
         mPopupWindow = new PopupWindow(builder.mContext);
         mPopupWindow.setBackgroundDrawable(null);
-        mPopupWindow.setClippingEnabled(true);
+        mPopupWindow.setClippingEnabled(false);
         mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
@@ -314,6 +314,7 @@ public final class Tooltip {
 
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
             PointF location = calculateLocation();
+            mPopupWindow.setClippingEnabled(true);
             mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
         }
     };

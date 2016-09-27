@@ -132,7 +132,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.8.1-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:0.1.8.2-SNAPSHOT'
 }
 ```
 ### Maven
@@ -140,11 +140,11 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.8.1-SNAPSHOT</version>
+    <version>0.1.8.2-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
-### 0.1.8.1-SNAPSHOT
+### 0.1.8.2-SNAPSHOT
 - Min SDK changed from 11 to 14
 - Implemented `OnClickListener` and `OnLongClickListener` listeners
 - Implemented `setOnClickListener` and `setOnLongClickListener` methods in `Builder` and `Tooltip`

@@ -152,6 +152,7 @@ dependencies {
 - Implemented customizing arrow drawable by method `setArrow(Drawable)` and styleable attribute `arrowDrawable`
 - Reimplemented `TooltipActionView` class
 - Removed `Context context` argument in `Builder` constructors with second argument `MenuItem anchorMenuItem`
+- Fixed `Activity has leaked window`
 
 ## Future Work
 - Animations

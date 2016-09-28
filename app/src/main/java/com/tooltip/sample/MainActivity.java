@@ -12,6 +12,8 @@ import com.tooltip.Tooltip;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Tooltip mTooltip;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +38,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        if (getSupportActionBar() != null) {
-            MenuItem menuItem = menu.findItem(R.id.action_test2);
-            Tooltip.Builder builder = new Tooltip.Builder(getSupportActionBar().getThemedContext(), menuItem)
-                    .setCornerRadius(10f)
-                    .setGravity(Gravity.BOTTOM)
-                    .setText("I`m on the bottom of menu item");
-            builder.show();
-        }
+        MenuItem menuItem = menu.findItem(R.id.action_test2);
+        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
+                .setCornerRadius(10f)
+                .setGravity(Gravity.BOTTOM)
+                .setText("I`m on the bottom of menu item");
+        builder.show();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -52,12 +52,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_test:
-                new Tooltip.Builder(findViewById(R.id.action_test), R.style.Tooltip)
-                        .setCancelable(true)
-                        .setDismissOnClick(true)
-                        .setGravity(Gravity.BOTTOM)
-                        .setText("I`m on the bottom of first menu item and showing dynamically on menu item click")
-                        .show();
+                if (mTooltip == null) {
+                    mTooltip = new Tooltip.Builder(findViewById(R.id.action_test), R.style.Tooltip)
+                            .setDismissOnClick(true)
+                            .setGravity(Gravity.BOTTOM)
+                            .setText("I`m on the bottom of first menu item and showing dynamically on menu item click")
+                            .show();
+                } else {
+                    if (mTooltip.isShowing()) {
+                        mTooltip.dismiss();
+                    } else {
+                        mTooltip.show();
+                    }
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -390,7 +390,7 @@ public final class Tooltip {
         private float mLineSpacingMultiplier = 1f;
 
         private Drawable mArrowDrawable;
-        private String mText;
+        private CharSequence mText;
         private ColorStateList mTextColor;
         private Typeface mTypeface = Typeface.DEFAULT;
 
@@ -636,7 +636,7 @@ public final class Tooltip {
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setText(String text) {
+        public Builder setText(CharSequence text) {
             mText = text;
             return this;
         }

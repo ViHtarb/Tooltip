@@ -146,7 +146,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.8.2-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:0.1.9.1-SNAPSHOT'
 }
 ```
 ### Maven
@@ -154,19 +154,12 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.8.2-SNAPSHOT</version>
+    <version>0.1.9.1-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
-### 0.1.8.2-SNAPSHOT
-- Min SDK changed from 11 to 14
-- Implemented `OnClickListener` and `OnLongClickListener` listeners
-- Implemented `setOnClickListener` and `setOnLongClickListener` methods in `Builder` and `Tooltip`
-- Implemented `setOnDismissListener` in `Tooltip`
-- Implemented customizing arrow drawable by method `setArrow(Drawable)` and styleable attribute `arrowDrawable`
-- Reimplemented `TooltipActionView` class
-- Removed `Context context` argument in `Builder` constructors with second argument `MenuItem anchorMenuItem`
-- Fixed `Activity has leaked window`
+### 0.1.9.1-SNAPSHOT
+- [#13](https://github.com/ViHtarb/Tooltip/pull/13) Implemented supporting `CharSequence` for text instead of `String` (@gkravas)
 
 ## Future Work
 - Animations

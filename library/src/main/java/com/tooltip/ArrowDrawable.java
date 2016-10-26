@@ -36,7 +36,7 @@ import android.support.annotation.ColorInt;
 import android.view.Gravity;
 
 /**
- * Implementation arrow drawable for tooltip
+ * Implementation arrow drawable for {@link Tooltip}
  */
 final class ArrowDrawable extends ColorDrawable {
 

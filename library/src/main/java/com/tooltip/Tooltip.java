@@ -187,16 +187,16 @@ public final class Tooltip {
     }
 
     /**
-     * <p>Indicate whether this Tooltip is showing on screen.</p>
+     * Indicate whether this {@link Tooltip} is showing on screen
      *
-     * @return true if the Tooltip is showing, false otherwise
+     * @return true if {@link Tooltip} is showing, false otherwise
      */
     public boolean isShowing() {
         return mPopupWindow.isShowing();
     }
 
     /**
-     * Display the Tooltip anchored to the custom gravity of the anchor view.
+     * Display the {@link Tooltip} anchored to the custom gravity of the anchor view
      *
      * @see #dismiss()
      */
@@ -215,9 +215,9 @@ public final class Tooltip {
     }
 
     /**
-     * Disposes of the Tooltip. This method can be invoked only after
-     * {@link #show()} has been executed. Failing
-     * that, calling this method will have no effect.
+     * Disposes of the {@link Tooltip}. This method can be invoked only after
+     * {@link #show()} has been executed. Failing that, calling this method
+     * will have no effect
      *
      * @see #show()
      */
@@ -226,7 +226,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets listener to be called when the Tooltip is clicked.
+     * Sets listener to be called when the {@link Tooltip} is clicked.
      *
      * @param listener The listener.
      */
@@ -235,7 +235,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets listener to be called when the Tooltip is clicked and held.
+     * Sets listener to be called when the {@link Tooltip} is clicked and held.
      *
      * @param listener The listener.
      */
@@ -244,7 +244,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets listener to be called when Tooltip is dismissed.
+     * Sets listener to be called when {@link Tooltip} is dismissed.
      *
      * @param listener The listener.
      */
@@ -459,9 +459,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets whether Tooltip is cancelable or not. Default is {@code false}.
+         * Sets whether {@link Tooltip} is cancelable or not. Default is {@code false}
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCancelable(boolean cancelable) {
             isCancelable = cancelable;
@@ -469,9 +469,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets whether Tooltip is dismissing on click or not. Default is {@code false}.
+         * Sets whether {@link Tooltip} is dismissing on click or not. Default is {@code false}
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setDismissOnClick(boolean isDismissOnClick) {
             this.isDismissOnClick = isDismissOnClick;
@@ -479,9 +479,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip background color.
+         * Sets {@link Tooltip} background color
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setBackgroundColor(@ColorInt int color) {
             mBackgroundColor = color;
@@ -489,18 +489,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip background drawable corner radius from resource.
+         * Sets {@link Tooltip} background drawable corner radius from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCornerRadius(@DimenRes int resId) {
             return setCornerRadius(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip background drawable corner radius.
+         * Sets {@link Tooltip} background drawable corner radius
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCornerRadius(float radius) {
             mCornerRadius = radius;
@@ -508,18 +508,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow height from resource.
+         * Sets {@link Tooltip} arrow height from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowHeight(@DimenRes int resId) {
             return setArrowHeight(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip arrow height.
+         * Sets {@link Tooltip} arrow height
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowHeight(float height) {
             mArrowHeight = height;
@@ -527,18 +527,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow width from resource.
+         * Sets {@link Tooltip} arrow width from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowWidth(@DimenRes int resId) {
             return setArrowWidth(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip arrow width.
+         * Sets {@link Tooltip} arrow width
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowWidth(float width) {
             mArrowWidth = width;
@@ -546,18 +546,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow drawable from resources.
+         * Sets {@link Tooltip} arrow drawable from resources
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrow(@DrawableRes int resId) {
             return setArrow(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
         }
 
         /**
-         * Sets Tooltip arrow drawable.
+         * Sets {@link Tooltip} arrow drawable
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrow(Drawable arrowDrawable) {
             mArrowDrawable = arrowDrawable;
@@ -565,18 +565,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip margin from resource.
+         * Sets {@link Tooltip} margin from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setMargin(@DimenRes int resId) {
             return setMargin(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip margin.
+         * Sets {@link Tooltip} margin
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setMargin(float margin) {
             mMargin = margin;
@@ -584,9 +584,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text appearance from the specified style resource.
+         * Sets {@link Tooltip} text appearance from the specified style resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextAppearance(@StyleRes int resId) {
             mTextAppearance = resId;
@@ -594,18 +594,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip padding from resource.
+         * Sets {@link Tooltip} padding from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setPadding(@DimenRes int resId) {
             return setPadding(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip padding.
+         * Sets {@link Tooltip} padding
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setPadding(float padding) {
             mPadding = padding;
@@ -613,9 +613,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip gravity.
+         * Sets {@link Tooltip} gravity
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setGravity(int gravity) {
             mGravity = gravity;
@@ -623,18 +623,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text from resource.
+         * Sets {@link Tooltip} text from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setText(@StringRes int resId) {
             return setText(mContext.getString(resId));
         }
 
         /**
-         * Sets Tooltip text.
+         * Sets {@link Tooltip} text
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setText(CharSequence text) {
             mText = text;
@@ -642,9 +642,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text size from resource.
+         * Sets {@link Tooltip} text size from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(@DimenRes int resId) {
             mTextSize = mContext.getResources().getDimension(resId);
@@ -652,9 +652,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text size.
+         * Sets {@link Tooltip} text size
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(float size) {
             mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, mContext.getResources().getDisplayMetrics());
@@ -662,9 +662,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text color.
+         * Sets {@link Tooltip} text color
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextColor(@ColorInt int color) {
             mTextColor = ColorStateList.valueOf(color);
@@ -672,9 +672,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text style.
+         * Sets {@link Tooltip} text style
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextStyle(int style) {
             mTextStyle = style;
@@ -682,10 +682,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip line spacing. Each line will have its height
-         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         * Sets {@link Tooltip} line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setLineSpacing(@DimenRes int addResId, float mult) {
             mLineSpacingExtra = mContext.getResources().getDimensionPixelSize(addResId);
@@ -694,10 +694,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip line spacing. Each line will have its height
-         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         * Sets {@link Tooltip} line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setLineSpacing(float add, float mult) {
             mLineSpacingExtra = add;
@@ -706,9 +706,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text typeface.
+         * Sets {@link Tooltip} text typeface
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTypeface(Typeface typeface) {
             mTypeface = typeface;
@@ -716,9 +716,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is clicked.
+         * Sets listener to be called when the {@link Tooltip} is clicked
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnClickListener(OnClickListener listener) {
             mOnClickListener = listener;
@@ -726,9 +727,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is clicked and held.
+         * Sets listener to be called when the {@link Tooltip} is clicked and held
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnLongClickListener(OnLongClickListener listener) {
             mOnLongClickListener = listener;
@@ -736,9 +738,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is dismissed.
+         * Sets listener to be called when the {@link Tooltip} is dismissed
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnDismissListener(OnDismissListener listener) {
             mOnDismissListener = listener;
@@ -748,8 +751,8 @@ public final class Tooltip {
         /**
          * Creates a {@link Tooltip} with the arguments supplied to this builder. It does not
          * {@link Tooltip#show()} the tooltip. This allows the user to do any extra processing
-         * before displaying the tooltip. Use {@link #show()} if you don't have any other processing
-         * to do and want this to be created and displayed.
+         * before displaying the <code>Tooltip</code>. Use {@link #show()} if you don't have any other processing
+         * to do and want this to be created and displayed
          */
         public Tooltip build() {
             if (!Gravity.isHorizontal(mGravity) && !Gravity.isVertical(mGravity)) {
@@ -775,7 +778,7 @@ public final class Tooltip {
         }
 
         /**
-         * Builds a {@link Tooltip} with builder attributes and {@link Tooltip#show()}'s the tooltip.
+         * Builds a {@link Tooltip} with builder attributes and {@link Tooltip#show()}'s the <code>Tooltip</code>
          */
         public Tooltip show() {
             Tooltip tooltip = build();

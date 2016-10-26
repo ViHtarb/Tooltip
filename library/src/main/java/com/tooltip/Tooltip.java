@@ -142,7 +142,7 @@ public final class Tooltip {
         mArrowView.setImageDrawable(builder.mArrowDrawable);
 
         LinearLayout.LayoutParams arrowLayoutParams;
-        if (mGravity == Gravity.TOP || mGravity == Gravity.BOTTOM) {
+        if (Gravity.isVertical(mGravity)) {
             arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight, 0);
         } else {
             arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowHeight, (int) builder.mArrowWidth, 0);
@@ -152,7 +152,7 @@ public final class Tooltip {
 
         mContentView = new LinearLayout(builder.mContext);
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+        mContentView.setOrientation(Gravity.isHorizontal(mGravity) ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
 
         padding = (int) Util.dpToPx(5);
 
@@ -244,7 +244,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets the listener to be called when Tooltip is dismissed.
+     * Sets listener to be called when Tooltip is dismissed.
      *
      * @param listener The listener.
      */
@@ -327,7 +327,7 @@ public final class Tooltip {
             RectF anchorRect = Util.calculateRectOnScreen(mAnchorView);
             RectF contentViewRect = Util.calculateRectOnScreen(mContentView);
             float x, y;
-            if (mGravity == Gravity.BOTTOM || mGravity == Gravity.TOP) {
+            if (Gravity.isVertical(mGravity)) {
                 x = mContentView.getPaddingLeft() + Util.dpToPx(2);
                 float centerX = (contentViewRect.width() / 2f) - (mArrowView.getWidth() / 2f);
                 float newX = centerX - (contentViewRect.centerX() - anchorRect.centerX());

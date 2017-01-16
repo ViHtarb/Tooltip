@@ -146,7 +146,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.9.1-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:0.1.9.2-SNAPSHOT'
 }
 ```
 ### Maven
@@ -154,10 +154,13 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.9.1-SNAPSHOT</version>
+    <version>0.1.9.2-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
+### 0.1.9.2-SNAPSHOT
+- [#19](https://github.com/ViHtarb/Tooltip/issues/19) Fixed issue with `Tooltip` moving on scrolling/updating list views
+
 ### 0.1.9.1-SNAPSHOT
 - [#13](https://github.com/ViHtarb/Tooltip/pull/13) Implemented supporting `CharSequence` for text instead of `String` (@gkravas)
 

@@ -137,7 +137,7 @@ dependencies {
 </dependency>
 ```
 ## SNAPSHOTS
-For using `snapshots` of development versions you need include the snapshots repo by adding the snapshot build to a dependent project. To do this add the following to your `build.gradle` file
+For using `snapshots` of development versions you need include the snapshots repo by adding the snapshot build to a dependent project. To do this add the following to your `build.gradle` project(not module) file
 ```java
 maven {
     url "https://oss.sonatype.org/content/repositories/snapshots"

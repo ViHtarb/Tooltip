@@ -139,21 +139,33 @@ public final class Tooltip {
         textViewParams.gravity = Gravity.CENTER;
         textView.setLayoutParams(textViewParams);
 
-        mArrowView = new ImageView(builder.mContext);
-        mArrowView.setImageDrawable(builder.mArrowDrawable);
-
-        LinearLayout.LayoutParams arrowLayoutParams;
-        if (Gravity.isVertical(mGravity)) {
-            arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight, 0);
-        } else {
-            arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowHeight, (int) builder.mArrowWidth, 0);
-        }
-        arrowLayoutParams.gravity = Gravity.CENTER;
-        mArrowView.setLayoutParams(arrowLayoutParams);
-
         mContentView = new LinearLayout(builder.mContext);
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mContentView.setOrientation(Gravity.isHorizontal(mGravity) ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+
+        if (builder.isArrowEnabled) {
+            mArrowView = new ImageView(builder.mContext);
+            mArrowView.setImageDrawable(builder.mArrowDrawable);
+
+            LinearLayout.LayoutParams arrowLayoutParams;
+            if (Gravity.isVertical(mGravity)) {
+                arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight, 0);
+            } else {
+                arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowHeight, (int) builder.mArrowWidth, 0);
+            }
+            arrowLayoutParams.gravity = Gravity.CENTER;
+            mArrowView.setLayoutParams(arrowLayoutParams);
+
+            if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
+                mContentView.addView(textView);
+                mContentView.addView(mArrowView);
+            } else {
+                mContentView.addView(mArrowView);
+                mContentView.addView(textView);
+            }
+        } else {
+            mContentView.addView(textView);
+        }
 
         padding = (int) Util.dpToPx(5);
 
@@ -168,14 +180,6 @@ public final class Tooltip {
             case Gravity.END:
                 mContentView.setPadding(padding, 0, 0, 0);
                 break;
-        }
-
-        if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
-            mContentView.addView(textView);
-            mContentView.addView(mArrowView);
-        } else {
-            mContentView.addView(mArrowView);
-            mContentView.addView(textView);
         }
 
         mContentView.setOnClickListener(mClickListener);
@@ -318,7 +322,10 @@ public final class Tooltip {
                 vto.addOnScrollChangedListener(mOnScrollChangedListener);
             }
 
-            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
+            if (mArrowView != null) {
+                mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
+            }
+
             PointF location = calculateLocation();
             mPopupWindow.setClippingEnabled(true);
             mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
@@ -388,6 +395,7 @@ public final class Tooltip {
     public static final class Builder {
         private boolean isDismissOnClick;
         private boolean isCancelable;
+        private boolean isArrowEnabled;
 
         private int mGravity;
         private int mBackgroundColor;
@@ -449,6 +457,7 @@ public final class Tooltip {
 
             isCancelable = a.getBoolean(R.styleable.Tooltip_cancelable, false);
             isDismissOnClick = a.getBoolean(R.styleable.Tooltip_dismissOnClick, false);
+            isArrowEnabled = a.getBoolean(R.styleable.Tooltip_arrowEnabled, true);
             mBackgroundColor = a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY);
             mCornerRadius = a.getDimension(R.styleable.Tooltip_cornerRadius, -1);
             mArrowHeight = a.getDimension(R.styleable.Tooltip_arrowHeight, -1);
@@ -489,6 +498,16 @@ public final class Tooltip {
          */
         public Builder setDismissOnClick(boolean isDismissOnClick) {
             this.isDismissOnClick = isDismissOnClick;
+            return this;
+        }
+
+        /**
+         * Sets whether {@link Tooltip} is arrow enabled. Default is {@code true}
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setArrowEnabled(boolean isArrowEnabled) {
+            this.isArrowEnabled = isArrowEnabled;
             return this;
         }
 
@@ -779,7 +798,7 @@ public final class Tooltip {
             if (mArrowWidth == -1) {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
             }
-            if (mArrowDrawable == null) {
+            if (mArrowDrawable == null && isArrowEnabled) {
                 mArrowDrawable = new ArrowDrawable(mBackgroundColor, mGravity);
             }
             if (mMargin == -1) {

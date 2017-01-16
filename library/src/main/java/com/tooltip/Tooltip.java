@@ -97,6 +97,7 @@ public final class Tooltip {
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                mAnchorView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
                 mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
                 if (mOnDismissListener != null) {
@@ -312,6 +313,11 @@ public final class Tooltip {
         public void onGlobalLayout() {
             Util.removeOnGlobalLayoutListener(mContentView, this);
 
+            final ViewTreeObserver vto = mAnchorView.getViewTreeObserver();
+            if (vto != null) {
+                vto.addOnScrollChangedListener(mOnScrollChangedListener);
+            }
+
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
             PointF location = calculateLocation();
             mPopupWindow.setClippingEnabled(true);
@@ -356,6 +362,14 @@ public final class Tooltip {
             }
             mArrowView.setX(x);
             mArrowView.setY(y);
+        }
+    };
+
+    private final ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+            PointF location = calculateLocation();
+            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
         }
     };
 

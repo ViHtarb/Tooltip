@@ -28,6 +28,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:' + rootProject.ext.junitVersion
+    compile 'com.android.support:design:' + rootProject.ext.supportLibraryVersion
     compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
     compile project(':library')
 }

@@ -169,10 +169,7 @@ dependencies {
 - Elevation(Shadow)
 
 ## Known issues
-- [#17](https://github.com/ViHtarb/Tooltip/issues/19) `Cannot add library into my project because of java.util.zip.ZipException` on build project with library. As temporary fix use it:
-```java 
-compile ('com.github.vihtarb:tooltip:0.1.9') { exclude module: "support-compat" }
-```
+- [#17](https://github.com/ViHtarb/Tooltip/issues/17) As temporary fix use it: `compile ('com.github.vihtarb:tooltip:0.1.9') { exclude module: "support-compat" }`
 
 ## License([MIT License](http://opensource.org/licenses/MIT))
 <pre>

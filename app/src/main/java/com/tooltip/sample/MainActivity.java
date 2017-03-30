@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setIconPadding(16F)
+                        .setIconPosition(Gravity.RIGHT)
                         .setGravity(Gravity.BOTTOM)
                         .setText(R.string.tooltip_hello_world);
                 builder.show();
@@ -70,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
                     mTooltip = new Tooltip.Builder(findViewById(R.id.action_test), R.style.Tooltip)
                             .setDismissOnClick(true)
                             .setGravity(Gravity.BOTTOM)
-                            .setText("I`m on the bottom of first menu item and showing dynamically on menu item click")
+                            .setText("I`m on the bottom of first menu item and showing " +
+                                    "dynamically on menu item click")
                             .show();
                 } else {
                     if (mTooltip.isShowing()) {

@@ -42,6 +42,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.TextViewCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -58,6 +59,7 @@ import android.widget.TextView;
  * Tooltip
  */
 public final class Tooltip {
+    private static final String TAG = "Tooltip";
 
     private final boolean isCancelable;
     private final boolean isDismissOnClick;
@@ -213,7 +215,11 @@ public final class Tooltip {
             mAnchorView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPopupWindow.showAsDropDown(mAnchorView);
+                    if (mAnchorView.isShown()) {
+                        mPopupWindow.showAsDropDown(mAnchorView);
+                    } else {
+                        Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
+                    }
                 }
             });
         }

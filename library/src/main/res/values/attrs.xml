@@ -8,6 +8,9 @@
         <attr name="arrowHeight" format="dimension"/>
         <attr name="arrowWidth" format="dimension"/>
         <attr name="arrowDrawable" format="reference"/>
+        <attr name="iconPosition" format="integer"/>
+        <attr name="iconPadding" format="dimension"/>
+        <attr name="iconDrawable" format="reference"/>
         <attr name="margin" format="dimension"/>
         <attr name="textAppearance" format="reference"/>
         <attr name="android:padding"/>

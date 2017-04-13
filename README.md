@@ -159,7 +159,7 @@ dependencies {
 ```
 ## Changelog-SNAPSHOTS
 ### 0.1.9.3-SNAPSHOT
-- Implemented arrow disabling: new attribute for styles `arrowEnabled(boolean)` and new method `Builder.setArrowEnabled(boolean)` 
+- Implemented arrow disabling by `Builder` method `setArrowEnabled(boolean)` and styleable attribute `arrowEnabled`
 - [#26](https://github.com/ViHtarb/Tooltip/issues/26) Fixed issue with `Exception android.view.WindowManager$BadTokenException:...`
 
 ### 0.1.9.2-SNAPSHOT

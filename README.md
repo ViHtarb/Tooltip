@@ -3,7 +3,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/ViHtarb/tooltip/src/ccb911a31d9749e3e607cdfd93c6485dcdde056d/LICENSE?at=master&fileviewer=file-view-default)
 [![Build Status](https://travis-ci.org/ViHtarb/Tooltip.svg?branch=master)](https://travis-ci.org/ViHtarb/Tooltip)
 [![Maven Central](https://img.shields.io/badge/Maven%20Central-0.1.9-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android Tooltips-brightgreen.svg?style=true)](https://android-arsenal.com/details/1/4253)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android%20Tooltips-brightgreen.svg?style=true)](https://android-arsenal.com/details/1/4253)
 
 Simple to use customizable Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html). This Tooltips does not require any custom layout. It works as [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
 
@@ -158,6 +158,10 @@ dependencies {
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
+### 0.1.9.3-SNAPSHOT
+- Implemented arrow disabling by `Builder` method `setArrowEnabled(boolean)` and styleable attribute `arrowEnabled`
+- [#26](https://github.com/ViHtarb/Tooltip/issues/26) Fixed issue with `Exception android.view.WindowManager$BadTokenException:...`
+
 ### 0.1.9.2-SNAPSHOT
 - [#19](https://github.com/ViHtarb/Tooltip/issues/19) Fixed issue with `Tooltip` moving on scrolling/updating list views
 

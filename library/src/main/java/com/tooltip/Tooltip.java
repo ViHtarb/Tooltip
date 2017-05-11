@@ -33,7 +33,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
@@ -41,6 +40,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewTreeObserverCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.util.TypedValue;
@@ -130,12 +131,7 @@ public final class Tooltip {
             textView.setTextColor(builder.mTextColor);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            textView.setBackground(drawable);
-        } else {
-            //noinspection deprecation
-            textView.setBackgroundDrawable(drawable);
-        }
+        ViewCompat.setBackground(textView, drawable);
 
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
         textViewParams.gravity = Gravity.CENTER;
@@ -321,7 +317,7 @@ public final class Tooltip {
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            Util.removeOnGlobalLayoutListener(mContentView, this);
+            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
 
             final ViewTreeObserver vto = mAnchorView.getViewTreeObserver();
             if (vto != null) {
@@ -341,7 +337,7 @@ public final class Tooltip {
     private final ViewTreeObserver.OnGlobalLayoutListener mArrowLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            Util.removeOnGlobalLayoutListener(mContentView, this);
+            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
 
             RectF anchorRect = Util.calculateRectOnScreen(mAnchorView);
             RectF contentViewRect = Util.calculateRectOnScreen(mContentView);
@@ -437,8 +433,7 @@ public final class Tooltip {
             View anchorView = anchorMenuItem.getActionView();
             if (anchorView != null) {
                 if (anchorView instanceof TooltipActionView) {
-                    TooltipActionView tooltipActionView = (TooltipActionView) anchorView;
-                    tooltipActionView.setMenuItem(anchorMenuItem);
+                    ((TooltipActionView) anchorView).setMenuItem(anchorMenuItem);
                 }
 
                 init(anchorView.getContext(), anchorView, resId);

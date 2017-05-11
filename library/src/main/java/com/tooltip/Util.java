@@ -26,10 +26,8 @@ package com.tooltip;
 
 import android.content.res.Resources;
 import android.graphics.RectF;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 /**
  * Tooltip utils
@@ -68,15 +66,6 @@ final class Util {
                 return Gravity.TOP;
             default:
                 return gravity;
-        }
-    }
-
-    public static void removeOnGlobalLayoutListener(View view, ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            view.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-        } else {
-            //noinspection deprecation
-            view.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
         }
     }
 }

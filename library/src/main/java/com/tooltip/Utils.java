@@ -26,7 +26,6 @@ package com.tooltip;
 
 import android.content.res.Resources;
 import android.graphics.RectF;
-import android.view.Gravity;
 import android.view.View;
 
 /**
@@ -52,20 +51,5 @@ final class Utils {
 
     public static float dpToPx(float dp) {
         return dp * Resources.getSystem().getDisplayMetrics().density;
-    }
-
-    public static int reverseGravity(int gravity) {
-        switch (gravity) {
-            case Gravity.LEFT:
-                return Gravity.RIGHT;
-            case Gravity.TOP:
-                return Gravity.BOTTOM;
-            case Gravity.RIGHT:
-                return Gravity.LEFT;
-            case Gravity.BOTTOM:
-                return Gravity.TOP;
-            default:
-                return gravity;
-        }
     }
 }

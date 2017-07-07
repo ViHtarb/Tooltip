@@ -42,12 +42,12 @@ final class ArrowDrawable extends ColorDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final int mBackgroundColor;
-    private final int mGravity;
+    private int mGravity;
 
     private Path mPath;
 
     ArrowDrawable(@ColorInt int foregroundColor, int gravity) {
-        mGravity = Util.gravityToArrowDirection(gravity);
+        mGravity = Utils.reverseGravity(gravity);
         mBackgroundColor = Color.TRANSPARENT;
 
         mPaint.setColor(foregroundColor);
@@ -63,7 +63,7 @@ final class ArrowDrawable extends ColorDrawable {
         mPath = new Path();
 
         switch (mGravity) {
-            case Gravity.START:
+            case Gravity.LEFT:
                 mPath.moveTo(bounds.width(), bounds.height());
                 mPath.lineTo(0, bounds.height() / 2);
                 mPath.lineTo(bounds.width(), 0);
@@ -75,7 +75,7 @@ final class ArrowDrawable extends ColorDrawable {
                 mPath.lineTo(bounds.width(), bounds.height());
                 mPath.lineTo(0, bounds.height());
                 break;
-            case Gravity.END:
+            case Gravity.RIGHT:
                 mPath.moveTo(0, 0);
                 mPath.lineTo(bounds.width(), bounds.height() / 2);
                 mPath.lineTo(0, bounds.height());

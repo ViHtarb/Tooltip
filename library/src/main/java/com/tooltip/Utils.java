@@ -32,7 +32,7 @@ import android.view.View;
 /**
  * Tooltip utils
  */
-final class Util {
+final class Utils {
 
     public static RectF calculateRectOnScreen(View view) {
         int[] location = new int[2];
@@ -54,14 +54,14 @@ final class Util {
         return dp * Resources.getSystem().getDisplayMetrics().density;
     }
 
-    public static int gravityToArrowDirection(int gravity) {
+    public static int reverseGravity(int gravity) {
         switch (gravity) {
-            case Gravity.START:
-                return Gravity.END;
+            case Gravity.LEFT:
+                return Gravity.RIGHT;
             case Gravity.TOP:
                 return Gravity.BOTTOM;
-            case Gravity.END:
-                return Gravity.START;
+            case Gravity.RIGHT:
+                return Gravity.LEFT;
             case Gravity.BOTTOM:
                 return Gravity.TOP;
             default:

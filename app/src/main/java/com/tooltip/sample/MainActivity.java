@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
-                        .setGravity(Gravity.BOTTOM)
-                        .setText(R.string.tooltip_hello_world);
+                        .setGravity(Gravity.START)
+                        .setText("TESTadsa");
                 builder.show();
             }
         });

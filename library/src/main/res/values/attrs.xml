@@ -12,11 +12,16 @@
         <attr name="margin" format="dimension"/>
         <attr name="textAppearance" format="reference"/>
         <attr name="android:padding"/>
+        <attr name="android:gravity"/>
+        <attr name="android:drawableBottom"/>
+        <attr name="android:drawableEnd"/>
+        <attr name="android:drawableStart"/>
+        <attr name="android:drawableTop"/>
+        <attr name="android:drawablePadding"/>
         <attr name="android:text"/>
         <attr name="android:textSize"/>
         <attr name="android:textColor"/>
         <attr name="android:textStyle"/>
-        <attr name="android:gravity"/>
         <attr name="android:fontFamily"/>
         <attr name="android:typeface"/>
         <attr name="android:lineSpacingExtra"/>

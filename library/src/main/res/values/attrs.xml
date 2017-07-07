@@ -18,6 +18,7 @@
         <attr name="android:drawableStart"/>
         <attr name="android:drawableTop"/>
         <attr name="android:drawablePadding"/>
+        <attr name="android:maxWidth"/>
         <attr name="android:text"/>
         <attr name="android:textSize"/>
         <attr name="android:textColor"/>

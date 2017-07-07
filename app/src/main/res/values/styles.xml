@@ -24,5 +24,7 @@
         <item name="android:lineSpacingExtra">5dp</item>
         <item name="backgroundColor">@color/colorPrimary</item>
         <item name="cornerRadius">10dp</item>
+        <item name="arrowWidth">48dp</item>
+        <item name="arrowHeight">48dp</item>
     </style>
 </resources>

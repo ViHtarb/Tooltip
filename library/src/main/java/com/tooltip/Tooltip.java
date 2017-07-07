@@ -122,6 +122,10 @@ public final class Tooltip {
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
         textView.setCompoundDrawablePadding(builder.mDrawablePadding);
 
+        if (builder.mMaxWidth >= 0) {
+            textView.setMaxWidth(builder.mMaxWidth);
+        }
+
         if (builder.mTextSize >= 0) {
             textView.setTextSize(TypedValue.TYPE_NULL, builder.mTextSize);
         }
@@ -406,6 +410,7 @@ public final class Tooltip {
         private int mTextStyle;
         private int mPadding;
         private int mDrawablePadding;
+        private int mMaxWidth;
 
         private float mCornerRadius;
         private float mArrowHeight;
@@ -480,6 +485,7 @@ public final class Tooltip {
             mDrawableStart = a.getDrawable(R.styleable.Tooltip_android_drawableStart);
             mDrawableTop = a.getDrawable(R.styleable.Tooltip_android_drawableTop);
             mDrawablePadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_drawablePadding, 0);
+            mMaxWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_maxWidth, -1);
             mText = a.getString(R.styleable.Tooltip_android_text);
             mTextSize = a.getDimension(R.styleable.Tooltip_android_textSize, -1);
             mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
@@ -672,6 +678,27 @@ public final class Tooltip {
         }
 
         /**
+         * Sets the size of the padding between the drawables and
+         * the {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawablePadding(int padding) {
+            mDrawablePadding = padding;
+            return this;
+        }
+
+        /***
+         * Sets {@link Tooltip} max width
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setMaxWidth(int maxWidth) {
+            mMaxWidth = maxWidth;
+            return this;
+        }
+
+        /**
          * Sets drawable from resource to the bottom of {@link Tooltip} text.
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
@@ -744,17 +771,6 @@ public final class Tooltip {
          */
         public Builder setDrawableTop(Drawable drawable) {
             mDrawableTop = drawable;
-            return this;
-        }
-
-        /**
-         * Sets the size of the padding between the drawables and
-         * the {@link Tooltip} text.
-         *
-         * @return This {@link Builder} object to allow for chaining of calls to set methods
-         */
-        public Builder setDrawablePadding(int padding) {
-            mDrawablePadding = padding;
             return this;
         }
 

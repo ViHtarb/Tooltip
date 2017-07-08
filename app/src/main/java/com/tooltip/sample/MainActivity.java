@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
-                        .setGravity(Gravity.TOP)
+                        .setGravity(Gravity.BOTTOM)
                         .setText(R.string.tooltip_hello_world);
                 builder.show();
             }

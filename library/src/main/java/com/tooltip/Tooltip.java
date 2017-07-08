@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
@@ -47,7 +48,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -62,7 +62,6 @@ import android.widget.TextView;
 public final class Tooltip {
     private static final String TAG = "Tooltip";
 
-    private final boolean isCancelable;
     private final boolean isDismissOnClick;
 
     private final int mGravity;
@@ -80,7 +79,6 @@ public final class Tooltip {
     private ImageView mArrowView;
 
     private Tooltip(Builder builder) {
-        isCancelable = builder.isCancelable;
         isDismissOnClick = builder.isDismissOnClick;
 
         mGravity = Gravity.getAbsoluteGravity(builder.mGravity, ViewCompat.getLayoutDirection(builder.mAnchorView));
@@ -91,11 +89,11 @@ public final class Tooltip {
         mOnDismissListener = builder.mOnDismissListener;
 
         mPopupWindow = new PopupWindow(builder.mContext);
-        mPopupWindow.setBackgroundDrawable(null);
         mPopupWindow.setClippingEnabled(false);
         mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -189,9 +187,6 @@ public final class Tooltip {
         mContentView.setOnClickListener(mClickListener);
         mContentView.setOnLongClickListener(mLongClickListener);
 
-        if (builder.isCancelable || builder.isDismissOnClick) {
-            mContentView.setOnTouchListener(mTouchListener);
-        }
         return mContentView;
     }
 
@@ -298,6 +293,9 @@ public final class Tooltip {
             if (mOnClickListener != null) {
                 mOnClickListener.onClick(Tooltip.this);
             }
+            if (isDismissOnClick) {
+                dismiss();
+            }
         }
     };
 
@@ -305,17 +303,6 @@ public final class Tooltip {
         @Override
         public boolean onLongClick(View v) {
             return mOnLongClickListener != null && mOnLongClickListener.onLongClick(Tooltip.this);
-        }
-    };
-
-    private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if ((isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) || (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP)) {
-                dismiss();
-                return true;
-            }
-            return false;
         }
     };
 

@@ -13,12 +13,12 @@
         <attr name="textAppearance" format="reference"/>
         <attr name="android:padding"/>
         <attr name="android:gravity"/>
+        <attr name="android:maxWidth"/>
+        <attr name="android:drawablePadding"/>
         <attr name="android:drawableBottom"/>
         <attr name="android:drawableEnd"/>
         <attr name="android:drawableStart"/>
         <attr name="android:drawableTop"/>
-        <attr name="android:drawablePadding"/>
-        <attr name="android:maxWidth"/>
         <attr name="android:text"/>
         <attr name="android:textSize"/>
         <attr name="android:textColor"/>

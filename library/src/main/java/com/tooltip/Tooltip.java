@@ -396,8 +396,8 @@ public final class Tooltip {
         private int mTextAppearance;
         private int mTextStyle;
         private int mPadding;
-        private int mDrawablePadding;
         private int mMaxWidth;
+        private int mDrawablePadding;
 
         private float mCornerRadius;
         private float mArrowHeight;
@@ -464,15 +464,15 @@ public final class Tooltip {
             mArrowWidth = a.getDimension(R.styleable.Tooltip_arrowWidth, -1);
             mArrowDrawable = a.getDrawable(R.styleable.Tooltip_arrowDrawable);
             mMargin = a.getDimension(R.styleable.Tooltip_margin, -1);
-            mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
             mPadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_padding, -1);
             mGravity = a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM);
+            mMaxWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_maxWidth, -1);
+            mDrawablePadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_drawablePadding, 0);
             mDrawableBottom = a.getDrawable(R.styleable.Tooltip_android_drawableBottom);
             mDrawableEnd = a.getDrawable(R.styleable.Tooltip_android_drawableEnd);
             mDrawableStart = a.getDrawable(R.styleable.Tooltip_android_drawableStart);
             mDrawableTop = a.getDrawable(R.styleable.Tooltip_android_drawableTop);
-            mDrawablePadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_drawablePadding, 0);
-            mMaxWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_maxWidth, -1);
+            mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
             mText = a.getString(R.styleable.Tooltip_android_text);
             mTextSize = a.getDimension(R.styleable.Tooltip_android_textSize, -1);
             mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
@@ -623,16 +623,6 @@ public final class Tooltip {
         }
 
         /**
-         * Sets {@link Tooltip} text appearance from the specified style resource
-         *
-         * @return This {@link Builder} object to allow for chaining of calls to set methods
-         */
-        public Builder setTextAppearance(@StyleRes int resId) {
-            mTextAppearance = resId;
-            return this;
-        }
-
-        /**
          * Sets {@link Tooltip} padding
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
@@ -664,6 +654,16 @@ public final class Tooltip {
             return this;
         }
 
+        /***
+         * Sets {@link Tooltip} max width
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setMaxWidth(int maxWidth) {
+            mMaxWidth = maxWidth;
+            return this;
+        }
+
         /**
          * Sets the size of the padding between the drawables and
          * the {@link Tooltip} text.
@@ -672,16 +672,6 @@ public final class Tooltip {
          */
         public Builder setDrawablePadding(int padding) {
             mDrawablePadding = padding;
-            return this;
-        }
-
-        /***
-         * Sets {@link Tooltip} max width
-         *
-         * @return This {@link Builder} object to allow for chaining of calls to set methods
-         */
-        public Builder setMaxWidth(int maxWidth) {
-            mMaxWidth = maxWidth;
             return this;
         }
 
@@ -758,6 +748,16 @@ public final class Tooltip {
          */
         public Builder setDrawableTop(Drawable drawable) {
             mDrawableTop = drawable;
+            return this;
+        }
+
+        /**
+         * Sets {@link Tooltip} text appearance from the specified style resource
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setTextAppearance(@StyleRes int resId) {
+            mTextAppearance = resId;
             return this;
         }
 

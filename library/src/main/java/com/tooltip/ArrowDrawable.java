@@ -70,26 +70,41 @@ final class ArrowDrawable extends ColorDrawable {
 
         switch (mGravity) {
             case Gravity.LEFT:
-                x2 = x1 * 5f;
-                y2 = y1 * 2f;
+                y1 *= 2.5f;
+
+                x2 = x1 * 10f;
+                y2 = y1 * 3f;
+
+                x1 /= 4;
+                y1 *= 2;
 
                 mPath.moveTo(0, 0);
                 mPath.cubicTo(0, 0, x1, y1, x2, y2);
-                mPath.cubicTo(x2, y2, (bounds.width() + x2) * 1.5f, bounds.height() / 2, x2, bounds.height() - y2);
+                mPath.cubicTo(x2, y2, bounds.width() * 1.5f, bounds.height() / 2, x2, bounds.height() - y2);
                 mPath.cubicTo(x2, bounds.height() - y2, x1, bounds.height() - y1, 0, bounds.height());
                 break;
             case Gravity.TOP:
-                x2 = x1 * 2f;
-                y2 = y1 * 5f;
+                x1 *= 2.5f;
+
+                x2 = x1 * 3f;
+                y2 = y1 * 10f;
+
+                x1 *= 2;
+                y1 /= 4;
 
                 mPath.moveTo(0, 0);
                 mPath.cubicTo(0, 0, x1, y1, x2, y2);
-                mPath.cubicTo(x2, y2, bounds.width() / 2, (bounds.height() + y2) * 1.5f, bounds.width() - x2, y2);
+                mPath.cubicTo(x2, y2, bounds.width() / 2, bounds.height() * 1.5f, bounds.width() - x2, y2);
                 mPath.cubicTo(bounds.width() - x2, y2, bounds.width() - x1, y1, bounds.width(), 0);
                 break;
             case Gravity.RIGHT:
-                x2 = x1 * 5f;
-                y2 = y1 * 2f;
+                y1 *= 2.5f;
+
+                x2 = x1 * 10f;
+                y2 = y1 * 3f;
+
+                x1 /= 4;
+                y1 *= 2;
 
                 x1 = bounds.width() - x1;
                 x2 = bounds.width() - x2;
@@ -100,8 +115,13 @@ final class ArrowDrawable extends ColorDrawable {
                 mPath.cubicTo(x2, bounds.height() - y2, x1, bounds.height() - y1, bounds.width(), bounds.height());
                 break;
             case Gravity.BOTTOM:
-                x2 = x1 * 2f;
-                y2 = y1 * 5f;
+                x1 *= 2.5f;
+
+                x2 = x1 * 3f;
+                y2 = y1 * 10f;
+
+                x1 *= 2;
+                y1 /= 4;
 
                 y1 = bounds.height() - y1;
                 y2 = bounds.height() - y2;

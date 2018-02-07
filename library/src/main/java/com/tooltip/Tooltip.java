@@ -65,6 +65,7 @@ public final class Tooltip {
     private final int mGravity;
 
     private final float mMargin;
+    private final int mOffset;
 
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
@@ -82,6 +83,7 @@ public final class Tooltip {
 
         mGravity = builder.mGravity;
         mMargin = builder.mMargin;
+        mOffset = builder.mOffset;
         mAnchorView = builder.mAnchorView;
         mOnClickListener = builder.mOnClickListener;
         mOnLongClickListener = builder.mOnLongClickListener;
@@ -208,7 +210,7 @@ public final class Tooltip {
             mAnchorView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPopupWindow.showAsDropDown(mAnchorView);
+                    mPopupWindow.showAsDropDown(mAnchorView, 0, mOffset);
                 }
             });
         }
@@ -384,6 +386,7 @@ public final class Tooltip {
         private float mArrowHeight;
         private float mArrowWidth;
         private float mMargin;
+        private int mOffset;
         private float mPadding;
         private float mTextSize;
         private float mLineSpacingExtra;
@@ -441,6 +444,7 @@ public final class Tooltip {
             mArrowWidth = a.getDimension(R.styleable.Tooltip_arrowWidth, -1);
             mArrowDrawable = a.getDrawable(R.styleable.Tooltip_arrowDrawable);
             mMargin = a.getDimension(R.styleable.Tooltip_margin, -1);
+            mOffset = a.getDimensionPixelSize(R.styleable.Tooltip_offset, -1);
             mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
             mPadding = a.getDimension(R.styleable.Tooltip_android_padding, -1);
             mGravity = a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM);
@@ -561,6 +565,16 @@ public final class Tooltip {
          */
         public Builder setArrow(Drawable arrowDrawable) {
             mArrowDrawable = arrowDrawable;
+            return this;
+        }
+
+        /**
+         * Sets offset for Tooltip from the anchor view
+         *
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setTooltipOffset(int offset) {
+            mOffset = offset;
             return this;
         }
 
@@ -770,6 +784,9 @@ public final class Tooltip {
             }
             if (mPadding == -1) {
                 mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);
+            }
+            if (mOffset == -1) {
+                mOffset = mContext.getResources().getDimensionPixelOffset(R.dimen.default_tooltip_offset);
             }
             return new Tooltip(this);
         }

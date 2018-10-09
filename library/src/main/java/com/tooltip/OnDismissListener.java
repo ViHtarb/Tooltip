@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2016. Viнt@rь
+ * Copyright (c) 2018. Viнt@rь
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,8 @@ package com.tooltip;
 import android.widget.PopupWindow;
 
 /**
- * Listener that is called when this Tooltip is dismissed.
+ * @deprecated Use {@link com.tooltip.core.OnDismissListener} instead.
  */
+@Deprecated
 public interface OnDismissListener extends PopupWindow.OnDismissListener {
 }

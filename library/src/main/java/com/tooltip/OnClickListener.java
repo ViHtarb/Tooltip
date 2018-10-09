@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2016. Viнt@rь
+ * Copyright (c) 2018. Viнt@rь
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +24,9 @@
 
 package com.tooltip;
 
-import android.support.annotation.NonNull;
-
 /**
- * Interface definition for a callback to be invoked when a Tooltip is clicked.
+ * @deprecated Use {@link com.tooltip.core.OnClickListener} instead.
  */
-public interface OnClickListener {
-
-    /**
-     * Called when a Tooltip has been clicked.
-     *
-     * @param tooltip The Tooltip that was clicked.
-     */
-    void onClick(@NonNull Tooltip tooltip);
+@Deprecated
+public interface OnClickListener extends com.tooltip.core.OnClickListener {
 }

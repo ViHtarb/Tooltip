@@ -28,6 +28,6 @@ dependencies {
     })
     testImplementation 'junit:junit:' + rootProject.ext.junitVersion
 
-    implementation 'com.android.support:support-compat:' + rootProject.ext.supportLibraryVersion
-    api project(':core')
+    //implementation 'com.android.support:support-compat:' + rootProject.ext.supportLibraryVersion
+    implementation 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
 }

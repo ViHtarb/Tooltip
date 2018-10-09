@@ -22,12 +22,21 @@
  * SOFTWARE.
  */
 
-package com.tooltip;
+package com.tooltip.core;
+
+import android.support.annotation.NonNull;
 
 /**
- * @deprecated Use {@link com.tooltip.core.OnLongClickListener} instead.
+ * Interface definition for a callback to be invoked when a Tooltip has been clicked and held.
  */
-@Deprecated
-public interface OnLongClickListener extends com.tooltip.core.OnLongClickListener {
+public interface OnLongClickListener {
 
+    /**
+     * Called when a Tooltip has been clicked and held.
+     *
+     * @param tooltip The Tooltip that was clicked and held.
+     *
+     * @return true if the callback consumed the long click, false otherwise.
+     */
+    boolean onLongClick(@NonNull Tooltip tooltip);
 }

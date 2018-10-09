@@ -12,6 +12,6 @@
         android:orderInCategory="101"
         android:icon="@mipmap/ic_launcher"
         android:title="@null"
-        app:actionViewClass="com.tooltip.TooltipActionView"
+        app:actionViewClass="com.tooltip.core.TooltipActionMenuItemView"
         app:showAsAction="ifRoom"/>
 </menu>

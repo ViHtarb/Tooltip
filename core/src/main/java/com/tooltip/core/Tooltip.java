@@ -172,8 +172,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     /**
      * @deprecated Deprecated and will be removed.
      */
-    @ColorInt
     @Deprecated
+    @ColorInt
     protected int getArrowColor(@NonNull T builder) {
         return Color.GRAY;
     }
@@ -374,7 +374,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         }
     };
 
-    public static abstract class Builder {
+    public static abstract class Builder<B extends Builder> {
         private boolean isDismissOnClick;
         private boolean isCancelable;
         private boolean isArrowEnabled;
@@ -438,9 +438,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setCancelable(boolean cancelable) {
+        @SuppressWarnings("unchecked")
+        public B setCancelable(boolean cancelable) {
             isCancelable = cancelable;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -448,9 +449,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setDismissOnClick(boolean isDismissOnClick) {
+        @SuppressWarnings("unchecked")
+        public B setDismissOnClick(boolean isDismissOnClick) {
             this.isDismissOnClick = isDismissOnClick;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -458,9 +460,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrowEnabled(boolean isArrowEnabled) {
+        @SuppressWarnings("unchecked")
+        public B setArrowEnabled(boolean isArrowEnabled) {
             this.isArrowEnabled = isArrowEnabled;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -468,7 +471,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrowHeight(@DimenRes int resId) {
+        @SuppressWarnings("unchecked")
+        public B setArrowHeight(@DimenRes int resId) {
             return setArrowHeight(mContext.getResources().getDimension(resId));
         }
 
@@ -477,9 +481,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrowHeight(float height) {
+        @SuppressWarnings("unchecked")
+        public B setArrowHeight(float height) {
             mArrowHeight = height;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -487,7 +492,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrowWidth(@DimenRes int resId) {
+        @SuppressWarnings("unchecked")
+        public B setArrowWidth(@DimenRes int resId) {
             return setArrowWidth(mContext.getResources().getDimension(resId));
         }
 
@@ -496,9 +502,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrowWidth(float width) {
+        @SuppressWarnings("unchecked")
+        public B setArrowWidth(float width) {
             mArrowWidth = width;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -506,7 +513,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrow(@DrawableRes int resId) {
+        @SuppressWarnings("unchecked")
+        public B setArrow(@DrawableRes int resId) {
             return setArrow(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
         }
 
@@ -515,9 +523,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setArrow(Drawable arrowDrawable) {
+        @SuppressWarnings("unchecked")
+        public B setArrow(Drawable arrowDrawable) {
             mArrowDrawable = arrowDrawable;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -525,7 +534,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setMargin(@DimenRes int resId) {
+        @SuppressWarnings("unchecked")
+        public B setMargin(@DimenRes int resId) {
             return setMargin(mContext.getResources().getDimension(resId));
         }
 
@@ -534,9 +544,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setMargin(float margin) {
+        @SuppressWarnings("unchecked")
+        public B setMargin(float margin) {
             mMargin = margin;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -544,9 +555,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setGravity(int gravity) {
+        @SuppressWarnings("unchecked")
+        public B setGravity(int gravity) {
             mGravity = gravity;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -555,9 +567,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          * @param listener The listener
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setOnClickListener(OnClickListener listener) {
+        @SuppressWarnings("unchecked")
+        public B setOnClickListener(OnClickListener listener) {
             mOnClickListener = listener;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -566,9 +579,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          * @param listener The listener
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setOnLongClickListener(OnLongClickListener listener) {
+        @SuppressWarnings("unchecked")
+        public B setOnLongClickListener(OnLongClickListener listener) {
             mOnLongClickListener = listener;
-            return this;
+            return (B) this;
         }
 
         /**
@@ -577,9 +591,10 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
          * @param listener The listener
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
-        public Builder setOnDismissListener(OnDismissListener listener) {
+        @SuppressWarnings("unchecked")
+        public B setOnDismissListener(OnDismissListener listener) {
             mOnDismissListener = listener;
-            return this;
+            return (B) this;
         }
 
         @NonNull
@@ -591,9 +606,9 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         @SuppressWarnings("unchecked")
         @NonNull
         public final <T extends Tooltip> T show() {
-            Tooltip tooltip = build();
+            T tooltip = (T) build();
             tooltip.show();
-            return (T) tooltip;
+            return tooltip;
         }
     }
 }

@@ -49,12 +49,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Simple {@code Tooltip} text implementation
+ * Simple text {@code Tooltip} implementation
  */
-public class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
+public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
     private static final String TAG = "Tooltip";
 
-    protected Tooltip(Builder builder) {
+    private Tooltip(Builder builder) {
         super(builder);
     }
 
@@ -102,7 +102,7 @@ public class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
         return builder.mBackgroundColor;
     }
 
-    public static class Builder extends com.tooltip.core.Tooltip.Builder {
+    public final static class Builder extends com.tooltip.core.Tooltip.Builder<Builder> {
         private int mBackgroundColor;
         private int mTextAppearance;
         private int mTextStyle;
@@ -147,7 +147,7 @@ public class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
             TypedArray a = context.obtainStyledAttributes(resId, R.styleable.Tooltip);
 
             mBackgroundColor = a.getColor(com.tooltip.R.styleable.Tooltip_backgroundColor, Color.GRAY);
-            mCornerRadius = a.getDimension(com.tooltip.R.styleable.Tooltip_cornerRadius, -1);
+            mCornerRadius = a.getDimensionPixelSize(com.tooltip.R.styleable.Tooltip_cornerRadius, -1);
             mPadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_padding, mContext.getResources().getDimensionPixelSize(R.dimen.default_tooltip_padding));
             mMaxWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_maxWidth, -1);
             mDrawablePadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_drawablePadding, 0);
@@ -168,54 +168,6 @@ public class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
             mTypeface = getTypefaceFromAttr(fontFamily, typefaceIndex, mTextStyle);
 
             a.recycle();
-        }
-
-        @Override
-        public Builder setCancelable(boolean cancelable) {
-            super.setCancelable(cancelable);
-            return this;
-        }
-
-        @Override
-        public Builder setDismissOnClick(boolean isDismissOnClick) {
-            super.setDismissOnClick(isDismissOnClick);
-            return this;
-        }
-
-        @Override
-        public Builder setArrowEnabled(boolean isArrowEnabled) {
-            super.setArrowEnabled(isArrowEnabled);
-            return this;
-        }
-
-        @Override
-        public Builder setArrowHeight(float height) {
-            super.setArrowHeight(height);
-            return this;
-        }
-
-        @Override
-        public Builder setArrowWidth(float width) {
-            super.setArrowWidth(width);
-            return this;
-        }
-
-        @Override
-        public Builder setArrow(Drawable arrowDrawable) {
-            super.setArrow(arrowDrawable);
-            return this;
-        }
-
-        @Override
-        public Builder setMargin(float margin) {
-            super.setMargin(margin);
-            return this;
-        }
-
-        @Override
-        public Builder setGravity(int gravity) {
-            super.setGravity(gravity);
-            return this;
         }
 
         /**

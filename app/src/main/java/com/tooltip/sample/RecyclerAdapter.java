@@ -27,12 +27,15 @@
 package com.tooltip.sample;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tooltip.Tooltip;
+
 
 /**
  * Created by Viнt@rь on 16.01.2017
@@ -48,7 +51,7 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mTextView = (TextView) itemView.findViewById(R.id.text_view);
+            mTextView = itemView.findViewById(R.id.text_view);
         }
     }
 
@@ -59,7 +62,7 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(View.inflate(mContext, R.layout.item_layout_recycler, null));
     }
 
@@ -71,6 +74,7 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
         if (position == 100) {
             if (mTooltip == null) {
                 mTooltip = new Tooltip.Builder(holder.mTextView)
+                        .setGravity(Gravity.END)
                         .setText("TEST")
                         .show();
             } else {

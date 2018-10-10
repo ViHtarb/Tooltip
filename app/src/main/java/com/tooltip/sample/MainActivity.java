@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import com.tooltip.Tooltip;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private Tooltip mTooltip;
@@ -36,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
         builderContainer.show();*/
 
         Button button = findViewById(R.id.button_test);
-/*        Tooltip.Builder builder = new Tooltip.Builder(button, R.style.Tooltip2)
-                .setCancelable(true)
-                .setDismissOnClick(false)
+        Tooltip.Builder builder = new Tooltip.Builder(button, R.style.Tooltip2)
+                .setGravity(Gravity.START)
+                .setCancelable(false)
                 .setCornerRadius(20f)
-                .setText(R.string.tooltip_hello_world);
-        builder.show();*/
+                .setText("TEST");
+        builder.show();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
         text.setSpan(span, 31, 32, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         MenuItem menuItem = menu.findItem(R.id.action_test2);
-        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
+/*        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
                 .setCornerRadius(10f)
                 .setGravity(Gravity.BOTTOM)
-                .setText(text);
+                .setText(text);*/
         //builder.show();
 
         return super.onCreateOptionsMenu(menu);

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Tooltip">
+        <attr name="cancelable" format="boolean"/>
+        <attr name="dismissOnClick" format="boolean"/>
+        <attr name="arrowEnabled" format="boolean"/>
+        <attr name="arrowHeight" format="dimension"/>
+        <attr name="arrowWidth" format="dimension"/>
+        <attr name="arrowDrawable" format="reference"/>
+        <attr name="margin" format="dimension"/>
+        <attr name="android:gravity"/>
+    </declare-styleable>
+</resources>

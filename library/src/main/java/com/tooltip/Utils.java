@@ -26,15 +26,12 @@ package com.tooltip;
 
 import android.content.res.Resources;
 import android.graphics.RectF;
-import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 /**
  * Tooltip utils
  */
-final class Util {
+final class Utils {
 
     public static RectF calculateRectOnScreen(View view) {
         int[] location = new int[2];
@@ -54,29 +51,5 @@ final class Util {
 
     public static float dpToPx(float dp) {
         return dp * Resources.getSystem().getDisplayMetrics().density;
-    }
-
-    public static int gravityToArrowDirection(int gravity) {
-        switch (gravity) {
-            case Gravity.START:
-                return Gravity.END;
-            case Gravity.TOP:
-                return Gravity.BOTTOM;
-            case Gravity.END:
-                return Gravity.START;
-            case Gravity.BOTTOM:
-                return Gravity.TOP;
-            default:
-                return gravity;
-        }
-    }
-
-    public static void removeOnGlobalLayoutListener(View view, ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            view.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-        } else {
-            //noinspection deprecation
-            view.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
-        }
     }
 }

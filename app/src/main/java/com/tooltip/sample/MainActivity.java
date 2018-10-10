@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -26,7 +27,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.button_test);
+/*        View view = findViewById(R.id.container);
+        Tooltip.Builder builderContainer = new Tooltip.Builder(view, R.style.Tooltip2)
+                .setCancelable(true)
+                .setDismissOnClick(false)
+                .setCornerRadius(20f)
+                .setText("TESTTTTTTTTTTTTTTTTT");
+        builderContainer.show();*/
+
+        Button button = findViewById(R.id.button_test);
+/*        Tooltip.Builder builder = new Tooltip.Builder(button, R.style.Tooltip2)
+                .setCancelable(true)
+                .setDismissOnClick(false)
+                .setCornerRadius(20f)
+                .setText(R.string.tooltip_hello_world);
+        builder.show();*/
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,11 +49,13 @@ public class MainActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .setDismissOnClick(false)
                         .setCornerRadius(20f)
-                        .setGravity(Gravity.BOTTOM)
                         .setText(R.string.tooltip_hello_world);
                 builder.show();
             }
         });
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(new RecyclerAdapter(this));
     }
 
     @Override
@@ -57,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCornerRadius(10f)
                 .setGravity(Gravity.BOTTOM)
                 .setText(text);
-        builder.show();
+        //builder.show();
 
         return super.onCreateOptionsMenu(menu);
     }

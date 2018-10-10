@@ -77,6 +77,14 @@ public class TooltipActionView extends FrameLayout {
     }
 
     @Override
+    public void setEnabled(boolean enabled) {
+        if (mMenuItem != null) {
+            mMenuItem.setEnabled(enabled);
+        }
+        super.setEnabled(enabled);
+    }
+
+    @Override
     public boolean performClick() {
         if (mOnMenuItemClickListener != null) {
             mOnMenuItemClickListener.onMenuItemClick(mMenuItem);
@@ -107,6 +115,13 @@ public class TooltipActionView extends FrameLayout {
         return super.performLongClick();
     }
 
+    public void setVisible(boolean visible) {
+        if (mMenuItem != null) {
+            mMenuItem.setVisible(visible);
+        }
+        setVisibility(visible ? VISIBLE : GONE);
+    }
+
     @Nullable
     public MenuItem getMenuItem() {
         return mMenuItem;
@@ -117,13 +132,20 @@ public class TooltipActionView extends FrameLayout {
             mMenuItem = menuItem;
 
             View actionView = menuItem.getActionView();
-            if (actionView != null && actionView.equals(this)) {
+            if (actionView == null) {
+                actionView = this;
+                menuItem.setActionView(this);
+            }
+
+            if (actionView == this) {
+                super.setEnabled(menuItem.isEnabled());
+                setVisible(menuItem.isVisible());
                 if (menuItem.getIcon() != null) {
                     mImageView.setImageDrawable(menuItem.getIcon());
                 } else if (menuItem.getTitle() != null) {
                     mTextView.setText(menuItem.getTitle());
                 }
-            }
+            } // TODO else menuItem.actionView not equals
         }
     }
 

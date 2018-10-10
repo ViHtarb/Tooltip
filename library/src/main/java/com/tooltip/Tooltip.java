@@ -31,9 +31,9 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
@@ -41,11 +41,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewTreeObserverCompat;
 import android.support.v4.widget.TextViewCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -58,8 +60,8 @@ import android.widget.TextView;
  * Tooltip
  */
 public final class Tooltip {
+    private static final String TAG = "Tooltip";
 
-    private final boolean isCancelable;
     private final boolean isDismissOnClick;
 
     private final int mGravity;
@@ -77,10 +79,9 @@ public final class Tooltip {
     private ImageView mArrowView;
 
     private Tooltip(Builder builder) {
-        isCancelable = builder.isCancelable;
         isDismissOnClick = builder.isDismissOnClick;
 
-        mGravity = builder.mGravity;
+        mGravity = Gravity.getAbsoluteGravity(builder.mGravity, ViewCompat.getLayoutDirection(builder.mAnchorView));
         mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
         mOnClickListener = builder.mOnClickListener;
@@ -88,15 +89,16 @@ public final class Tooltip {
         mOnDismissListener = builder.mOnDismissListener;
 
         mPopupWindow = new PopupWindow(builder.mContext);
-        mPopupWindow.setBackgroundDrawable(null);
         mPopupWindow.setClippingEnabled(false);
         mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setContentView(getContentView(builder));
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                mAnchorView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
                 mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
                 if (mOnDismissListener != null) {
@@ -107,96 +109,98 @@ public final class Tooltip {
     }
 
     private View getContentView(Builder builder) {
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(builder.mBackgroundColor);
-        drawable.setCornerRadius(builder.mCornerRadius);
-
-        int padding = (int) builder.mPadding;
-
         TextView textView = new TextView(builder.mContext);
+
         TextViewCompat.setTextAppearance(textView, builder.mTextAppearance);
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(textView, builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
+
         textView.setText(builder.mText);
-        textView.setPadding(padding, padding, padding, padding);
+        textView.setPadding(builder.mPadding, builder.mPadding, builder.mPadding, builder.mPadding);
         textView.setLineSpacing(builder.mLineSpacingExtra, builder.mLineSpacingMultiplier);
         textView.setTypeface(builder.mTypeface, builder.mTextStyle);
+        textView.setCompoundDrawablePadding(builder.mDrawablePadding);
+
+        if (builder.mMaxWidth >= 0) {
+            textView.setMaxWidth(builder.mMaxWidth);
+        }
 
         if (builder.mTextSize >= 0) {
             textView.setTextSize(TypedValue.TYPE_NULL, builder.mTextSize);
         }
+
         if (builder.mTextColor != null) {
             textView.setTextColor(builder.mTextColor);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            textView.setBackground(drawable);
-        } else {
-            //noinspection deprecation
-            textView.setBackgroundDrawable(drawable);
         }
 
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
         textViewParams.gravity = Gravity.CENTER;
         textView.setLayoutParams(textViewParams);
 
-        mArrowView = new ImageView(builder.mContext);
-        mArrowView.setImageDrawable(builder.mArrowDrawable);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(builder.mBackgroundColor);
+        drawable.setCornerRadius(builder.mCornerRadius);
 
-        LinearLayout.LayoutParams arrowLayoutParams;
-        if (mGravity == Gravity.TOP || mGravity == Gravity.BOTTOM) {
-            arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight, 0);
-        } else {
-            arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowHeight, (int) builder.mArrowWidth, 0);
-        }
-        arrowLayoutParams.gravity = Gravity.CENTER;
-        mArrowView.setLayoutParams(arrowLayoutParams);
+        ViewCompat.setBackground(textView, drawable);
 
         mContentView = new LinearLayout(builder.mContext);
         mContentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mContentView.setOrientation(mGravity == Gravity.START || mGravity == Gravity.END ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+        mContentView.setOrientation(Gravity.isHorizontal(mGravity) ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
 
-        padding = (int) Util.dpToPx(5);
+        if (builder.isArrowEnabled) {
+            mArrowView = new ImageView(builder.mContext);
+            mArrowView.setImageDrawable(builder.mArrowDrawable == null ? new ArrowDrawable(builder.mBackgroundColor, mGravity) : builder.mArrowDrawable);
 
+            LinearLayout.LayoutParams arrowLayoutParams;
+            if (Gravity.isVertical(mGravity)) {
+                arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight, 0);
+            } else {
+                arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowHeight, (int) builder.mArrowWidth, 0);
+            }
+            arrowLayoutParams.gravity = Gravity.CENTER;
+            mArrowView.setLayoutParams(arrowLayoutParams);
+
+            if (mGravity == Gravity.TOP || mGravity == Gravity.getAbsoluteGravity(Gravity.START, ViewCompat.getLayoutDirection(mAnchorView))) {
+                mContentView.addView(textView);
+                mContentView.addView(mArrowView);
+            } else {
+                mContentView.addView(mArrowView);
+                mContentView.addView(textView);
+            }
+        } else {
+            mContentView.addView(textView);
+        }
+
+        int padding = (int) Utils.dpToPx(5);
         switch (mGravity) {
-            case Gravity.START:
-                mContentView.setPadding(0, 0, padding, 0);
+            case Gravity.LEFT:
+                mContentView.setPadding(padding, 0, 0, 0);
                 break;
             case Gravity.TOP:
             case Gravity.BOTTOM:
                 mContentView.setPadding(padding, 0, padding, 0);
                 break;
-            case Gravity.END:
-                mContentView.setPadding(padding, 0, 0, 0);
+            case Gravity.RIGHT:
+                mContentView.setPadding(0, 0, padding, 0);
                 break;
-        }
-
-        if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
-            mContentView.addView(textView);
-            mContentView.addView(mArrowView);
-        } else {
-            mContentView.addView(mArrowView);
-            mContentView.addView(textView);
         }
 
         mContentView.setOnClickListener(mClickListener);
         mContentView.setOnLongClickListener(mLongClickListener);
 
-        if (builder.isCancelable || builder.isDismissOnClick) {
-            mContentView.setOnTouchListener(mTouchListener);
-        }
         return mContentView;
     }
 
     /**
-     * <p>Indicate whether this Tooltip is showing on screen.</p>
+     * Indicate whether this {@link Tooltip} is showing on screen
      *
-     * @return true if the Tooltip is showing, false otherwise
+     * @return true if {@link Tooltip} is showing, false otherwise
      */
     public boolean isShowing() {
         return mPopupWindow.isShowing();
     }
 
     /**
-     * Display the Tooltip anchored to the custom gravity of the anchor view.
+     * Display the {@link Tooltip} anchored to the custom gravity of the anchor view
      *
      * @see #dismiss()
      */
@@ -208,16 +212,20 @@ public final class Tooltip {
             mAnchorView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPopupWindow.showAsDropDown(mAnchorView);
+                    if (mAnchorView.isShown()) {
+                        mPopupWindow.showAsDropDown(mAnchorView);
+                    } else {
+                        Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
+                    }
                 }
             });
         }
     }
 
     /**
-     * Disposes of the Tooltip. This method can be invoked only after
-     * {@link #show()} has been executed. Failing
-     * that, calling this method will have no effect.
+     * Disposes of the {@link Tooltip}. This method can be invoked only after
+     * {@link #show()} has been executed. Failing that, calling this method
+     * will have no effect
      *
      * @see #show()
      */
@@ -226,7 +234,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets listener to be called when the Tooltip is clicked.
+     * Sets listener to be called when the {@link Tooltip} is clicked.
      *
      * @param listener The listener.
      */
@@ -235,7 +243,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets listener to be called when the Tooltip is clicked and held.
+     * Sets listener to be called when the {@link Tooltip} is clicked and held.
      *
      * @param listener The listener.
      */
@@ -244,7 +252,7 @@ public final class Tooltip {
     }
 
     /**
-     * Sets the listener to be called when Tooltip is dismissed.
+     * Sets listener to be called when {@link Tooltip} is dismissed.
      *
      * @param listener The listener.
      */
@@ -255,15 +263,15 @@ public final class Tooltip {
     private PointF calculateLocation() {
         PointF location = new PointF();
 
-        final RectF anchorRect = Util.calculateRectInWindow(mAnchorView);
+        final RectF anchorRect = Utils.calculateRectInWindow(mAnchorView);
         final PointF anchorCenter = new PointF(anchorRect.centerX(), anchorRect.centerY());
 
         switch (mGravity) {
-            case Gravity.START:
+            case Gravity.LEFT:
                 location.x = anchorRect.left - mContentView.getWidth() - mMargin;
                 location.y = anchorCenter.y - mContentView.getHeight() / 2f;
                 break;
-            case Gravity.END:
+            case Gravity.RIGHT:
                 location.x = anchorRect.right + mMargin;
                 location.y = anchorCenter.y - mContentView.getHeight() / 2f;
                 break;
@@ -276,7 +284,6 @@ public final class Tooltip {
                 location.y = anchorRect.bottom + mMargin;
                 break;
         }
-
         return location;
     }
 
@@ -285,6 +292,9 @@ public final class Tooltip {
         public void onClick(View v) {
             if (mOnClickListener != null) {
                 mOnClickListener.onClick(Tooltip.this);
+            }
+            if (isDismissOnClick) {
+                dismiss();
             }
         }
     };
@@ -296,23 +306,20 @@ public final class Tooltip {
         }
     };
 
-    private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if ((isCancelable && event.getAction() == MotionEvent.ACTION_OUTSIDE) || (isDismissOnClick && event.getAction() == MotionEvent.ACTION_UP)) {
-                dismiss();
-                return true;
-            }
-            return false;
-        }
-    };
-
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            Util.removeOnGlobalLayoutListener(mContentView, this);
+            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
 
-            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
+            final ViewTreeObserver vto = mAnchorView.getViewTreeObserver();
+            if (vto != null) {
+                vto.addOnScrollChangedListener(mOnScrollChangedListener);
+            }
+
+            if (mArrowView != null) {
+                mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
+            }
+
             PointF location = calculateLocation();
             mPopupWindow.setClippingEnabled(true);
             mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
@@ -322,13 +329,13 @@ public final class Tooltip {
     private final ViewTreeObserver.OnGlobalLayoutListener mArrowLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            Util.removeOnGlobalLayoutListener(mContentView, this);
+            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
 
-            RectF anchorRect = Util.calculateRectOnScreen(mAnchorView);
-            RectF contentViewRect = Util.calculateRectOnScreen(mContentView);
+            RectF anchorRect = Utils.calculateRectOnScreen(mAnchorView);
+            RectF contentViewRect = Utils.calculateRectOnScreen(mContentView);
             float x, y;
-            if (mGravity == Gravity.BOTTOM || mGravity == Gravity.TOP) {
-                x = mContentView.getPaddingLeft() + Util.dpToPx(2);
+            if (Gravity.isVertical(mGravity)) {
+                x = mContentView.getPaddingLeft() + Utils.dpToPx(2);
                 float centerX = (contentViewRect.width() / 2f) - (mArrowView.getWidth() / 2f);
                 float newX = centerX - (contentViewRect.centerX() - anchorRect.centerX());
                 if (newX > x) {
@@ -341,7 +348,7 @@ public final class Tooltip {
                 y = mArrowView.getTop();
                 y = y + (mGravity == Gravity.TOP ? -1 : +1);
             } else {
-                y = mContentView.getPaddingTop() + Util.dpToPx(2);
+                y = mContentView.getPaddingTop() + Utils.dpToPx(2);
                 float centerY = (contentViewRect.height() / 2f) - (mArrowView.getHeight() / 2f);
                 float newY = centerY - (contentViewRect.centerY() - anchorRect.centerY());
                 if (newY > y) {
@@ -352,10 +359,18 @@ public final class Tooltip {
                     }
                 }
                 x = mArrowView.getLeft();
-                x = x + (mGravity == Gravity.START ? -1 : +1);
+                x = x + (mGravity == Gravity.LEFT ? -1 : +1);
             }
             mArrowView.setX(x);
             mArrowView.setY(y);
+        }
+    };
+
+    private final ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+            PointF location = calculateLocation();
+            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
         }
     };
 
@@ -374,20 +389,28 @@ public final class Tooltip {
     public static final class Builder {
         private boolean isDismissOnClick;
         private boolean isCancelable;
+        private boolean isArrowEnabled;
 
-        private int mGravity;
         private int mBackgroundColor;
+        private int mGravity;
         private int mTextAppearance;
         private int mTextStyle;
+        private int mPadding;
+        private int mMaxWidth;
+        private int mDrawablePadding;
 
         private float mCornerRadius;
         private float mArrowHeight;
         private float mArrowWidth;
         private float mMargin;
-        private float mPadding;
         private float mTextSize;
         private float mLineSpacingExtra;
         private float mLineSpacingMultiplier = 1f;
+
+        private Drawable mDrawableBottom;
+        private Drawable mDrawableEnd;
+        private Drawable mDrawableStart;
+        private Drawable mDrawableTop;
 
         private Drawable mArrowDrawable;
         private CharSequence mText;
@@ -409,8 +432,7 @@ public final class Tooltip {
             View anchorView = anchorMenuItem.getActionView();
             if (anchorView != null) {
                 if (anchorView instanceof TooltipActionView) {
-                    TooltipActionView tooltipActionView = (TooltipActionView) anchorView;
-                    tooltipActionView.setMenuItem(anchorMenuItem);
+                    ((TooltipActionView) anchorView).setMenuItem(anchorMenuItem);
                 }
 
                 init(anchorView.getContext(), anchorView, resId);
@@ -435,15 +457,22 @@ public final class Tooltip {
 
             isCancelable = a.getBoolean(R.styleable.Tooltip_cancelable, false);
             isDismissOnClick = a.getBoolean(R.styleable.Tooltip_dismissOnClick, false);
+            isArrowEnabled = a.getBoolean(R.styleable.Tooltip_arrowEnabled, true);
             mBackgroundColor = a.getColor(R.styleable.Tooltip_backgroundColor, Color.GRAY);
             mCornerRadius = a.getDimension(R.styleable.Tooltip_cornerRadius, -1);
             mArrowHeight = a.getDimension(R.styleable.Tooltip_arrowHeight, -1);
             mArrowWidth = a.getDimension(R.styleable.Tooltip_arrowWidth, -1);
             mArrowDrawable = a.getDrawable(R.styleable.Tooltip_arrowDrawable);
             mMargin = a.getDimension(R.styleable.Tooltip_margin, -1);
-            mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
-            mPadding = a.getDimension(R.styleable.Tooltip_android_padding, -1);
+            mPadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_padding, -1);
             mGravity = a.getInteger(R.styleable.Tooltip_android_gravity, Gravity.BOTTOM);
+            mMaxWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_maxWidth, -1);
+            mDrawablePadding = a.getDimensionPixelSize(R.styleable.Tooltip_android_drawablePadding, 0);
+            mDrawableBottom = a.getDrawable(R.styleable.Tooltip_android_drawableBottom);
+            mDrawableEnd = a.getDrawable(R.styleable.Tooltip_android_drawableEnd);
+            mDrawableStart = a.getDrawable(R.styleable.Tooltip_android_drawableStart);
+            mDrawableTop = a.getDrawable(R.styleable.Tooltip_android_drawableTop);
+            mTextAppearance = a.getResourceId(R.styleable.Tooltip_textAppearance, -1);
             mText = a.getString(R.styleable.Tooltip_android_text);
             mTextSize = a.getDimension(R.styleable.Tooltip_android_textSize, -1);
             mTextColor = a.getColorStateList(R.styleable.Tooltip_android_textColor);
@@ -459,9 +488,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets whether Tooltip is cancelable or not. Default is {@code false}.
+         * Sets whether {@link Tooltip} is cancelable or not. Default is {@code false}
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCancelable(boolean cancelable) {
             isCancelable = cancelable;
@@ -469,9 +498,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets whether Tooltip is dismissing on click or not. Default is {@code false}.
+         * Sets whether {@link Tooltip} is dismissing on click or not. Default is {@code false}
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setDismissOnClick(boolean isDismissOnClick) {
             this.isDismissOnClick = isDismissOnClick;
@@ -479,9 +508,19 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip background color.
+         * Sets whether {@link Tooltip} is arrow enabled. Default is {@code true}
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setArrowEnabled(boolean isArrowEnabled) {
+            this.isArrowEnabled = isArrowEnabled;
+            return this;
+        }
+
+        /**
+         * Sets {@link Tooltip} background color
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setBackgroundColor(@ColorInt int color) {
             mBackgroundColor = color;
@@ -489,18 +528,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip background drawable corner radius from resource.
+         * Sets {@link Tooltip} background drawable corner radius from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCornerRadius(@DimenRes int resId) {
             return setCornerRadius(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip background drawable corner radius.
+         * Sets {@link Tooltip} background drawable corner radius
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setCornerRadius(float radius) {
             mCornerRadius = radius;
@@ -508,18 +547,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow height from resource.
+         * Sets {@link Tooltip} arrow height from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowHeight(@DimenRes int resId) {
             return setArrowHeight(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip arrow height.
+         * Sets {@link Tooltip} arrow height
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowHeight(float height) {
             mArrowHeight = height;
@@ -527,18 +566,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow width from resource.
+         * Sets {@link Tooltip} arrow width from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowWidth(@DimenRes int resId) {
             return setArrowWidth(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip arrow width.
+         * Sets {@link Tooltip} arrow width
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrowWidth(float width) {
             mArrowWidth = width;
@@ -546,18 +585,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip arrow drawable from resources.
+         * Sets {@link Tooltip} arrow drawable from resources
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrow(@DrawableRes int resId) {
             return setArrow(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
         }
 
         /**
-         * Sets Tooltip arrow drawable.
+         * Sets {@link Tooltip} arrow drawable
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setArrow(Drawable arrowDrawable) {
             mArrowDrawable = arrowDrawable;
@@ -565,18 +604,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip margin from resource.
+         * Sets {@link Tooltip} margin from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setMargin(@DimenRes int resId) {
             return setMargin(mContext.getResources().getDimension(resId));
         }
 
         /**
-         * Sets Tooltip margin.
+         * Sets {@link Tooltip} margin
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setMargin(float margin) {
             mMargin = margin;
@@ -584,9 +623,138 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text appearance from the specified style resource.
+         * Sets {@link Tooltip} padding
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setPadding(int padding) {
+            mPadding = padding;
+            return this;
+        }
+
+        /**
+         * Sets {@link Tooltip} padding
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         *
+         * @deprecated Use {@link #setPadding(int)} instead
+         */
+        @Deprecated
+        public Builder setPadding(float padding) {
+            return setPadding((int) padding);
+        }
+
+        /**
+         * Sets {@link Tooltip} gravity
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setGravity(int gravity) {
+            mGravity = gravity;
+            return this;
+        }
+
+        /***
+         * Sets {@link Tooltip} max width
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setMaxWidth(int maxWidth) {
+            mMaxWidth = maxWidth;
+            return this;
+        }
+
+        /**
+         * Sets the size of the padding between the drawables and
+         * the {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawablePadding(int padding) {
+            mDrawablePadding = padding;
+            return this;
+        }
+
+        /**
+         * Sets drawable from resource to the bottom of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableBottom(@DrawableRes int resId) {
+            return setDrawableBottom(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+        }
+
+        /**
+         * Sets drawable to the bottom of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableBottom(Drawable drawable) {
+            mDrawableBottom = drawable;
+            return this;
+        }
+
+        /**
+         * Sets drawable from resource to the end of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableEnd(@DrawableRes int resId) {
+            return setDrawableBottom(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+        }
+
+        /**
+         * Sets drawable to the end of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableEnd(Drawable drawable) {
+            mDrawableEnd = drawable;
+            return this;
+        }
+
+        /**
+         * Sets drawable from resource to the start of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableStart(@DrawableRes int resId) {
+            return setDrawableStart(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+        }
+
+        /**
+         * Sets drawable to the start of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableStart(Drawable drawable) {
+            mDrawableStart = drawable;
+            return this;
+        }
+
+        /**
+         * Sets drawable from resource to the top of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableTop(@DrawableRes int resId) {
+            return setDrawableTop(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+        }
+
+        /**
+         * Sets drawable to the top of {@link Tooltip} text.
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
+         */
+        public Builder setDrawableTop(Drawable drawable) {
+            mDrawableTop = drawable;
+            return this;
+        }
+
+        /**
+         * Sets {@link Tooltip} text appearance from the specified style resource
+         *
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextAppearance(@StyleRes int resId) {
             mTextAppearance = resId;
@@ -594,47 +762,18 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip padding from resource.
+         * Sets {@link Tooltip} text from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setPadding(@DimenRes int resId) {
-            return setPadding(mContext.getResources().getDimension(resId));
-        }
-
-        /**
-         * Sets Tooltip padding.
-         *
-         * @return This Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setPadding(float padding) {
-            mPadding = padding;
-            return this;
-        }
-
-        /**
-         * Sets Tooltip gravity.
-         *
-         * @return This Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setGravity(int gravity) {
-            mGravity = gravity;
-            return this;
-        }
-
-        /**
-         * Sets Tooltip text from resource.
-         *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setText(@StringRes int resId) {
             return setText(mContext.getString(resId));
         }
 
         /**
-         * Sets Tooltip text.
+         * Sets {@link Tooltip} text
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setText(CharSequence text) {
             mText = text;
@@ -642,9 +781,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text size from resource.
+         * Sets {@link Tooltip} text size from resource
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(@DimenRes int resId) {
             mTextSize = mContext.getResources().getDimension(resId);
@@ -652,9 +791,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text size.
+         * Sets {@link Tooltip} text size
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextSize(float size) {
             mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, mContext.getResources().getDisplayMetrics());
@@ -662,9 +801,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text color.
+         * Sets {@link Tooltip} text color
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextColor(@ColorInt int color) {
             mTextColor = ColorStateList.valueOf(color);
@@ -672,9 +811,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text style.
+         * Sets {@link Tooltip} text style
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTextStyle(int style) {
             mTextStyle = style;
@@ -682,10 +821,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip line spacing. Each line will have its height
-         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         * Sets {@link Tooltip} line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setLineSpacing(@DimenRes int addResId, float mult) {
             mLineSpacingExtra = mContext.getResources().getDimensionPixelSize(addResId);
@@ -694,10 +833,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip line spacing. Each line will have its height
-         * multiplied by <code>mult</code> and have <code>add</code> added to it.
+         * Sets {@link Tooltip} line spacing. Each line will have its height
+         * multiplied by <code>mult</code> and have <code>add</code> added to it
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setLineSpacing(float add, float mult) {
             mLineSpacingExtra = add;
@@ -706,9 +845,9 @@ public final class Tooltip {
         }
 
         /**
-         * Sets Tooltip text typeface.
+         * Sets {@link Tooltip} text typeface
          *
-         * @return This Builder object to allow for chaining of calls to set methods
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setTypeface(Typeface typeface) {
             mTypeface = typeface;
@@ -716,9 +855,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is clicked.
+         * Sets listener to be called when the {@link Tooltip} is clicked
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnClickListener(OnClickListener listener) {
             mOnClickListener = listener;
@@ -726,9 +866,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is clicked and held.
+         * Sets listener to be called when the {@link Tooltip} is clicked and held
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnLongClickListener(OnLongClickListener listener) {
             mOnLongClickListener = listener;
@@ -736,9 +877,10 @@ public final class Tooltip {
         }
 
         /**
-         * Sets listener to be called when the Tooltip is dismissed.
+         * Sets listener to be called when the {@link Tooltip} is dismissed
          *
-         * @param listener The listener.
+         * @param listener The listener
+         * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setOnDismissListener(OnDismissListener listener) {
             mOnDismissListener = listener;
@@ -748,34 +890,27 @@ public final class Tooltip {
         /**
          * Creates a {@link Tooltip} with the arguments supplied to this builder. It does not
          * {@link Tooltip#show()} the tooltip. This allows the user to do any extra processing
-         * before displaying the tooltip. Use {@link #show()} if you don't have any other processing
-         * to do and want this to be created and displayed.
+         * before displaying the <code>Tooltip</code>. Use {@link #show()} if you don't have any other processing
+         * to do and want this to be created and displayed
          */
         public Tooltip build() {
-            if (!Gravity.isHorizontal(mGravity) && !Gravity.isVertical(mGravity)) {
-                throw new IllegalArgumentException("Gravity must have be START, END, TOP or BOTTOM.");
-            }
-
             if (mArrowHeight == -1) {
                 mArrowHeight = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_height);
             }
             if (mArrowWidth == -1) {
                 mArrowWidth = mContext.getResources().getDimension(R.dimen.default_tooltip_arrow_width);
             }
-            if (mArrowDrawable == null) {
-                mArrowDrawable = new ArrowDrawable(mBackgroundColor, mGravity);
-            }
             if (mMargin == -1) {
                 mMargin = mContext.getResources().getDimension(R.dimen.default_tooltip_margin);
             }
             if (mPadding == -1) {
-                mPadding = mContext.getResources().getDimension(R.dimen.default_tooltip_padding);
+                mPadding = mContext.getResources().getDimensionPixelSize(R.dimen.default_tooltip_padding);
             }
             return new Tooltip(this);
         }
 
         /**
-         * Builds a {@link Tooltip} with builder attributes and {@link Tooltip#show()}'s the tooltip.
+         * Builds a {@link Tooltip} with builder attributes and {@link Tooltip#show()}'s the <code>Tooltip</code>
          */
         public Tooltip show() {
             Tooltip tooltip = build();

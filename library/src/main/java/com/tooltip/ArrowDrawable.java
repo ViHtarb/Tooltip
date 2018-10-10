@@ -36,7 +36,7 @@ import android.support.annotation.ColorInt;
 import android.view.Gravity;
 
 /**
- * Implementation arrow drawable for tooltip
+ * Implementation arrow drawable for {@link Tooltip}
  */
 final class ArrowDrawable extends ColorDrawable {
 
@@ -47,7 +47,7 @@ final class ArrowDrawable extends ColorDrawable {
     private Path mPath;
 
     ArrowDrawable(@ColorInt int foregroundColor, int gravity) {
-        mGravity = Util.gravityToArrowDirection(gravity);
+        mGravity = gravity;
         mBackgroundColor = Color.TRANSPARENT;
 
         mPaint.setColor(foregroundColor);
@@ -62,30 +62,74 @@ final class ArrowDrawable extends ColorDrawable {
     private synchronized void updatePath(Rect bounds) {
         mPath = new Path();
 
+        float x1 = bounds.width() * 5 / 100;
+        float y1 = bounds.height() * 5 / 100;
+
+        float x2;
+        float y2;
+
         switch (mGravity) {
-            case Gravity.START:
-                mPath.moveTo(bounds.width(), bounds.height());
-                mPath.lineTo(0, bounds.height() / 2);
-                mPath.lineTo(bounds.width(), 0);
-                mPath.lineTo(bounds.width(), bounds.height());
+            case Gravity.LEFT:
+                y1 *= 2.5f;
+
+                x2 = x1 * 10f;
+                y2 = y1 * 3f;
+
+                x1 /= 4;
+                y1 *= 2;
+
+                mPath.moveTo(0, 0);
+                mPath.cubicTo(0, 0, x1, y1, x2, y2);
+                mPath.cubicTo(x2, y2, bounds.width() * 1.5f, bounds.height() / 2, x2, bounds.height() - y2);
+                mPath.cubicTo(x2, bounds.height() - y2, x1, bounds.height() - y1, 0, bounds.height());
                 break;
             case Gravity.TOP:
-                mPath.moveTo(0, bounds.height());
-                mPath.lineTo(bounds.width() / 2, 0);
-                mPath.lineTo(bounds.width(), bounds.height());
-                mPath.lineTo(0, bounds.height());
-                break;
-            case Gravity.END:
+                x1 *= 2.5f;
+
+                x2 = x1 * 3f;
+                y2 = y1 * 10f;
+
+                x1 *= 2;
+                y1 /= 4;
+
                 mPath.moveTo(0, 0);
-                mPath.lineTo(bounds.width(), bounds.height() / 2);
-                mPath.lineTo(0, bounds.height());
-                mPath.lineTo(0, 0);
+                mPath.cubicTo(0, 0, x1, y1, x2, y2);
+                mPath.cubicTo(x2, y2, bounds.width() / 2, bounds.height() * 1.5f, bounds.width() - x2, y2);
+                mPath.cubicTo(bounds.width() - x2, y2, bounds.width() - x1, y1, bounds.width(), 0);
+                break;
+            case Gravity.RIGHT:
+                y1 *= 2.5f;
+
+                x2 = x1 * 10f;
+                y2 = y1 * 3f;
+
+                x1 /= 4;
+                y1 *= 2;
+
+                x1 = bounds.width() - x1;
+                x2 = bounds.width() - x2;
+
+                mPath.moveTo(bounds.width(), 0);
+                mPath.cubicTo(bounds.width(), 0, x1, y1, x2, y2);
+                mPath.cubicTo(x2, y2, -x2, bounds.height() / 2, x2, bounds.height() - y2);
+                mPath.cubicTo(x2, bounds.height() - y2, x1, bounds.height() - y1, bounds.width(), bounds.height());
                 break;
             case Gravity.BOTTOM:
-                mPath.moveTo(0, 0);
-                mPath.lineTo(bounds.width() / 2, bounds.height());
-                mPath.lineTo(bounds.width(), 0);
-                mPath.lineTo(0, 0);
+                x1 *= 2.5f;
+
+                x2 = x1 * 3f;
+                y2 = y1 * 10f;
+
+                x1 *= 2;
+                y1 /= 4;
+
+                y1 = bounds.height() - y1;
+                y2 = bounds.height() - y2;
+
+                mPath.moveTo(0, bounds.height());
+                mPath.cubicTo(0, bounds.height(), x1, y1, x2, y2);
+                mPath.cubicTo(x2, y2, bounds.width() / 2, -y2, bounds.width() - x2, y2);
+                mPath.cubicTo(bounds.width() - x2, y2, bounds.width() - x1, y1, bounds.width(), bounds.height());
                 break;
         }
 

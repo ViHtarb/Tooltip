@@ -22,15 +22,7 @@ android:
     - extra-google-m2repository
     # Specify at least one system image
     #- sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
-    - sys-img-x86-android-$EMULATOR_API_LEVEL
-
-    # Additional components
-    #- extra-google-google_play_services
-    #- addon-google_apis-google-19
-
-    # Specify at least one system image, if you need to run emulator(s) during your tests
-    #- sys-img-armeabi-v7a-android-19
-    #- sys-img-x86-android-17
+    #- sys-img-x86-android-$EMULATOR_API_LEVEL
 
   licenses:
     - '.+'
@@ -46,4 +38,4 @@ script:
   #- echo $ADB_INSTALL_TIMEOUT
   #- android list target
   #- ./gradlew connectedAndroidTest
-  - ./gradlew clean assembleAndroidTest
+  - ./gradlew assembleAndroidTest

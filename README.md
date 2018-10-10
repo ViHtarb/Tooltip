@@ -2,7 +2,7 @@
 
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://bitbucket.org/ViHtarb/tooltip/src/ccb911a31d9749e3e607cdfd93c6485dcdde056d/LICENSE?at=master&fileviewer=file-view-default)
 [![Build Status](https://travis-ci.org/ViHtarb/Tooltip.svg?branch=master)](https://travis-ci.org/ViHtarb/Tooltip)
-[![Maven Central](https://img.shields.io/badge/Maven%20Central-0.1.9-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
+[![Maven Central](https://img.shields.io/badge/Maven%20Central-0.2.0-brightgreen.svg?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vihtarb%22)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android%20Tooltips-brightgreen.svg?style=true)](https://android-arsenal.com/details/1/4253)
 
 Simple to use customizable Android Tooltips library based on [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html). This Tooltips does not require any custom layout. It works as [PopupWindow](http://developer.android.com/intl/pt-br/reference/android/widget/PopupWindow.html).
@@ -13,7 +13,7 @@ Simple to use customizable Android Tooltips library based on [PopupWindow](http:
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.9'
+    compile 'com.github.vihtarb:tooltip:0.2.0'
 }
 ```
 ### Maven
@@ -21,7 +21,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.9</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 ## Usage
@@ -123,6 +123,20 @@ Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
 - `<attr name="android:lineSpacingMultiplier"/>`
 
 ## Changelog
+### 0.2.0
+- Implemented setting compound drawables(and drawables padding) by `Builder` methods `setDrawableStart`, `setDrawableEnd`, `setDrawableBottom`, `setDrawableTop` and for padding `setDrawablePadding(int)` or styleable attributes `android:drawableStart`, `android:drawableEnd`, `android:drawableBottom`, `android:drawableTop` and for padding `android:drawablePadding` (@antoninovitale)
+- Implemented setting max `Tooltip` width by `Builder` method `setMaxWidth(int)` or styleable attribute `android:maxWidth` (@CapnSpellcheck)
+- Implemented RTL layout direction supporting
+- Implemented use `Gravity.LEFT` and `Gravity.RIGHT` as `Tooltip` gravity, but it strongly not recommended
+- Implemented smooth `Tooltip` arrow
+- Fixed `Tooltip` content view padding
+- `Builder` method `setPadding(float)` marked as deprecated use `setPadding(int)` instead
+- `Builder` method `setPadding(int)` now sets padding from argument not from resources
+- Implemented arrow disabling by `Builder` method `setArrowEnabled(boolean)` or styleable attribute `arrowEnabled`
+- [#26](https://github.com/ViHtarb/Tooltip/issues/26) Fixed issue with `Exception android.view.WindowManager$BadTokenException:...`
+- [#19](https://github.com/ViHtarb/Tooltip/issues/19) Fixed issue with `Tooltip` moving on scrolling/updating list views
+- [#13](https://github.com/ViHtarb/Tooltip/pull/13) Implemented supporting `CharSequence` for text instead of `String` (@gkravas)
+
 ### 0.1.9
 - Min SDK changed from 11 to 14
 - Implemented `OnClickListener` and `OnLongClickListener` listeners
@@ -133,27 +147,6 @@ Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
 - Removed `Context context` argument in `Builder` constructors with second argument `MenuItem anchorMenuItem`
 - Fixed `Activity has leaked window`
 
-### 0.1.8
-- Implemented `OnDismissListener`
-- Removed `Context context` argument in `Builder` constructors with second argument `View anchorView`
-- Renamed styleable attribute from `colorBackground` to `backgroundColor`
-
-### 0.1.6
-This version is supported Android API 7 and large. If you want use Tooltips in projects with Min SDK 7 then use this in dependencies:
-### Gradle
-```java
-dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.6'
-}
-```
-### Maven
-```html
-<dependency>
-    <groupId>com.github.vihtarb</groupId>
-    <artifactId>tooltip</artifactId>
-    <version>0.1.6</version>
-</dependency>
-```
 ## SNAPSHOTS
 For using `snapshots` of development versions you need include the snapshots repo by adding the snapshot build to a dependent project. To do this add the following to your `build.gradle` project(not module) file
 ```java
@@ -164,7 +157,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:0.1.9.4-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:1.0.0-alpha01-SNAPSHOT'
 }
 ```
 ### Maven
@@ -172,29 +165,12 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>0.1.9.4-SNAPSHOT</version>
+    <version>1.0.0-alpha01-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
-### 0.1.9.4-SNAPSHOT
-- Implemented setting compound drawables(and drawables padding) by `Builder` methods `setDrawableStart`, `setDrawableEnd`, `setDrawableBottom`, `setDrawableTop` and for padding `setDrawablePadding(int)` or styleable attributes `android:drawableStart`, `android:drawableEnd`, `android:drawableBottom`, `android:drawableTop` and for padding `android:drawablePadding` (@antoninovitale)
-- Implemented setting max `Tooltip` width by `Builder` method `setMaxWidth(int)` or styleable attribute `android:maxWidth` (@CapnSpellcheck)
-- Implemented RTL layout direction supporting
-- Implemented use `Gravity.LEFT` and `Gravity.RIGHT` as `Tooltip` gravity, but it strongly not recommended
-- Implemented smooth `Tooltip` arrow
-- Fixed `Tooltip` content view padding
-- `Builder` method `setPadding(float)` marked as deprecated use `setPadding(int)` instead
-- `Builder` method `setPadding(int)` now sets padding from argument not from resources
+### 1.0.0-alpha01-SNAPSHOT
 
-### 0.1.9.3-SNAPSHOT
-- Implemented arrow disabling by `Builder` method `setArrowEnabled(boolean)` or styleable attribute `arrowEnabled`
-- [#26](https://github.com/ViHtarb/Tooltip/issues/26) Fixed issue with `Exception android.view.WindowManager$BadTokenException:...`
-
-### 0.1.9.2-SNAPSHOT
-- [#19](https://github.com/ViHtarb/Tooltip/issues/19) Fixed issue with `Tooltip` moving on scrolling/updating list views
-
-### 0.1.9.1-SNAPSHOT
-- [#13](https://github.com/ViHtarb/Tooltip/pull/13) Implemented supporting `CharSequence` for text instead of `String` (@gkravas)
 
 ## Future Work
 - Animations

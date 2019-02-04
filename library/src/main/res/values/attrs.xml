@@ -12,6 +12,10 @@
         <attr name="margin" format="dimension"/>
         <attr name="textAppearance" format="reference"/>
         <attr name="android:padding"/>
+        <attr name="android:paddingStart"/>
+        <attr name="android:paddingTop"/>
+        <attr name="android:paddingEnd"/>
+        <attr name="android:paddingBottom"/>
         <attr name="android:gravity"/>
         <attr name="android:maxWidth"/>
         <attr name="android:drawablePadding"/>

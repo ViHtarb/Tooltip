@@ -95,6 +95,7 @@ public final class Tooltip {
         mPopupWindow.setContentView(getContentView(builder));
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
+        mPopupWindow.setFocusable(true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

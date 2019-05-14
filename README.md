@@ -165,7 +165,7 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>1.0.0-alpha01-SNAPSHOT</version>
+    <version>1.0.0-alpha02-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS

@@ -87,22 +87,17 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
 
         mContentView = createContentViewInternal(builder);
 
-        mPopupWindow = new PopupWindow(builder.mContext);
+        mPopupWindow = new PopupWindow(mContentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setClippingEnabled(false);
-        mPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setContentView(mContentView);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                mAnchorView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
-                mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
+        mPopupWindow.setFocusable(builder.isCancelable);
+        mPopupWindow.setOnDismissListener(() -> {
+            mAnchorView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
+            mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
-                if (mOnDismissListener != null) {
-                    mOnDismissListener.onDismiss();
-                }
+            if (mOnDismissListener != null) {
+                mOnDismissListener.onDismiss();
             }
         });
     }
@@ -160,8 +155,15 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
                 break;
         }
 
-        contentView.setOnClickListener(mClickListener);
-        contentView.setOnLongClickListener(mLongClickListener);
+        contentView.setOnClickListener(v -> {
+            if (mOnClickListener != null) {
+                mOnClickListener.onClick(Tooltip.this);
+            }
+            if (isDismissOnClick) {
+                dismiss();
+            }
+        });
+        contentView.setOnLongClickListener(v -> mOnLongClickListener != null && mOnLongClickListener.onLongClick(Tooltip.this));
 
         return contentView;
     }
@@ -197,14 +199,11 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
             mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
 
             mAnchorView.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-            mAnchorView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mAnchorView.isShown()) {
-                        mPopupWindow.showAsDropDown(mAnchorView);
-                    } else {
-                        Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
-                    }
+            mAnchorView.post(() -> {
+                if (mAnchorView.isShown()) {
+                    mPopupWindow.showAsDropDown(mAnchorView);
+                } else {
+                    Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
                 }
             });
         }
@@ -275,26 +274,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         return location;
     }
 
-    private final View.OnClickListener mClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mOnClickListener != null) {
-                mOnClickListener.onClick(Tooltip.this);
-            }
-            if (isDismissOnClick) {
-                dismiss();
-            }
-        }
-    };
-
-    private final View.OnLongClickListener mLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            return mOnLongClickListener != null && mOnLongClickListener.onLongClick(Tooltip.this);
-        }
-    };
-
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+
         @Override
         public void onGlobalLayout() {
             ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
@@ -315,6 +296,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     };
 
     private final ViewTreeObserver.OnGlobalLayoutListener mArrowLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+
         @Override
         public void onGlobalLayout() {
             ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
@@ -355,6 +337,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     };
 
     private final ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+
         @Override
         public void onScrollChanged() {
             PointF location = calculateLocation();
@@ -363,6 +346,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     };
 
     private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener() {
+
         @Override
         public void onViewAttachedToWindow(View v) {
 

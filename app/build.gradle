@@ -19,15 +19,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testImplementation 'junit:junit:' + rootProject.ext.junitVersion
     implementation 'com.android.support:design:' + rootProject.ext.supportLibraryVersion
     implementation 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
     implementation project(':library')
+
+    testImplementation 'junit:junit:' + rootProject.ext.junitVersion
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

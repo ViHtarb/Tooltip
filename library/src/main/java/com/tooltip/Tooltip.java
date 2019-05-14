@@ -334,7 +334,7 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setText(@StringRes int resId) {
-            return setText(mContext.getString(resId));
+            return setText(mContext.getText(resId));
         }
 
         /**
@@ -423,7 +423,7 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
 
         @NonNull
         @Override
-        public Tooltip build() { // TODO
+        public Tooltip build() {
             return new Tooltip(this);
         }
 

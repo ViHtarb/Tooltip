@@ -38,21 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button_test);
         Tooltip.Builder builder = new Tooltip.Builder(button, R.style.Tooltip2)
-                .setGravity(Gravity.START)
+                .setGravity(Gravity.BOTTOM)
                 .setCancelable(false)
                 .setCornerRadius(20f)
                 .setText("TEST");
         builder.show();
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Tooltip.Builder builder = new Tooltip.Builder(v, R.style.Tooltip2)
-                        .setCancelable(true)
-                        .setDismissOnClick(false)
-                        .setCornerRadius(20f)
-                        .setText(R.string.tooltip_hello_world);
-                builder.show();
-            }
+        button.setOnClickListener(v -> {
+            Tooltip.Builder builder1 = new Tooltip.Builder(v, R.style.Tooltip2)
+                    .setCancelable(true)
+                    .setDismissOnClick(true)
+                    .setCornerRadius(20f)
+                    .setText(R.string.tooltip_hello_world);
+            builder1.show();
         });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -71,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
         text.setSpan(span, 31, 32, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         MenuItem menuItem = menu.findItem(R.id.action_test2);
-/*        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
+        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
                 .setCornerRadius(10f)
                 .setGravity(Gravity.BOTTOM)
-                .setText(text);*/
-        //builder.show();
+                .setText(text);
+        builder.show();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_test:
                 if (mTooltip == null) {
-                    mTooltip = new Tooltip.Builder(findViewById(R.id.action_test), R.style.Tooltip)
+                    mTooltip = new Tooltip.Builder((View) findViewById(R.id.action_test), R.style.Tooltip)
                             .setDismissOnClick(true)
                             .setGravity(Gravity.BOTTOM)
                             .setText("I`m on the bottom of first menu item and showing dynamically on menu item click")

@@ -157,7 +157,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:1.0.0-alpha02-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:1.0.0-alpha03-SNAPSHOT'
 }
 ```
 ### Maven
@@ -169,6 +169,9 @@ dependencies {
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
+### 1.0.0-alpha03-SNAPSHOT
+- Migrated to androidx
+
 ### 1.0.0-alpha02-SNAPSHOT
 - Migrated to Java 1.8
 - Fixed simple Tooltip `Builder.setText(int)` method

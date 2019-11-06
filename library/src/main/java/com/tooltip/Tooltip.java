@@ -31,15 +31,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -47,6 +38,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 
 /**
  * Simple text {@code Tooltip} implementation

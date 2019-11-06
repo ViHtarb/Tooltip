@@ -3,9 +3,6 @@ package com.tooltip.sample;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -14,9 +11,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.tooltip.Tooltip;
+import com.tooltip.sample.databinding.ActivityMainBinding;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
 /*        View view = findViewById(R.id.container);
         Tooltip.Builder builderContainer = new Tooltip.Builder(view, R.style.Tooltip2)
@@ -36,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
                 .setText("TESTTTTTTTTTTTTTTTTT");
         builderContainer.show();*/
 
-        Button button = findViewById(R.id.button_test);
-        Tooltip.Builder builder = new Tooltip.Builder(button, R.style.Tooltip2)
+        Tooltip.Builder builder = new Tooltip.Builder(binding.buttonTest, R.style.Tooltip2)
                 .setGravity(Gravity.BOTTOM)
                 .setCancelable(false)
                 .setCornerRadius(20f)
                 .setText("TEST");
-        builder.show();
-        button.setOnClickListener(v -> {
+        Tooltip test = builder.show();
+        binding.buttonTest.setOnClickListener(v -> {
             Tooltip.Builder builder1 = new Tooltip.Builder(v, R.style.Tooltip2)
                     .setCancelable(true)
                     .setDismissOnClick(true)
@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
             builder1.show();
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new RecyclerAdapter(this));
+        binding.recyclerView.setAdapter(new RecyclerAdapter(this));
     }
 
     @Override

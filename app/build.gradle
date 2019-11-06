@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    viewBinding {
+        enabled true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -27,11 +30,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:' + rootProject.ext.supportLibraryVersion
-    implementation 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
+    implementation 'androidx.appcompat:appcompat:' + rootProject.ext.androidXVersions.appCompat
+    implementation 'com.google.android.material:material:' + rootProject.ext.materialLibraryVersion
     implementation project(':library')
 
     testImplementation 'junit:junit:' + rootProject.ext.junitVersion
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
 }

@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-beta01'
+        classpath 'com.android.tools.build:gradle:3.6.0-beta02'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,12 +25,18 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 28
+    compileSdkVersion = 29
     buildToolsVersion = "28.0.3"
     minSdkVersion = 14
-    targetSdkVersion = 28
+    targetSdkVersion = 29
 
-    supportLibraryVersion = "28.0.0"
+    androidXVersions = [
+        appCompat  : '1.1.0',
+        annotation : '1.1.0',
+        core       : '1.2.0-beta01',
+    ]
+
+    materialLibraryVersion = "1.2.0-alpha01"
 
     junitVersion = "4.13-beta-2"
 }

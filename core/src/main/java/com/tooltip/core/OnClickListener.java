@@ -24,7 +24,7 @@
 
 package com.tooltip.core;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Interface definition for a callback to be invoked when a Tooltip is clicked.

@@ -25,16 +25,18 @@
 package com.tooltip;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 
 import com.tooltip.core.TooltipActionMenuItemView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * @deprecated Use {@link TooltipActionMenuItemView} instead.
  */
+@Deprecated
 public class TooltipActionView extends TooltipActionMenuItemView {
 
     public TooltipActionView(Context context) {

@@ -29,15 +29,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuItemImpl;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -46,6 +37,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.core.widget.TextViewCompat;
 
 /**
  * Created by Viнt@rь on 14.09.2016

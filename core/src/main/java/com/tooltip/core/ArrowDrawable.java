@@ -32,8 +32,9 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
 import android.view.Gravity;
+
+import androidx.annotation.ColorInt;
 
 /**
  * Implementation arrow drawable for {@link Tooltip}

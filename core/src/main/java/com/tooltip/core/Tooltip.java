@@ -31,13 +31,6 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewTreeObserverCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +41,14 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 
 /**
  * Base {@code Tooltip} implementation

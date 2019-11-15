@@ -157,7 +157,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:1.0.0-alpha03-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:1.0.0-alpha04-SNAPSHOT'
 }
 ```
 ### Maven
@@ -165,10 +165,13 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>1.0.0-alpha03-SNAPSHOT</version>
+    <version>1.0.0-alpha04-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
+### 1.0.0-alpha04-SNAPSHOT
+- Fixed [#57](https://github.com/ViHtarb/Tooltip/issues/57) issue
+
 ### 1.0.0-alpha03-SNAPSHOT
 - Migrated to androidx
 

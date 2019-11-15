@@ -268,7 +268,7 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
          * @return This {@link Builder} object to allow for chaining of calls to set methods
          */
         public Builder setDrawableEnd(@DrawableRes int resId) {
-            return setDrawableBottom(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
+            return setDrawableEnd(ResourcesCompat.getDrawable(mContext.getResources(), resId, null));
         }
 
         /**

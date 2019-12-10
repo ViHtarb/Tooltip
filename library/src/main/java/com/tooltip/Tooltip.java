@@ -112,7 +112,8 @@ public final class Tooltip {
         TextView textView = new TextView(builder.mContext);
 
         TextViewCompat.setTextAppearance(textView, builder.mTextAppearance);
-        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(textView, builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(textView, builder.mDrawableStart, builder.mDrawableTop,
+            builder.mDrawableEnd, builder.mDrawableBottom);
 
         textView.setText(builder.mText);
         ViewCompat.setPaddingRelative(textView, builder.mPaddingStart, builder.mPaddingTop, builder.mPaddingEnd, builder.mPaddingBottom);
@@ -132,7 +133,8 @@ public final class Tooltip {
             textView.setTextColor(builder.mTextColor);
         }
 
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        LinearLayout.LayoutParams textViewParams =
+            new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
         textViewParams.gravity = Gravity.CENTER;
         textView.setLayoutParams(textViewParams);
 
@@ -148,7 +150,8 @@ public final class Tooltip {
 
         if (builder.isArrowEnabled) {
             mArrowView = new ImageView(builder.mContext);
-            mArrowView.setImageDrawable(builder.mArrowDrawable == null ? new ArrowDrawable(builder.mBackgroundColor, mGravity) : builder.mArrowDrawable);
+            mArrowView.setImageDrawable(
+                builder.mArrowDrawable == null ? new ArrowDrawable(builder.mBackgroundColor, mGravity) : builder.mArrowDrawable);
 
             LinearLayout.LayoutParams arrowLayoutParams;
             if (Gravity.isVertical(mGravity)) {
@@ -159,7 +162,8 @@ public final class Tooltip {
             arrowLayoutParams.gravity = Gravity.CENTER;
             mArrowView.setLayoutParams(arrowLayoutParams);
 
-            if (mGravity == Gravity.TOP || mGravity == Gravity.getAbsoluteGravity(Gravity.START, ViewCompat.getLayoutDirection(mAnchorView))) {
+            if (mGravity == Gravity.TOP || mGravity == Gravity.getAbsoluteGravity(Gravity.START,
+                ViewCompat.getLayoutDirection(mAnchorView))) {
                 mContentView.addView(textView);
                 mContentView.addView(mArrowView);
             } else {
@@ -213,7 +217,9 @@ public final class Tooltip {
                 @Override
                 public void run() {
                     if (mAnchorView.isShown()) {
-                        mPopupWindow.showAsDropDown(mAnchorView);
+                        PointF location = calculateLocation();
+                        mPopupWindow.showAsDropDown(mAnchorView, (int) location.x, (int) location.y, mGravity);
+                        updateLocation();
                     } else {
                         Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
                     }
@@ -320,9 +326,8 @@ public final class Tooltip {
                 mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
             }
 
-            PointF location = calculateLocation();
             mPopupWindow.setClippingEnabled(true);
-            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
+            updateLocation();
         }
     };
 
@@ -369,10 +374,14 @@ public final class Tooltip {
     private final ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
         @Override
         public void onScrollChanged() {
-            PointF location = calculateLocation();
-            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
+            updateLocation();
         }
     };
+
+    private void updateLocation() {
+        PointF location = calculateLocation();
+        mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
+    }
 
     private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener() {
         @Override
@@ -643,7 +652,6 @@ public final class Tooltip {
          * Sets {@link Tooltip} padding
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
-         *
          * @deprecated Use {@link #setPadding(int)} instead
          */
         @Deprecated
@@ -663,7 +671,6 @@ public final class Tooltip {
             mPaddingBottom = bottom;
             return this;
         }
-
 
         /**
          * Sets {@link Tooltip} gravity

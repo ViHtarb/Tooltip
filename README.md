@@ -157,7 +157,7 @@ maven {
 ### Gradle
 ```java
 dependencies {
-    compile 'com.github.vihtarb:tooltip:1.0.0-alpha01-SNAPSHOT'
+    compile 'com.github.vihtarb:tooltip:1.0.0-alpha04-SNAPSHOT'
 }
 ```
 ### Maven
@@ -165,12 +165,24 @@ dependencies {
 <dependency>
     <groupId>com.github.vihtarb</groupId>
     <artifactId>tooltip</artifactId>
-    <version>1.0.0-alpha01-SNAPSHOT</version>
+    <version>1.0.0-alpha04-SNAPSHOT</version>
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
-### 1.0.0-alpha01-SNAPSHOT
+### 1.0.0-alpha04-SNAPSHOT
+- Fixed [#57](https://github.com/ViHtarb/Tooltip/issues/57) issue
 
+### 1.0.0-alpha03-SNAPSHOT
+- Migrated to androidx
+
+### 1.0.0-alpha02-SNAPSHOT
+- Migrated to Java 1.8
+- Fixed simple Tooltip `Builder.setText(int)` method
+- Implemented sets Tooltip `setFocusable(isCancelable)` issue [#55](https://github.com/ViHtarb/Tooltip/issues/55)
+
+### 1.0.0-alpha01-SNAPSHOT
+- Library splitted to `core` and `default Tooltip` modules.
+- First version with a primitive implementation of customization. From this version you can customize tooltip as you need. To do this you need extends from `core.Tooltip` and `core.Tooltip.Builder` classes and implement `core.Tooltip.createContentView` method. For example look to `detault Tooltip` implementation.
 
 ## Future Work
 - Animations

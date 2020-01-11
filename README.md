@@ -53,21 +53,7 @@ dependencies {
 - Library splitted to `core` and `default Tooltip` modules.
 - First version with a primitive implementation of customization. From this version you can customize tooltip as you need. To do this you need extends from `core.Tooltip` and `core.Tooltip.Builder` classes and implement `core.Tooltip.createContentView` method. For example look to `detault Tooltip` implementation.
 
-### Gradle
-```java
-dependencies {
-    compile 'com.github.vihtarb:tooltip:0.2.0'
-}
-```
-### Maven
-```html
-<dependency>
-    <groupId>com.github.vihtarb</groupId>
-    <artifactId>tooltip</artifactId>
-    <version>0.2.0</version>
-</dependency>
-```
-## Usage
+## USAGE
 ```java
 Tooltip tooltip = new Tooltip.Builder(anchorView)
         .setText("Hello tooltip")
@@ -165,6 +151,21 @@ Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
 - `<attr name="android:lineSpacingExtra"/>`
 - `<attr name="android:lineSpacingMultiplier"/>`
 
+## RELEASES
+### Gradle
+```java
+dependencies {
+    compile 'com.github.vihtarb:tooltip:0.2.0'
+}
+```
+### Maven
+```html
+<dependency>
+    <groupId>com.github.vihtarb</groupId>
+    <artifactId>tooltip</artifactId>
+    <version>0.2.0</version>
+</dependency>
+```
 ## Changelog
 ### 0.2.0
 - Implemented setting compound drawables(and drawables padding) by `Builder` methods `setDrawableStart`, `setDrawableEnd`, `setDrawableBottom`, `setDrawableTop` and for padding `setDrawablePadding(int)` or styleable attributes `android:drawableStart`, `android:drawableEnd`, `android:drawableBottom`, `android:drawableTop` and for padding `android:drawablePadding` (@antoninovitale)

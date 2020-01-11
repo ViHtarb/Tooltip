@@ -4,16 +4,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="tooltipStyle">@style/Tooltip2</item>
     </style>
 
     <style name="Tooltip">
         <item name="android:textSize">16sp</item>
-        <item name="backgroundColor">@color/colorAccent</item>
+        <item name="backgroundColor">?colorAccent</item>
         <item name="cornerRadius">10dp</item>
-        <!--<item name="android:drawableTop">@drawable/ic_android_black_24dp</item>-->
         <item name="android:drawableStart">@drawable/ic_android_black_24dp</item>
-        <!--<item name="android:drawableBottom">@drawable/ic_android_black_24dp</item>-->
-        <!--<item name="android:drawableEnd">@drawable/ic_android_black_24dp</item>-->
         <item name="android:drawablePadding">10dp</item>
     </style>
 
@@ -22,9 +20,14 @@
         <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingExtra">5dp</item>
-        <item name="backgroundColor">@color/colorPrimary</item>
+        <item name="backgroundColor">?colorPrimary</item>
         <item name="cornerRadius">10dp</item>
+        <item name="textAppearance">@style/Tooltip2.TextAppearance</item>
 <!--        <item name="arrowWidth">48dp</item>
         <item name="arrowHeight">48dp</item>-->
+    </style>
+
+    <style name="Tooltip2.TextAppearance" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/greatvibes</item>
     </style>
 </resources>

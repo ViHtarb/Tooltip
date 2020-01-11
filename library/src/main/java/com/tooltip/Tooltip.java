@@ -37,24 +37,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.widget.TextViewCompat;
 
 /**
  * Simple text {@code Tooltip} implementation
  */
 public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
-    private static final String TAG = "Tooltip";
-
     private Tooltip(Builder builder) {
         super(builder);
     }
@@ -62,16 +60,17 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
     @NonNull
     @Override
     protected View createContentView(@NonNull Builder builder) {
-        TextView textView = new TextView(mContext);
-
-        TextViewCompat.setTextAppearance(textView, builder.mTextAppearance);
-        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(textView, builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
-
+        AppCompatTextView textView = new AppCompatTextView(mContext);
+        textView.setTextAppearance(mContext, builder.mTextAppearance);
+        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
         textView.setText(builder.mText);
         textView.setPadding(builder.mPadding, builder.mPadding, builder.mPadding, builder.mPadding);
         textView.setLineSpacing(builder.mLineSpacingExtra, builder.mLineSpacingMultiplier);
-        textView.setTypeface(builder.mTypeface, builder.mTextStyle);
         textView.setCompoundDrawablePadding(builder.mDrawablePadding);
+
+        if (builder.mTextStyle >= 0) {
+            textView.setTypeface(Typeface.create(textView.getTypeface(), builder.mTextStyle));
+        }
 
         if (builder.mMaxWidth >= 0) {
             textView.setMaxWidth(builder.mMaxWidth);
@@ -123,29 +122,36 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
 
         private CharSequence mText;
         private ColorStateList mTextColor;
-        private Typeface mTypeface = Typeface.DEFAULT;
 
         public Builder(@NonNull MenuItem anchorMenuItem) {
             super(anchorMenuItem);
         }
 
-        public Builder(@NonNull MenuItem anchorMenuItem, int resId) {
-            super(anchorMenuItem, resId);
+        public Builder(@NonNull MenuItem anchorMenuItem, @StyleRes int styleId) {
+            super(anchorMenuItem, styleId);
+        }
+
+        public Builder(@NonNull MenuItem anchorMenuItem, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+            super(anchorMenuItem, defStyleAttr, defStyleRes);
         }
 
         public Builder(@NonNull View anchorView) {
             super(anchorView);
         }
 
-        public Builder(@NonNull View anchorView, int resId) {
-            super(anchorView, resId);
+        public Builder(@NonNull View anchorView, @StyleRes int styleId) {
+            super(anchorView, styleId);
+        }
+
+        public Builder(@NonNull View anchorView, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+            super(anchorView, defStyleAttr, defStyleRes);
         }
 
         @Override
-        protected void init(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
-            super.init(context, anchorView, resId);
+        protected void init(@NonNull Context context, @NonNull View anchorView, @AttrRes int detStyleAttr, @StyleRes int defStyleRes) {
+            super.init(context, anchorView, detStyleAttr, defStyleRes);
 
-            TypedArray a = context.obtainStyledAttributes(resId, R.styleable.Tooltip);
+            TypedArray a = mContext.obtainStyledAttributes(null, R.styleable.Tooltip, detStyleAttr, defStyleRes);
 
             mBackgroundColor = a.getColor(com.tooltip.R.styleable.Tooltip_backgroundColor, Color.GRAY);
             mCornerRadius = a.getDimensionPixelSize(com.tooltip.R.styleable.Tooltip_cornerRadius, -1);
@@ -163,10 +169,6 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
             mTextStyle = a.getInteger(R.styleable.Tooltip_android_textStyle, -1);
             mLineSpacingExtra = a.getDimensionPixelSize(R.styleable.Tooltip_android_lineSpacingExtra, 0);
             mLineSpacingMultiplier = a.getFloat(R.styleable.Tooltip_android_lineSpacingMultiplier, mLineSpacingMultiplier);
-
-            final String fontFamily = a.getString(R.styleable.Tooltip_android_fontFamily);
-            final int typefaceIndex = a.getInt(R.styleable.Tooltip_android_typeface, -1);
-            mTypeface = getTypefaceFromAttr(fontFamily, typefaceIndex, mTextStyle);
 
             a.recycle();
         }
@@ -416,9 +418,11 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
          * Sets {@link Tooltip} text typeface
          *
          * @return This {@link Builder} object to allow for chaining of calls to set methods
+         *
+         * @deprecated Use TextAppearance_typeface instead.
          */
+        @Deprecated
         public Builder setTypeface(Typeface typeface) {
-            mTypeface = typeface;
             return this;
         }
 
@@ -426,28 +430,6 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
         @Override
         public Tooltip build() {
             return new Tooltip(this);
-        }
-
-        private Typeface getTypefaceFromAttr(String familyName, int typefaceIndex, int styleIndex) {
-            Typeface tf = null;
-            if (familyName != null) {
-                tf = Typeface.create(familyName, styleIndex);
-                if (tf != null) {
-                    return tf;
-                }
-            }
-            switch (typefaceIndex) {
-                case 1: // SANS
-                    tf = Typeface.SANS_SERIF;
-                    break;
-                case 2: // SERIF
-                    tf = Typeface.SERIF;
-                    break;
-                case 3: // MONOSPACE
-                    tf = Typeface.MONOSPACE;
-                    break;
-            }
-            return tf;
         }
     }
 }

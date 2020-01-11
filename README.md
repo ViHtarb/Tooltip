@@ -169,6 +169,12 @@ dependencies {
 </dependency>
 ```
 ## Changelog-SNAPSHOTS
+### 1.0.0-alpha05-SNAPSHOT
+- Fixed [#58](https://github.com/ViHtarb/Tooltip/issues/57) issue
+- Removed `android:fontFamily` and `android:typeface` attributes support for simple Tooltip. Use `textAppearance` instead
+- Removed deprecated classes from simple `Tooltip` module
+- Implemented `tooltipStyle` attribute
+
 ### 1.0.0-alpha04-SNAPSHOT
 - Fixed [#57](https://github.com/ViHtarb/Tooltip/issues/57) issue
 

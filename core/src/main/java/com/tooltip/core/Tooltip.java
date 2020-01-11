@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
@@ -380,31 +381,39 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         private OnDismissListener mOnDismissListener;
 
         public Builder(@NonNull MenuItem anchorMenuItem) {
-            this(anchorMenuItem, 0);
+            this(anchorMenuItem, R.attr.tooltipStyle, 0);
         }
 
-        public Builder(@NonNull MenuItem anchorMenuItem, @StyleRes int resId) {
+        public Builder(@NonNull MenuItem anchorMenuItem, @StyleRes int styleId) {
+            this(anchorMenuItem, 0, styleId);
+        }
+
+        public Builder(@NonNull MenuItem anchorMenuItem, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
             View anchorView = anchorMenuItem.getActionView();
             if (anchorView != null) {
-                init(anchorView.getContext(), anchorView, resId);
+                init(anchorView.getContext(), anchorView, defStyleAttr, defStyleRes);
             } else {
-                throw new NullPointerException("anchor menuItem haven`t actionViewClass");
+                throw new NullPointerException("anchorMenuItem haven`t actionViewClass");
             }
         }
 
         public Builder(@NonNull View anchorView) {
-            this(anchorView, 0);
+            this(anchorView, R.attr.tooltipStyle, 0);
         }
 
-        public Builder(@NonNull View anchorView, @StyleRes int resId) {
-            init(anchorView.getContext(), anchorView, resId);
+        public Builder(@NonNull View anchorView, @StyleRes int styleId) {
+            this(anchorView, 0, styleId);
         }
 
-        protected void init(@NonNull Context context, @NonNull View anchorView, @StyleRes int resId) {
+        public Builder(@NonNull View anchorView, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+            init(anchorView.getContext(), anchorView, defStyleAttr, defStyleRes);
+        }
+
+        protected void init(@NonNull Context context, @NonNull View anchorView, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
             mContext = context;
             mAnchorView = anchorView;
 
-            TypedArray a = context.obtainStyledAttributes(resId, R.styleable.Tooltip);
+            TypedArray a = mContext.obtainStyledAttributes(null, R.styleable.Tooltip, defStyleAttr, defStyleRes);
 
             isCancelable = a.getBoolean(R.styleable.Tooltip_cancelable, false);
             isDismissOnClick = a.getBoolean(R.styleable.Tooltip_dismissOnClick, false);

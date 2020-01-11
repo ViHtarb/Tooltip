@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 .setText("TESTTTTTTTTTTTTTTTTT");
         builderContainer.show();*/
 
-        Tooltip.Builder builder = new Tooltip.Builder(binding.buttonTest, R.style.Tooltip2)
+        Tooltip.Builder builder = new Tooltip.Builder(binding.buttonTest)
                 .setGravity(Gravity.BOTTOM)
                 .setCancelable(false)
                 .setCornerRadius(20f)
                 .setText("TEST");
         Tooltip test = builder.show();
         binding.buttonTest.setOnClickListener(v -> {
-            Tooltip.Builder builder1 = new Tooltip.Builder(v, R.style.Tooltip2)
+            Tooltip.Builder builder1 = new Tooltip.Builder(binding.buttonTest)
                     .setCancelable(true)
                     .setDismissOnClick(true)
                     .setCornerRadius(20f)
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         text.setSpan(span, 31, 32, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         MenuItem menuItem = menu.findItem(R.id.action_test2);
-        Tooltip.Builder builder = new Tooltip.Builder(menuItem)
+        Tooltip.Builder builder = new Tooltip.Builder(menuItem, R.style.Tooltip)
                 .setCornerRadius(10f)
                 .setGravity(Gravity.BOTTOM)
                 .setText(text);

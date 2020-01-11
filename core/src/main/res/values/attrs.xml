@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="tooltipStyle" format="reference"/>
+
     <declare-styleable name="Tooltip">
         <attr name="cancelable" format="boolean"/>
         <attr name="dismissOnClick" format="boolean"/>

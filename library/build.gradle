@@ -28,6 +28,6 @@ dependencies {
     api project(':core')
 
     testImplementation 'junit:junit:' + rootProject.ext.junitVersion
-    androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
 }

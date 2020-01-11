@@ -15,8 +15,6 @@
         <attr name="android:textSize"/>
         <attr name="android:textColor"/>
         <attr name="android:textStyle"/>
-        <attr name="android:fontFamily"/>
-        <attr name="android:typeface"/>
         <attr name="android:lineSpacingExtra"/>
         <attr name="android:lineSpacingMultiplier"/>
     </declare-styleable>

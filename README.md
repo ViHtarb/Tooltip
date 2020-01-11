@@ -10,6 +10,49 @@ Simple to use customizable Android Tooltips library based on [PopupWindow](http:
 ![Demo](https://raw.githubusercontent.com/ViHtarb/Tooltip/master/art/demo.gif)
 
 ## Getting started
+## SNAPSHOTS
+For using `snapshots` of development versions you need include the snapshots repo by adding the snapshot build to a dependent project. To do this add the following to your `build.gradle` project(not module) file
+```java
+maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+}
+```
+### Gradle
+```java
+dependencies {
+    compile 'com.github.vihtarb:tooltip:1.0.0-alpha05-SNAPSHOT'
+}
+```
+### Maven
+```html
+<dependency>
+    <groupId>com.github.vihtarb</groupId>
+    <artifactId>tooltip</artifactId>
+    <version>1.0.0-alpha05-SNAPSHOT</version>
+</dependency>
+```
+## Changelog-SNAPSHOTS
+### 1.0.0-alpha05-SNAPSHOT
+- Fixed [#58](https://github.com/ViHtarb/Tooltip/issues/57) issue
+- Removed `android:fontFamily` and `android:typeface` attributes support for simple Tooltip. Use `textAppearance` instead
+- Removed deprecated classes from simple `Tooltip` module
+- Implemented `tooltipStyle` attribute
+
+### 1.0.0-alpha04-SNAPSHOT
+- Fixed [#57](https://github.com/ViHtarb/Tooltip/issues/57) issue
+
+### 1.0.0-alpha03-SNAPSHOT
+- Migrated to androidx
+
+### 1.0.0-alpha02-SNAPSHOT
+- Migrated to Java 1.8
+- Fixed simple Tooltip `Builder.setText(int)` method
+- Implemented sets Tooltip `setFocusable(isCancelable)` issue [#55](https://github.com/ViHtarb/Tooltip/issues/55)
+
+### 1.0.0-alpha01-SNAPSHOT
+- Library splitted to `core` and `default Tooltip` modules.
+- First version with a primitive implementation of customization. From this version you can customize tooltip as you need. To do this you need extends from `core.Tooltip` and `core.Tooltip.Builder` classes and implement `core.Tooltip.createContentView` method. For example look to `detault Tooltip` implementation.
+
 ### Gradle
 ```java
 dependencies {
@@ -146,49 +189,6 @@ Tooltip tooltip = new Tooltip.Builder(anchorView, R.style.tooltip)
 - Reimplemented `TooltipActionView` class
 - Removed `Context context` argument in `Builder` constructors with second argument `MenuItem anchorMenuItem`
 - Fixed `Activity has leaked window`
-
-## SNAPSHOTS
-For using `snapshots` of development versions you need include the snapshots repo by adding the snapshot build to a dependent project. To do this add the following to your `build.gradle` project(not module) file
-```java
-maven {
-    url "https://oss.sonatype.org/content/repositories/snapshots"
-}
-```
-### Gradle
-```java
-dependencies {
-    compile 'com.github.vihtarb:tooltip:1.0.0-alpha04-SNAPSHOT'
-}
-```
-### Maven
-```html
-<dependency>
-    <groupId>com.github.vihtarb</groupId>
-    <artifactId>tooltip</artifactId>
-    <version>1.0.0-alpha04-SNAPSHOT</version>
-</dependency>
-```
-## Changelog-SNAPSHOTS
-### 1.0.0-alpha05-SNAPSHOT
-- Fixed [#58](https://github.com/ViHtarb/Tooltip/issues/57) issue
-- Removed `android:fontFamily` and `android:typeface` attributes support for simple Tooltip. Use `textAppearance` instead
-- Removed deprecated classes from simple `Tooltip` module
-- Implemented `tooltipStyle` attribute
-
-### 1.0.0-alpha04-SNAPSHOT
-- Fixed [#57](https://github.com/ViHtarb/Tooltip/issues/57) issue
-
-### 1.0.0-alpha03-SNAPSHOT
-- Migrated to androidx
-
-### 1.0.0-alpha02-SNAPSHOT
-- Migrated to Java 1.8
-- Fixed simple Tooltip `Builder.setText(int)` method
-- Implemented sets Tooltip `setFocusable(isCancelable)` issue [#55](https://github.com/ViHtarb/Tooltip/issues/55)
-
-### 1.0.0-alpha01-SNAPSHOT
-- Library splitted to `core` and `default Tooltip` modules.
-- First version with a primitive implementation of customization. From this version you can customize tooltip as you need. To do this you need extends from `core.Tooltip` and `core.Tooltip.Builder` classes and implement `core.Tooltip.createContentView` method. For example look to `detault Tooltip` implementation.
 
 ## Future Work
 - Animations

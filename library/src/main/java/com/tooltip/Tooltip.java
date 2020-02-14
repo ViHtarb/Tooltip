@@ -48,6 +48,7 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 
 /**
  * Simple text {@code Tooltip} implementation
@@ -62,11 +63,11 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
     protected View createContentView(@NonNull Builder builder) {
         AppCompatTextView textView = new AppCompatTextView(mContext);
         textView.setTextAppearance(mContext, builder.mTextAppearance);
-        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
         textView.setText(builder.mText);
         textView.setPadding(builder.mPadding, builder.mPadding, builder.mPadding, builder.mPadding);
         textView.setLineSpacing(builder.mLineSpacingExtra, builder.mLineSpacingMultiplier);
         textView.setCompoundDrawablePadding(builder.mDrawablePadding);
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(textView, builder.mDrawableStart, builder.mDrawableTop, builder.mDrawableEnd, builder.mDrawableBottom);
 
         if (builder.mTextStyle >= 0) {
             textView.setTypeface(Typeface.create(textView.getTypeface(), builder.mTextStyle));

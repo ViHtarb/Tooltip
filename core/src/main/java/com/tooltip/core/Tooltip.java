@@ -31,6 +31,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.view.ViewTreeObserverCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -203,7 +204,11 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
             mAnchorView.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
             mAnchorView.post(() -> {
                 if (mAnchorView.isShown()) {
-                    mPopupWindow.showAsDropDown(mAnchorView);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        mPopupWindow.showAtLocation(mAnchorView, Gravity.NO_GRAVITY, 0, 0);
+                    } else {
+                        mPopupWindow.showAsDropDown(mAnchorView);
+                    }
                 } else {
                     Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
                 }

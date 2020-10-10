@@ -85,7 +85,7 @@ public final class Tooltip extends com.tooltip.core.Tooltip<Tooltip.Builder> {
             textView.setTextColor(builder.mTextColor);
         }
 
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textViewParams.gravity = Gravity.CENTER;
         textView.setLayoutParams(textViewParams);
 

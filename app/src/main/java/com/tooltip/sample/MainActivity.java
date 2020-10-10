@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         builderContainer.show();*/
 
         Tooltip.Builder builder = new Tooltip.Builder(binding.buttonTest)
-                .setGravity(Gravity.BOTTOM)
+                .setGravity(Gravity.START)
                 .setCancelable(false)
                 .setCornerRadius(20f)
                 .setText("TEST");
@@ -50,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
                     .setCornerRadius(20f)
                     .setText(R.string.tooltip_hello_world);
             builder1.show();
+
+/*            Balloon balloon = new Balloon.Builder(v.getContext())
+                    .setArrowOrientation(ArrowOrientation.RIGHT)
+                    .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+                    .setArrowVisible(true)
+                    //.setArrowPosition(0.5f)
+                    .setTextSize(15f)
+                    //.setCornerRadius(4f)
+                    .setAlpha(0.9f)
+                    .setText("TEST sdasda sdada asdasd asd")
+                    .setLifecycleOwner(MainActivity.this)
+                    .build();
+            balloon.showAlignLeft(v);*/
         });
 
         binding.recyclerView.setAdapter(new RecyclerAdapter(this));

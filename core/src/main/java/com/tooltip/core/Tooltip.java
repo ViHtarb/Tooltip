@@ -27,11 +27,9 @@ package com.tooltip.core;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PointF;
-import android.graphics.RectF;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.view.ViewTreeObserverCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -56,11 +54,12 @@ import androidx.core.view.ViewCompat;
  * Base {@code Tooltip} implementation
  */
 public abstract class Tooltip<T extends Tooltip.Builder> {
+    private static final int MAX_POPUP_WIDTH_PERCENT = 80;
     private static final String TAG = "Tooltip";
 
     private final boolean isDismissOnClick;
 
-    private final int mGravity;
+    private int mGravity;
 
     private final float mMargin;
 
@@ -76,12 +75,13 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     private LinearLayout mContentView;
     private ImageView mArrowView;
 
-    protected Tooltip(Builder builder) {
+    protected Tooltip(T builder) {
         isDismissOnClick = builder.isDismissOnClick;
 
         mContext = builder.mContext;
 
-        mGravity = Gravity.getAbsoluteGravity(builder.mGravity, ViewCompat.getLayoutDirection(builder.mAnchorView));
+        //mGravity = Gravity.getAbsoluteGravity(builder.mGravity, ViewCompat.getLayoutDirection(builder.mAnchorView));
+        mGravity = builder.mGravity;
         mMargin = builder.mMargin;
         mAnchorView = builder.mAnchorView;
         mOnClickListener = builder.mOnClickListener;
@@ -91,23 +91,27 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         mContentView = createContentViewInternal(builder);
 
         mPopupWindow = new PopupWindow(mContentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setClippingEnabled(false);
+        //mPopupWindow.setClippingEnabled(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         mPopupWindow.setOutsideTouchable(builder.isCancelable);
         mPopupWindow.setFocusable(builder.isCancelable);
         mPopupWindow.setOnDismissListener(() -> {
-            mAnchorView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
             mAnchorView.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
             if (mOnDismissListener != null) {
                 mOnDismissListener.onDismiss();
             }
         });
+
+/*        mAnchorView.post(() -> {
+            mContentView = createContentViewInternal(builder);
+            mPopupWindow.setContentView(mContentView);
+        });*/
     }
 
     @SuppressWarnings("unchecked")
-    private LinearLayout createContentViewInternal(Builder builder) {
-        View customContentView = createContentView((T) builder);
+    private LinearLayout createContentViewInternal(T builder) {
+        View customContentView = createContentView(builder);
 
         LinearLayout contentView = new LinearLayout(builder.mContext);
         contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -118,7 +122,11 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
 
             LinearLayout.LayoutParams arrowLayoutParams;
             if (builder.mArrowDrawable == null) {
-                mArrowView.setImageDrawable(new ArrowDrawable(getArrowColor((T) builder), mGravity));
+                mAnchorView.post(() -> {
+                    int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, ViewCompat.getLayoutDirection(mAnchorView));
+                    mArrowView.setImageDrawable(new ArrowDrawable(getArrowColor(builder), absoluteGravity));
+                });
+                //mArrowView.setImageDrawable(new ArrowDrawable(getArrowColor(builder), mGravity));
 
                 if (Gravity.isVertical(mGravity)) {
                     arrowLayoutParams = new LinearLayout.LayoutParams((int) builder.mArrowWidth, (int) builder.mArrowHeight);
@@ -133,7 +141,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
             arrowLayoutParams.gravity = Gravity.CENTER;
             mArrowView.setLayoutParams(arrowLayoutParams);
 
-            if (mGravity == Gravity.TOP || mGravity == Gravity.getAbsoluteGravity(Gravity.START, ViewCompat.getLayoutDirection(mAnchorView))) {
+            if (mGravity == Gravity.TOP || mGravity == Gravity.START) {
                 contentView.addView(customContentView);
                 contentView.addView(mArrowView);
             } else {
@@ -146,14 +154,14 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
 
         int padding = (int) Utils.dpToPx(5);
         switch (mGravity) {
-            case Gravity.LEFT:
+            case Gravity.START:
                 contentView.setPadding(padding, 0, 0, 0);
                 break;
             case Gravity.TOP:
             case Gravity.BOTTOM:
                 contentView.setPadding(padding, 0, padding, 0);
                 break;
-            case Gravity.RIGHT:
+            case Gravity.END:
                 contentView.setPadding(0, 0, padding, 0);
                 break;
         }
@@ -199,16 +207,60 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
      */
     public void show() {
         if (!isShowing()) {
-            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
-
             mAnchorView.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
             mAnchorView.post(() -> {
                 if (mAnchorView.isShown()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        mPopupWindow.showAtLocation(mAnchorView, Gravity.NO_GRAVITY, 0, 0);
-                    } else {
-                        mPopupWindow.showAsDropDown(mAnchorView);
+                    if (mArrowView != null) {
+                        mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
                     }
+
+                    int layoutDirection = ViewCompat.getLayoutDirection(mAnchorView);
+
+                    mContentView.setMeasureWithLargestChildEnabled(true);
+                    mContentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    int measuredWidth = mContentView.getMeasuredWidth();
+                    int measuredHeight = mContentView.getMeasuredHeight();
+
+                    int maxWidth = Utils.getScreenWidth(mContext);
+                    switch (mGravity) {
+                        case Gravity.START:
+                            maxWidth = (int) mAnchorView.getX();
+                            break;
+                        case Gravity.END:
+                            maxWidth = maxWidth - ((int) mAnchorView.getX() + mAnchorView.getMeasuredWidth());
+                            break;
+                    }
+
+                    measuredWidth = Math.min(measuredWidth, maxWidth * MAX_POPUP_WIDTH_PERCENT / 100);
+                    mPopupWindow.setWidth(measuredWidth);
+
+                    int xoff, yoff;
+                    xoff = yoff = (int) mMargin;
+
+                    switch (mGravity) {
+                        case Gravity.START:
+                            xoff = measuredWidth + xoff;
+                            if (layoutDirection == ViewCompat.LAYOUT_DIRECTION_LTR) {
+                                xoff = -xoff;
+                            }
+                            yoff = (-mAnchorView.getMeasuredHeight() / 2) - (measuredHeight / 2) + yoff;
+                            break;
+                        case Gravity.END:
+                            xoff = mAnchorView.getMeasuredWidth() + (int) Utils.dpToPx(8) + xoff;
+                            if (layoutDirection != ViewCompat.LAYOUT_DIRECTION_LTR) {
+                                xoff = -xoff;
+                            }
+                            yoff = (-mAnchorView.getMeasuredHeight() / 2) - (measuredHeight / 2) + yoff;
+                            break;
+                        case Gravity.TOP:
+                            xoff = (mAnchorView.getMeasuredWidth() / 2) - (measuredWidth / 2);
+                            yoff = -mAnchorView.getMeasuredHeight() / 2 - measuredHeight - yoff;
+                            break;
+                        case Gravity.BOTTOM:
+                            xoff = (mAnchorView.getMeasuredWidth() / 2) - (measuredWidth / 2);
+                            break;
+                    }
+                    mPopupWindow.showAsDropDown(mAnchorView, xoff, yoff);
                 } else {
                     Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed");
                 }
@@ -254,62 +306,14 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
         mOnDismissListener = listener;
     }
 
-    private PointF calculateLocation() {
-        PointF location = new PointF();
-
-        final RectF anchorRect = Utils.calculateRectInWindow(mAnchorView);
-        final PointF anchorCenter = new PointF(anchorRect.centerX(), anchorRect.centerY());
-
-        switch (mGravity) {
-            case Gravity.LEFT:
-                location.x = anchorRect.left - mContentView.getWidth() - mMargin;
-                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
-                break;
-            case Gravity.RIGHT:
-                location.x = anchorRect.right + mMargin;
-                location.y = anchorCenter.y - mContentView.getHeight() / 2f;
-                break;
-            case Gravity.TOP:
-                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.top - mContentView.getHeight() - mMargin;
-                break;
-            case Gravity.BOTTOM:
-                location.x = anchorCenter.x - mContentView.getWidth() / 2f;
-                location.y = anchorRect.bottom + mMargin;
-                break;
-        }
-        return location;
-    }
-
-    private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-
-        @Override
-        public void onGlobalLayout() {
-            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
-
-            final ViewTreeObserver vto = mAnchorView.getViewTreeObserver();
-            if (vto != null) {
-                vto.addOnScrollChangedListener(mOnScrollChangedListener);
-            }
-
-            if (mArrowView != null) {
-                mContentView.getViewTreeObserver().addOnGlobalLayoutListener(mArrowLayoutListener);
-            }
-
-            PointF location = calculateLocation();
-            mPopupWindow.setClippingEnabled(true);
-            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
-        }
-    };
-
     private final ViewTreeObserver.OnGlobalLayoutListener mArrowLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
 
         @Override
         public void onGlobalLayout() {
             ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
 
-            RectF anchorRect = Utils.calculateRectOnScreen(mAnchorView);
-            RectF contentViewRect = Utils.calculateRectOnScreen(mContentView);
+            Rect anchorRect = Utils.calculateRectOnScreen(mAnchorView);
+            Rect contentViewRect = Utils.calculateRectOnScreen(mContentView);
             float x, y;
             if (Gravity.isVertical(mGravity)) {
                 x = mContentView.getPaddingLeft() + Utils.dpToPx(2);
@@ -335,20 +339,13 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
                         y = newY;
                     }
                 }
+                int absoluteGravity = Gravity.getAbsoluteGravity(mGravity, ViewCompat.getLayoutDirection(mAnchorView));
+
                 x = mArrowView.getLeft();
-                x = x + (mGravity == Gravity.LEFT ? -1 : +1);
+                x = x + (absoluteGravity == Gravity.LEFT ? -1 : +1);
             }
             mArrowView.setX(x);
             mArrowView.setY(y);
-        }
-    };
-
-    private final ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
-
-        @Override
-        public void onScrollChanged() {
-            PointF location = calculateLocation();
-            mPopupWindow.update((int) location.x, (int) location.y, mPopupWindow.getWidth(), mPopupWindow.getHeight());
         }
     };
 
@@ -366,24 +363,25 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
     };
 
     public static abstract class Builder<B extends Builder> {
-        private boolean isDismissOnClick;
-        private boolean isCancelable;
-        private boolean isArrowEnabled;
+        boolean isDismissOnClick;
+        boolean isCancelable;
+        boolean isArrowEnabled;
 
-        private int mGravity;
+        int mGravity;
 
-        private float mArrowHeight;
-        private float mArrowWidth;
-        private float mMargin;
+        float mArrowHeight;
+        float mArrowWidth;
+        float mMargin;
 
-        private Drawable mArrowDrawable;
+        Drawable mArrowDrawable;
+
+        View mAnchorView;
+
+        OnClickListener mOnClickListener;
+        OnLongClickListener mOnLongClickListener;
+        OnDismissListener mOnDismissListener;
 
         protected Context mContext;
-        private View mAnchorView;
-
-        private OnClickListener mOnClickListener;
-        private OnLongClickListener mOnLongClickListener;
-        private OnDismissListener mOnDismissListener;
 
         public Builder(@NonNull MenuItem anchorMenuItem) {
             this(anchorMenuItem, R.attr.tooltipStyle, 0);

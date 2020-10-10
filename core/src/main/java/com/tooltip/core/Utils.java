@@ -24,9 +24,15 @@
 
 package com.tooltip.core;
 
+import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.RectF;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
@@ -37,16 +43,67 @@ import androidx.annotation.Px;
  */
 final class Utils {
 
-    public static RectF calculateRectOnScreen(@NonNull View view) {
+    public static Rect calculateRectOnScreen(@NonNull View view) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-        return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
+        return new Rect(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
     }
 
-    public static RectF calculateRectInWindow(@NonNull View view) {
+    public static Rect calculateRectInWindow(@NonNull View view) {
         int[] location = new int[2];
         view.getLocationInWindow(location);
-        return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
+        return new Rect(location[0], location[1], location[0] + view.getMeasuredWidth(), location[1] + view.getMeasuredHeight());
+    }
+
+    public static int getScreenWidth(@NonNull Context context) {
+        return getScreenSize(context).x;
+    }
+
+    public static int getScreenHeight(@NonNull Context context) {
+        return getScreenSize(context).y;
+    }
+
+    public static int getScreenRealWidth(@NonNull Context context) {
+        return getScreenRealSize(context).x;
+    }
+
+    public static int getScreenRealHeight(@NonNull Context context) {
+        return getScreenRealSize(context).y;
+    }
+
+    private static DisplayMetrics getDisplayMetrics() {
+        return Resources.getSystem().getDisplayMetrics();
+    }
+
+    private static Point getScreenSize(@NonNull Context context) {
+        Display display;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            display = context.getDisplay();
+        } else {
+            display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
+                    .getDefaultDisplay();
+        }
+        Point size = new Point();
+        display.getSize(size);
+        return size;
+    }
+
+    private static Point getScreenRealSize(@NonNull Context context) {
+        Point size = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Display display;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                display = context.getDisplay();
+            } else {
+                display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
+                        .getDefaultDisplay();
+            }
+            display.getRealSize(size);
+        } else {
+            DisplayMetrics dm = getDisplayMetrics();
+            size.set(dm.widthPixels, dm.heightPixels);
+        }
+        return size;
     }
 
     public static float pxToDp(@Px float px) {

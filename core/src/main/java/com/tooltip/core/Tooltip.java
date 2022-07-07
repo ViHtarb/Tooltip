@@ -102,14 +102,8 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
                 mOnDismissListener.onDismiss();
             }
         });
-
-/*        mAnchorView.post(() -> {
-            mContentView = createContentViewInternal(builder);
-            mPopupWindow.setContentView(mContentView);
-        });*/
     }
 
-    @SuppressWarnings("unchecked")
     private LinearLayout createContentViewInternal(T builder) {
         View customContentView = createContentView(builder);
 

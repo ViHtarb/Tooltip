@@ -3,7 +3,7 @@
 buildscript {
     ext {
         compileSdk = 32
-        minSdk = 14
+        minSdk = 21
         targetSdk = 32
 
         coreVersion = '1.8.0'

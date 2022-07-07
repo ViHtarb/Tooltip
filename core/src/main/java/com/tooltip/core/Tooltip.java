@@ -30,7 +30,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewTreeObserverCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -304,7 +303,7 @@ public abstract class Tooltip<T extends Tooltip.Builder> {
 
         @Override
         public void onGlobalLayout() {
-            ViewTreeObserverCompat.removeOnGlobalLayoutListener(mContentView.getViewTreeObserver(), this);
+            mContentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             Rect anchorRect = Utils.calculateRectOnScreen(mAnchorView);
             Rect contentViewRect = Utils.calculateRectOnScreen(mContentView);
